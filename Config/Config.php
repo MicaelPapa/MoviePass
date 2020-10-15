@@ -9,7 +9,7 @@ define("DAO_PATH", "DAO/");
 define("CSS_PATH", FRONT_ROOT.VIEWS_PATH . "css/");
 define("JS_PATH", FRONT_ROOT.VIEWS_PATH . "js/");
 
-define("API_KEY","8980266afb2653bd7558658ca2459816");
+define("API_KEY","271e58069f5cfe4efa0d1fc04de3129f");
 define("LANGUAGE_ES","es");
 define("API_MAIN_LINK","https://api.themoviedb.org/3");
 define("IMG_LINK","https://image.tmdb.org/t/p/w185");

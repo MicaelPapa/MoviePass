@@ -41,7 +41,9 @@ class IMDBController
       }
    
       // EXECUTE:
-      $result = curl_exec($curl);
+      //$result = curl_exec($curl);
+      $result = file_get_contents($url);
+
       if(!$result)
       {
          die("Connection Failure");
