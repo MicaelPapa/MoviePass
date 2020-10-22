@@ -8,7 +8,7 @@ use Exception;
 use PHPMailer\Mail as Mail;
 use Models\User as User;
 use Util\Validate as Validate;
-use Util\Hash as Hash;
+use Util\Hash as Hash;   
 use Util\Random as Random;
 
 class LoginController
@@ -75,7 +75,7 @@ class LoginController
                 } else {
                     $this->ShowForgotPasswordView("Ha ocurrido un error al enviar la nueva contraseña");
                 }
-                $selectedUser['NewPassword'] = $this->userDAO->UpdateUserPassword($email, BaseController::Hash($newPassword));
+                $selectedUser['NewPassword'] = $this->userDAO->UpdateUserPassword($email, Hash::Hashing($newPassword));
             } else {
                 $this->ShowForgotPasswordView("Ese email no pertenece a ningun usuario registrado en MoviePass");
             }
