@@ -3,8 +3,9 @@
 namespace DAO;
 
 use DAO\Connection as Connection;
+use Interfaces\IStatisticsDAO as IStatisticsDAO;
 
-class StatisticsDAO
+class StatisticsDAO implements IStatisticsDAO
 {
     private $connection;
 

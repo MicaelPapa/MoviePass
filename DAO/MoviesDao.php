@@ -3,25 +3,24 @@
 namespace DAO;
 
 use \Exception as Exception;
-use Interfaces\IMoviesDAO as IMoviesDAO;
 use Models\Movies as Movies;
 use DAO\Connection as Connection;
 use DAO\MovieGenreDAO as MovieGenreDAO;
 use Models\MovieGenre as MovieGenre;
-
+use Interfaces\IMoviesDAO as IMoviesDAO;
 
 class MoviesDAO implements IMoviesDAO
 {
 	private $connection;
 	private $tableName = "Movies";
-    private $movieGenreTableName = "MoviesXGenres";
+	private $movieGenreTableName = "MoviesXGenres";
 
 	public function GetMoviesByCity($CityId)
 	{
 		$invokeStoredProcedure = 'CALL GetMoviesByCity(?)';
-        $parameters["CityId"] = $CityId;
+		$parameters["CityId"] = $CityId;
 
-        $this->connection = Connection::GetInstance();
+		$this->connection = Connection::GetInstance();
 		return $this->connection->Execute($invokeStoredProcedure, $parameters, QueryType::StoredProcedure);
 	}
 
@@ -42,7 +41,7 @@ class MoviesDAO implements IMoviesDAO
 				$movies->setSynopsis($row["Synopsis"]);
 				$movies->setReleaseDate($row["ReleaseDate"]);
 				$movies->setPhoto($row["Photo"]);
- 				$movies->setEarnings($row["Earnings"]);
+				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
 
@@ -56,27 +55,26 @@ class MoviesDAO implements IMoviesDAO
 
 	public function getAllMoviesResult()
 	{
-			$query = "SELECT * FROM " . $this->tableName;
-			$this->connection = Connection::GetInstance();
-			return $this->connection->Execute($query);
+		$query = "SELECT * FROM " . $this->tableName;
+		$this->connection = Connection::GetInstance();
+		return $this->connection->Execute($query);
 	}
 
 	public function add($movies)
 	{
-		try 
-		{
+		try {
 			$query = "INSERT INTO " . $this->tableName . " (IdMovieIMDB, MovieName, ReleaseDate, Photo,
 			Duration,Synopsis,Earnings,Budget,OriginalLanguage,IsPlaying)
 			 VALUES (:IdMovieIMDB, :MovieName, :ReleaseDate, :Photo, :Duration, :Synopsis, :Earnings,
 			:Budget, :OriginalLanguage, :IsPlaying);";
-			
+
 			$parameters["IdMovieIMDB"] = $movies->getIdMovieIMDB();
 			$parameters["MovieName"] = $movies->getMovieName();
- 			$parameters["Duration"] = $movies->getDuration();
+			$parameters["Duration"] = $movies->getDuration();
 			$parameters["Synopsis"] = $movies->getSynopsis();
 			$parameters["ReleaseDate"] = $movies->getReleaseDate();
 			$parameters["Photo"] = $movies->getPhoto();
- 			$parameters["Earnings"] = $movies->getEarnings();
+			$parameters["Earnings"] = $movies->getEarnings();
 			$parameters["Budget"] = $movies->getBudget();
 			$parameters["OriginalLanguage"] = $movies->getOriginalLanguage();
 			$parameters["IsPlaying"] = true;
@@ -95,22 +93,19 @@ class MoviesDAO implements IMoviesDAO
 		return true;
 	}
 
-function remove($movies)
+	function remove($movies)
 	{
-		try 
-		{
+		try {
 			$query = "DELETE FROM " . $this->tableName . " WHERE IdMovieIMDB = " . $movies->getIdMovieIMDB() . ";";
 
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query);
-/* 
+			/* 
 			$query = "DELETE FROM " . $this->generoTableName . " WHERE IdMovieIMDB = " . $movies->getIdMovieIMDB) . ";";
 
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query); */
-		} 
-		catch (Exception $ex) 
-		{
+		} catch (Exception $ex) {
 			throw $ex;
 		}
 	}
@@ -183,14 +178,12 @@ function remove($movies)
 
 	public function getByMovieId($idMovie)
 	{
-		try
-		{
+		try {
 			$query = "SELECT * FROM " . $this->tableName . " WHERE IdMovie = " . $idMovie . ";";
 			$this->connection = Connection::GetInstance();
 			$resultSet = $this->connection->Execute($query);
 
-			foreach ($resultSet as $row) 
-			{
+			foreach ($resultSet as $row) {
 				$movies->setIdMovie($row["IdMovie"]);
 				$movies->setIdMovieIMDB($row["IdMovieIMDB"]);
 				$movies->setMovieName($row["MovieName"]);
@@ -237,15 +230,13 @@ function remove($movies)
 
 	public function getByMovieName($movieName)
 	{
-		try
-		{
-			$query = "SELECT * FROM " . $this->tableName." WHERE MovieName LIKE '%". $movieName ."%';";
+		try {
+			$query = "SELECT * FROM " . $this->tableName . " WHERE MovieName LIKE '%" . $movieName . "%';";
 			$this->connection = Connection::GetInstance();
 			$resultSet = $this->connection->Execute($query);
 			$list = array();
 
-			foreach ($resultSet as $row) 
-			{
+			foreach ($resultSet as $row) {
 				$movies = new Movies();
 				$movies->setIdMovie($row["IdMovie"]);
 				$movies->setIdMovieIMDB($row["IdMovieIMDB"]);
@@ -257,18 +248,16 @@ function remove($movies)
 				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
-				
+
 				array_push($list, $movies);
 			}
-			return $list;			
-		} 
-		catch (Exception $ex) 
-		{
+			return $list;
+		} catch (Exception $ex) {
 			return null;
 		}
 	}
 
-public function edit($movies)
+	public function edit($movies)
 	{
 		try {
 			$query = "UPDATE " . $this->tableName . " SET IdMovieIMDB = :IdMovieIMDB, MovieName = :MovieName, Duration = :Duration, Synopsis = :Synopsis, ReleaseDate = :ReleaseDate, Photo = :Photo, Earnings = :Earnings, Budget = :Budget WHERE IdMovie = :IdMovie;";
@@ -297,16 +286,15 @@ public function edit($movies)
 			$this->connection = Connection::GetInstance();
 			$resultSet = $this->connection->Execute($query);
 
-		if($resultSet != null){
-			return true;
-		}
-		}
-		catch (Exception $ex) {
+			if ($resultSet != null) {
+				return true;
+			}
+		} catch (Exception $ex) {
 			throw $ex;
 		}
 	}
 
-/* 	public function setMoviesAndGenres($movies,$movieGenre){
+	/* 	public function setMoviesAndGenres($movies,$movieGenre){
 		try{
 			$query = "INSERTO INTO".$this->movieGenreTableName."(IdMovieIMDB, IdGenreIMDB) VALUES (:IdMovieIMDB, :IdGenreIMDB);";
 			$parameters["IdMovieIMDB"] = $movies->getIdMovieIMDB();
