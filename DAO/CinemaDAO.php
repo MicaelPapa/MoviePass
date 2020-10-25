@@ -4,9 +4,9 @@ namespace DAO;
 
 use DAO\Connection as Connection;
 use Models\Cinema as Cinema;
+use Interfaces\ICinemaDAO as ICinemaDAO;
 
-
-class cinemaDAO
+class cinemaDAO implements ICinemaDAO
 {
 	private $connection;
 	private $tableName = "cinemas";

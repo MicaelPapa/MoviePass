@@ -5,8 +5,9 @@ namespace DAO;
 use Models\User as User;
 use Models\Address as Address;
 use DAO\Connection as Connection;
+use Interfaces\IAddressDAO as IAddressDAO;
 
-class AddressDAO
+class AddressDAO implements IAddressDAO
 {
     private $connection;
     private $tableName = "Addresses";

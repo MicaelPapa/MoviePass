@@ -2,7 +2,10 @@
 
 namespace DAO;
 
-class PurchaseDAO
+use Interfaces\IPurchaseDAO as IPuchaseDAO;
+
+
+class PurchaseDAO implements IPuchaseDAO
 {
     public function BuyTickets($idCine, $idUser, $idFuncion, $cantTickets)
     {

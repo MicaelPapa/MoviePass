@@ -1,5 +1,7 @@
 <?php
     namespace Interfaces;
+
+    
     interface IScreeningDAO
     {
     function add($screening);

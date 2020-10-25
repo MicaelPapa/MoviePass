@@ -84,7 +84,7 @@ class MovieGenreDAO implements IMovieGenreDAO
         }
     }
 
-    public function isIdIMDB($idIMDB){
+    public function isIdIMDB($idIMDB){ /*CORREGIR*/
         try {
             $query = "SELECT * FROM " . $this->tableName . "WHERE IdMovieGenreIMDB = " . $movieGenre->getIdMovieGenreIMDB() . ";";
             $this->connection = Connection::GetInstance();

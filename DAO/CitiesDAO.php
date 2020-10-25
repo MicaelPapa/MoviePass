@@ -5,9 +5,10 @@ use DAO\Connection as Connection;
 use Models\State as State;
 use Models\Country as Country;
 use Models\City as City;
+use Interfaces\ICitiesDAO as ICitiesDAO;
 
 
-class CitiesDAO
+class CitiesDAO implements ICitiesDAO
 {
 	private $connection;
     private $tableName = "cities";
@@ -97,6 +98,7 @@ class CitiesDAO
     }
 
     public function getIdCitiesByName($cityName){
+        
         $query = "SELECT * FROM " . $this->tableName . " WHERE CityName = " . $cityName . " ;";
         $parameters = array();
         $this->connection = Connection::GetInstance();

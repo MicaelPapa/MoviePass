@@ -1,7 +1,8 @@
 <?php
     namespace DAO;
     use Models\Room as Room;
-    class RoomDAO
+    use Interfaces\IRoomDAO as IRoomDAO;
+    class RoomDAO implements IRoomDAO
     {
         private $connection;
         private $tableName = "rooms";
