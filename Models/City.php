@@ -7,7 +7,7 @@ namespace Models;
         private $idCity;
         private $cityName;
         private $zipCode;
-        private $idState;
+        private $state;
 
         
 

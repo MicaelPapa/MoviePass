@@ -33,8 +33,8 @@ require_once("navbar.php");
                     <td><?php echo $room->getRoomNumber(); ?></td>
                     <td><?php echo $room->getCapacity() ?></td>
                     <td>
-                      <button type="submit" name="idRoom" class="btn btn-danger" value="<?php echo $room->getIdRoom() ?>"><i class="fas fa-minus-circle"></i>&nbspEliminar</button>
-                      <a id="edit" href = "<?php echo FRONT_ROOT ?>Room/ShowEditView ? idCinema =<?php echo $room->getIdCinema() ?>" type="button" name="idCinema" class="btn btn-warning"><i class="fas fa-edit"></i>&nbspEditar
+                      <button type="submit" name="idRoom" class="btn btn-danger" value="<?php echo $room->getIdRoom(); ?>"><i class="fas fa-minus-circle"></i>&nbspEliminar</button>
+                      <a id="edit" href = "<?php echo FRONT_ROOT ?>Room/ShowEditView ? idRoom = <?php echo $room->getIdRoom();  ?>" type="button" name="idCinema" class="btn btn-warning"><i class="fas fa-edit"></i>&nbspEditar
                       </a>
                     </td>
                   </tr>
@@ -48,7 +48,7 @@ require_once("navbar.php");
                   echo '<h2 class="text-center display-4">No hay Salas disponibles para mostrar</h2>';
                 }
               ?>
-          <a href = "<?php echo FRONT_ROOT ?>Room/ShowAddView"  class="btn btn-success btn-block" ><i class="fas fa-plus-square"></i>&nbspAgregar nueva sala</a>
+          <a href = "<?php echo FRONT_ROOT ?>Room/ShowAddView? cinema = <?php echo $cinema->getIdCinema() ;?>"  class="btn btn-success btn-block" ><i class="fas fa-plus-square"></i>&nbspAgregar nueva sala</a>
           <a type="button" href="<?php echo FRONT_ROOT ?>Cinema/ShowListView" class="btn btn-primary btn-block"><i class="fas fa-arrow-left"></i>&nbspVolver a lista de cines</a>
         </form>
         <!-- form -->
