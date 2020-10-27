@@ -4,7 +4,7 @@ define("ROOT", dirname(__DIR__) . "/");
 //Path to your project's root folder
 define("FRONT_ROOT", "/MoviePass/");
 define("VIEWS_PATH", "Views/");
-define("FACEBOOK_PATH", "FacebookLogIn/");
+define("FACEBOOK_PATH", "Facebook/Custom/");
 define("DAO_PATH", "DAO/");
 define("CSS_PATH", FRONT_ROOT.VIEWS_PATH . "css/");
 define("JS_PATH", FRONT_ROOT.VIEWS_PATH . "js/");
