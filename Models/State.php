@@ -6,7 +6,7 @@ namespace Models;
 
         private $idState;
         private $stateName;
-        private $idCountry;
+        private $country;
 
         
 
@@ -53,19 +53,25 @@ namespace Models;
         /**
          * Get the value of idCountry
          */ 
-        public function getIdCountry()
+        
+         
+
+        /**
+         * Get the value of country
+         */ 
+        public function getCountry()
         {
-                return $this->idCountry;
+                return $this->country;
         }
 
         /**
-         * Set the value of idCountry
+         * Set the value of country
          *
          * @return  self
          */ 
-        public function setIdCountry($idCountry)
+        public function setCountry($country)
         {
-                $this->idCountry = $idCountry;
+                $this->country = $country;
 
                 return $this;
         }

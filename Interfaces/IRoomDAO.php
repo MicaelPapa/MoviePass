@@ -6,7 +6,7 @@ interface IRoomDAO
     public function Add($room, $cinema);
     function Remove($room);
     public function GetAll();
-    public function GetRoomByCinema($idCinema);
+    public function GetRoomsByCinema($idCinema);
 
 }
 

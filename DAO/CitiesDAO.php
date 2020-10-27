@@ -54,7 +54,7 @@ class CitiesDAO implements ICitiesDAO
                 $state = new State();
                 $state->setIdState($row["IdState"]);
                 $state->setStateName($row["StateName"]);
-                $state->setIdCountry($row["IdCountry"]);
+    //            $state->setIdCountry($row["IdCountry"]);
     
                 array_push($parameters, $state);
             }
