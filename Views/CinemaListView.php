@@ -15,41 +15,42 @@ require_once("navbar.php");
 
         <form action="<?php echo FRONT_ROOT ?>Cinema/Remove" method="">
           <?php
-              if(sizeof($cinemaList) != 0) {
+          if (sizeof($cinemaList) != 0) {
           ?>
-          <table class="table table-dark text-align-center" style="text-align: center; border-radius: 25px;">
-            <thead>
-              <tr>
-                <th style="width: 20%;">Id Del Cine</th>
-                <th style="width: 20%;">Nombre del Cine</th>
-                <th style="width: 20%;">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              foreach ($cinemaList as $cinema) {
-                ?>
+            <table class="table table-dark text-align-center" style="text-align: center; border-radius: 25px;">
+              <thead>
                 <tr>
-                  <td><?php echo $cinema->getIdCinema(); ?></td>
-                  <td><?php echo $cinema->getCinemaName(); ?></td>
-                  <td>
-                    <button type="submit" name="idCinema" class="btn btn-danger" value="<?php echo $cinema->getIdCinema() ?>"><i class="fas fa-minus-circle"></i>&nbspEliminar </button>
-                    <a id="edit" href = "<?php echo FRONT_ROOT ?>Cinema/ShowEditView ? idCinema =<?php echo $cinema->getIdCinema() ?>" type="button" name="idCinema" class="btn btn-warning"><i class="fas fa-edit"></i>&nbspEditar
-                    </a>
-                  </td>
+                  <th style="width: 20%;">Nombre del Cine</th>
+                  <th style="width: 20%;">Dirección</th>
+                  <th style="width: 20%;">Acciones</th>
                 </tr>
-              <?php
-              }
-              ?>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <?php
+                foreach ($cinemaList as $cinema) {
+                ?>
+                  <tr>
+                    <td><?php echo $cinema->getCinemaName(); echo " "; ?></td>
+                    <td><?php echo $cinema->getAddress()->getStreet(); echo " "; echo $cinema->getAddress()->getNumberStreet();  ?></td>
+
+                    <td>
+                      <button type="submit" name="idCinema" class="btn btn-danger" value="<?php echo $cinema->getIdCinema() ?>"><i class="fas fa-minus-circle"></i>&nbspEliminar </button>
+                      <a id="edit" href="<?php echo FRONT_ROOT ?>Cinema/ShowEditView ? idCinema =<?php echo $cinema->getIdCinema() ?>" type="button" name="idCinema" class="btn btn-warning"><i class="fas fa-edit"></i>&nbspEditar
+                      </a>
+                    </td>
+                  </tr>
+                <?php
+                }
+                ?>
+              </tbody>
+            </table>
           <?php
-            } else {
-              echo '<h2 class="text-center display-4">No hay Cines disponibles para mostrar</h2>';
-            }
+          } else {
+            echo '<h2 class="text-center display-4">No hay Cines disponibles para mostrar</h2>';
+          }
           ?>
-          <a href = "<?php echo FRONT_ROOT ?>Cinema/ShowAddView"  class="btn btn-success btn-block" ><i class="fas fa-plus-square"></i>&nbspAgregar nuevo cine</a>
-          <a href = "<?php echo FRONT_ROOT ?>Home/Index"  class="btn btn-primary btn-block" ><i class="fas fa-arrow-left"></i>&nbspVolver</a>
+          <a href="<?php echo FRONT_ROOT ?>Cinema/ShowAddView" class="btn btn-success btn-block"><i class="fas fa-plus-square"></i>&nbspAgregar nuevo cine</a>
+          <a href="<?php echo FRONT_ROOT ?>Home/Index" class="btn btn-primary btn-block"><i class="fas fa-arrow-left"></i>&nbspVolver</a>
         </form>
         <!-- form -->
       </div>

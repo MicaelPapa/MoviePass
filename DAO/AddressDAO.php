@@ -78,7 +78,7 @@ class AddressDAO implements IAddressDAO
                 $address->setIdAddress($row["IdAddress"]);
                 $address->setStreet($row["Street"]);
                 $address->setNumberStreet($row["NumberStreet"]);
-                $address->setIdCity($row["IdCity"]);
+             //   $address->setIdCity($row["IdCity"]);
                 
                 return $address;
             }
@@ -89,21 +89,31 @@ class AddressDAO implements IAddressDAO
         }
     }
 
-    public function add($address){
+    public function Add($address){
        
         try{
-            $query = "INSERT INTO " . $this->stateTableName . " ( Street, NumberStreet, IdCity) VALUES ( :Street, :NumberStreet, .IdCity);";
-            $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
+            $query = "INSERT INTO " . $this->tableName . " ( Street, NumberStreet) VALUES ( :Street, :NumberStreet);";
 
             $parameters["Street"] = $address->getStreet();
             $parameters["NumberStreet"] = $address->getNumberStreet();
-            $parameters["IdCity"] = $address->getIdCity();
+            $this->connection = Connection::GetInstance();
+			$this->connection->ExecuteNonQuery($query, $parameters);
+
+            $query = "SELECT MAX(IdAddress) as 'IdAddress' FROM ". $this->tableName . " ;";
             
             $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query, $parameters);
+            $result =  $this->connection->Execute($query);
+            
+           foreach($result as $row)
+            {
+                $idAddress = null;
+                $idAddress = $row["IdAddress"];
+                return $idAddress;
+            }
+          
+          //  $parameters["IdCity"] = $address->getIdCity();
         
-            return true;
+           
         }
         
         catch (Exception $ex) {

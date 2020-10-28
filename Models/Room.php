@@ -6,7 +6,7 @@ class Room
     private $idRoom;
     private $roomNumber;
     private $capacity;
-    private $idCinema;
+    private $cinema;
 
     public function getIdRoom()
     {
@@ -35,23 +35,8 @@ class Room
         return $this;
     }
 
-    
-    public function getIdCinema()
-    {
-        return $this->idCinema;
-    }
-
-  
-    public function setIdCinema($idCinema)
-    {
-        $this->idCinema = $idCinema;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of capacity
-     */ 
+ 
+        
     public function getCapacity()
     {
         return $this->capacity;
@@ -65,6 +50,26 @@ class Room
     public function setCapacity($capacity)
     {
         $this->capacity = $capacity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cinema
+     */ 
+    public function getCinema()
+    {
+        return $this->cinema;
+    }
+
+    /**
+     * Set the value of cinema
+     *
+     * @return  self
+     */ 
+    public function setCinema($cinema)
+    {
+        $this->cinema = $cinema;
 
         return $this;
     }

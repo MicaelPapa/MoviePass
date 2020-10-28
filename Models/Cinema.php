@@ -6,10 +6,9 @@ namespace Models;
 class Cinema
 {
     private $idCinema;
-    private $CinemaName;
-    private $IdAddress;
-    private $Address;
-    private $Rooms;
+    private $cinemaName;
+    private $address;
+  
 
     
     public function getIdCinema()
@@ -26,21 +25,21 @@ class Cinema
 
     public function getCinemaName()
     {
-        return $this->CinemaName;
+        return $this->cinemaName;
     }
 
  
-    public function setCinemaName($CinemaName)
+    public function setCinemaName($cinemaName)
     {
-        $this->CinemaName = $CinemaName;
+        $this->cinemaName = $cinemaName;
 
         return $this;
     }
 
 
-    /**
+   /* /**
      * Get the value of IdAddress
-     */ 
+      
     public function getIdAddress()
     {
         return $this->IdAddress;
@@ -50,36 +49,36 @@ class Cinema
      * Set the value of IdAddress
      *
      * @return  self
-     */ 
+     *
     public function setIdAddress($IdAddress)
     {
         $this->IdAddress = $IdAddress;
 
         return $this;
-    }
+    }*/
 
     public function getAddress()
     {
-        return $this->Address;
+        return $this->address;
     }
 
  
-    public function setAddress($Address)
+    public function setAddress($address)
     {
-        $this->Address = $Address;
+        $this->address = $address;
 
         return $this;
     }
 
     public function getRooms()
     {
-        return $this->Rooms;
+        return $this->rooms;
     }
 
  
-    public function setRooms($Rooms)
+    public function setRooms($rooms)
     {
-        $this->Rooms = $Rooms;
+        $this->rooms = $rooms;
 
         return $this;
     }

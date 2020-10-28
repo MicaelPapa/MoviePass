@@ -4,6 +4,8 @@ namespace DAO;
 
 use DAO\Connection as Connection;
 use Models\Cinema as Cinema;
+use Models\Room as Room;
+use Models\Address as Address;
 use Interfaces\ICinemaDAO as ICinemaDAO;
 
 class cinemaDAO implements ICinemaDAO
@@ -15,11 +17,11 @@ class cinemaDAO implements ICinemaDAO
 	{
 		try {
 			
-			$query = "INSERT INTO addresses (Street, NumberStreet, IdCity ) VALUES (:Street, :NumberStreet, :IdCity)";
+			$query = "INSERT INTO addresses (Street, NumberStreet, IdCity ) VALUES (:Street, :NumberStreet, /*:IdCity*/null)";
 
 			$parameters ["Street"] = $address->getStreet();
 			$parameters ["NumberStreet"] = $address->getNumberStreet();
-			$parameters ["IdCity"] = $address->getIdCity();
+			//$parameters ["IdCity"] = $address->getIdCity();
 			
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query, $parameters);
@@ -29,21 +31,26 @@ class cinemaDAO implements ICinemaDAO
 			$this->connection = Connection::GetInstance();
 			$result =$this->connection->Execute($query);
 
-			foreach ($result as $row)
+	/*
+				foreach ($result as $row)
 			{
 				$cinema->setIdAddress($row['IdAddress']);
+			}*/
+			foreach($result as $row)
+			{
+				$idAddress = $row['IdAddress'];
 			}
-
+		
 	
 			$query = "INSERT INTO ".$this->tableName." (CinemaName, IdAddress) VALUES (:CinemaName, :IdAddress)" ;																
 
 			$parameters2["CinemaName"] = $cinema->getCinemaName();
-			$parameters2["IdAddress"] = $cinema->getIdAddress();
+			$parameters2["IdAddress"] = $idAddress; //<---------------------------------
 
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query, $parameters2);
 
-			return true;
+			return $idAddress;
 		} catch (Exception $ex) {
 			throw $ex;
 		}
@@ -69,7 +76,8 @@ class cinemaDAO implements ICinemaDAO
 	{
 		try {
 			$cinemaList = array();
-			$query = "SELECT * FROM " . $this->tableName;
+			
+			$query = "SELECT * FROM " . $this->tableName. " as c INNER JOIN addresses a ON c.IdAddress= a.IdAddress ;" ;
 			$this->connection = Connection::GetInstance();
 			$result = $this->connection->Execute($query);
 
@@ -78,7 +86,15 @@ class cinemaDAO implements ICinemaDAO
 				$cinema = new Cinema();
 				$cinema->setIdCinema($row["IdCinema"]);
 				$cinema->setCinemaName($row["CinemaName"]);
-				$cinema->setIdAddress($row["IdAddress"]);
+
+
+				$address = new Address();
+				$address->setIdAddress($row["IdAddress"]);
+				$address->setNumberStreet($row["NumberStreet"]);
+				$address->setStreet($row["Street"]);
+
+				$cinema->setAddress($address);
+			
 				array_push($cinemaList, $cinema);
 			}
 			return $cinemaList;
@@ -145,7 +161,6 @@ class cinemaDAO implements ICinemaDAO
 				$cinema = new Cinema();
 				$cinema->setIdCinema($row["IdCinema"]);
 				$cinema->setCinemaName($row["CinemaName"]);
-				$cinema->setIdAddress($row["IdAddress"]);
 				return $cinema;
 			}
 		} catch (Exception $ex) {
@@ -156,29 +171,10 @@ class cinemaDAO implements ICinemaDAO
 	public function UpdateCinema($idCinema, $cinemaName, $address)
 	{
 		try {
-			$query = "INSERT INTO addresses (Street, NumberStreet, IdCity ) VALUES (:Street, :NumberStreet, :IdCity)";
-
-			$parameters ["Street"] = $address->getStreet();
-			$parameters ["NumberStreet"] = $address->getNumberStreet();
-			$parameters ["IdCity"] = $address->getIdCity();
 			
-			$this->connection = Connection::GetInstance();
-			$this->connection->ExecuteNonQuery($query, $parameters);
+			$query = "UPDATE " . $this->tableName . " SET CinemaName = :CinemaName, IdAddress = :IdAddress WHERE IdCinema =" . $idCinema . ";";
+
 			
-			$query = "SELECT IdAddress FROM addresses WHERE Street = '" . $address->getStreet() . "' AND NumberStreet = '" . $address->getNumberStreet() . "'"; 
-			
-			$this->connection = Connection::GetInstance();
-			$result =$this->connection->Execute($query);
-
-			foreach ($result as $row)
-			{
-				$address->setIdAddress($row['IdAddress']);
-			}
-
-
-			$query = "UPDATE " . $this->tableName . " SET IdCinema = :IdCinema, CinemaName = :CinemaName, IdAddress = :IdAddress WHERE IdCinema =" . $idCinema . ";";
-
-			$parameters2["IdCinema"] = $idCinema;
 			$parameters2["CinemaName"] =$cinemaName;
 			$parameters2["IdAddress"] = $address->getIdAddress();
 
@@ -202,7 +198,8 @@ class cinemaDAO implements ICinemaDAO
 				$cinema = new Cinema();
 				$cinema->setIdCinema($row["IdCinema"]);
 				$cinema->setCinemaName($row["CinemaName"]);
-				$cinema->setIdAddress($row["IdAddress"]);
+			//	$address = $this->addressDat
+		//		$cinema->setIdAddress($row["IdAddress"]);
 				return $cinema;
 			}
 		} catch (Exception $ex) {
@@ -210,6 +207,21 @@ class cinemaDAO implements ICinemaDAO
 		}
 	}
 
+	public function getCinemaAddress($idCinema)
+	{
+		$query = "SELECT * FROM "  . $this->tableName. " WHERE idCinema = '" . $idCinema . "';"; 
+		$this->connection = Connection::GetInstance();
+
+		$result = $this->connection->Execute($query);
+		
+		foreach($result as $row)
+		{
+			$idAddress = null ;
+			$idAddress = $row["IdAddress"];
+			return $idAddress;
+		}
+
+	}
 	public function getCinemasByMovie($movieId)
     {
 

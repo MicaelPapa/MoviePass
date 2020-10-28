@@ -78,13 +78,15 @@ class CinemaController
         if (Validate::Logged() && Validate::AdminLog()) {
             $cine = new Cinema();
             $cine = $this->CinemaDAO->GetCinemaById($idCinema);
-
-            $addressM = $this->AddressDAO->getAddressById($cine->getIdAddress());
-            $cityM = $this->CitiesDAO->getCity($addressM->getIdCity());
-            $stateM = $this->CitiesDAO->getState($cityM->getIdState());
+            $idAddress = $this->CinemaDAO->getCinemaAddress($cine->getIdCinema());
+            $address = $this->AddressDAO->getAddressById($idAddress); 
+            $cine->setAddress($address);
             
-            $states = $this->LoadStates();
-            $cities = $this->LoadCities($stateM->getIdState());
+ //           $cityM = $this->CitiesDAO->getCity($addressM->getIdCity());
+    //        $stateM = $this->CitiesDAO->getState($cityM->getIdState());
+            
+ //           $states = $this->LoadStates();
+//            $cities = $this->LoadCities($stateM->getIdState());
 
             require_once(VIEWS_PATH . "EditCinemaView.php");
            
@@ -93,12 +95,12 @@ class CinemaController
         }
     }
 
-    public function Add($cinemaName, $cityId, $street, $numberStreet)
+    public function Add($cinemaName, $street, $numberStreet) /*public function Add($cinemaName, $cityId, $street, $numberStreet)*/
     {
         if (Validate::Logged() && Validate::AdminLog()) { 
 
         $cinemaName = Validate::ValidateData($cinemaName);        
-        $cityId = Validate::ValidateData($cityId);
+     //   $cityId = Validate::ValidateData($cityId);
         $street = Validate::ValidateData($street);
         $numberStreet = Validate::ValidateData($numberStreet);
 
@@ -107,18 +109,23 @@ class CinemaController
             $this->ShowAddView("Cine ya existente");
         } 
         else{
-            $cinema = new Cinema();
-            $cinema->setCinemaName($cinemaName);
+          
 
             $address = new Address();
             $address->setStreet($street);
             $address->setNumberStreet($numberStreet);
-            $address->setIdCity($cityId);
+            //  $address->setIdCity($cityId);
 
-
-            $this->CinemaDAO->Add($cinema, $address);
+            $cinema = new Cinema();
+            $cinema->setCinemaName($cinemaName);
             
-            RoomController::ShowAddView($cinema);
+            $idAddress =  $this->CinemaDAO->Add($cinema, $address);
+            $address->setIdAddress($idAddress);
+            $cinema->setAddress($address);
+
+
+            require_once(VIEWS_PATH . "AddRoomView.php");       
+                 
         }
 
         } else {
@@ -154,8 +161,10 @@ class CinemaController
             $address = new Address();
             $address->setStreet($street);
             $address->setNumberStreet($number);
-            $address->setIdCity($cityId);
-
+            $idAddress = $this->AddressDAO->Add($address);
+            $address->setIdAddress($idAddress);
+      //      $address->setIdCity($cityId);
+          
            // $cinema = $this->cinemaDAO->GetCinemaById($idCinema);
                
             $this->CinemaDAO->UpdateCinema($idCinema, $cinemaName, $address);

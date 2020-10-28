@@ -24,23 +24,23 @@ require_once("navbar.php");
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProvincia"><i style="color: red;">&#42&nbsp</i>Provincia</label>
-                            <select id="inputProvincia" class="form-control" required>
+                            <select id="inputProvincia" class="form-control" >
                                 <option value="">Elije una</option>
-                                <?php 
-                                    foreach ($states as $state) {
+                               <?php 
+                                    /*foreach ($states as $state) {
                                         if($stateM->getIdState() == $state->getIdState()){
                                             echo ('<option selected value="' . $state->getIdState() . '">' . $state->getStateName() . '</option>');
                                         }
                                         else {
                                             echo ('<option value="' . $state->getIdState() . '">' . $state->getStateName() . '</option>');
                                         }                                        
-                                    } 
+                                    } */
                                 ?>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputCiudad"><i style="color: red;">&#42&nbsp</i>Ciudad</label>
-                            <select id="inputCiudad" class="form-control" name="cityId" required>
+                            <select id="inputCiudad" class="form-control" name="cityId" >
                                 <option value="">Elije una</option>
                                 <?php 
                                     foreach ($cities as $city) {
@@ -58,11 +58,11 @@ require_once("navbar.php");
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-6">
                             <label for="inputNombre"><i style="color: red;">&#42&nbsp</i>Dirección</label>
-                            <input value="<?php echo $addressM->getStreet();?>" type="text" class="form-control" id="inputNombre" placeholder="Dirección" name="street" required>
+                            <input value="<?php echo $address->getStreet();?>" type="text" class="form-control" id="inputNombre" placeholder="Dirección" name="street" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputNombre"><i style="color: red;">&#42&nbsp</i>Número</label>
-                            <input value="<?php echo $addressM->getNumberStreet();?>" type="number" class="form-control" id="inputNombre" placeholder="Número" name="number" required>
+                            <input value="<?php echo $address->getNumberStreet();?>" type="number" class="form-control" id="inputNombre" placeholder="Número" name="number" required>
                         </div>                        
                     </div>                   
                     <button name="idCinema"  value="<?php echo $idCinema ?>" class="btn btn-success"><i class="fas fa-save"></i>&nbspGuardar cambios Cine</button>
