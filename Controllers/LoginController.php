@@ -1,7 +1,5 @@
 <?php
-
 namespace Controllers;
-
 
 use DAO\UserDAO as UserDAO;
 use Exception;
@@ -51,7 +49,7 @@ class LoginController
 
     public function LogInWithFacebookHandler()
     {
-        require_once(FACEBOOK_PATH . "fblogin.php");
+        require_once(FACEBOOK_CUSTOM_PATH . "fblogin.php");
     }
 
     public function RecoverPassword()
