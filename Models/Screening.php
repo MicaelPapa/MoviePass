@@ -17,6 +17,9 @@
         private $Subtitles;
         private $startHour;
         private $finishHour;
+		private $room;
+		private $cinema;
+		private $movie;
 
 	public function getIdScreening(){
 		return $this->idScreening;
@@ -121,5 +124,65 @@
 		$this->Price = $price;
 	}
 
+
+		/**
+		 * Get the value of room
+		 */ 
+		public function getRoom()
+		{
+				return $this->room;
+		}
+
+		/**
+		 * Set the value of room
+		 *
+		 * @return  self
+		 */ 
+		public function setRoom($room)
+		{
+				$this->room = $room;
+
+				return $this;
+		}
+
+		/**
+		 * Get the value of cinema
+		 */ 
+		public function getCinema()
+		{
+				return $this->cinema;
+		}
+
+		/**
+		 * Set the value of cinema
+		 *
+		 * @return  self
+		 */ 
+		public function setCinema($cinema)
+		{
+				$this->cinema = $cinema;
+
+				return $this;
+		}
+
+		/**
+		 * Get the value of movie
+		 */ 
+		public function getMovie()
+		{
+				return $this->movie;
+		}
+
+		/**
+		 * Set the value of movie
+		 *
+		 * @return  self
+		 */ 
+		public function setMovie($movie)
+		{
+				$this->movie = $movie;
+
+				return $this;
+		}
 }
 ?>

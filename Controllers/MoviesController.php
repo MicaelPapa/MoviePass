@@ -20,11 +20,28 @@ class MoviesController
 		$this->movieGenreDAO = new MovieGenreDAO();
 	}
 
-	public function GetMovieByCity()
+	
+	public function AddMovieToDatabase()
 	{
-		$var = json_encode($this->moviesDAO->GetMoviesByCity($_POST["cityId"]));
-		return $var;
+		$screeningHelper = new ScreeningController();
+
+		if ($_GET['IdMovieIMDB'] != null) {
+
+			$idMovieIMDB = $_GET['IdMovieIMDB'];
+		} else {
+			$idMovieIMDB = 0;
+		}
+
+
+		if ($this->moviesDAO->getByIdMovieIMDB($idMovieIMDB) == NULL) {
+			$movie = $this->getInfoMovieApi($idMovieIMDB);
+			$this->moviesDAO->add($movie);
+		}
+
+		$screeningHelper->View($movie->getIdMovieIMDB());
 	}
+
+
 
 	public function ShowApiMovies($movieList = null)
 	{
@@ -83,26 +100,6 @@ class MoviesController
 			array_push($apiMovie, $movies);
 		}
 		return $apiMovie;
-	}
-
-	public function AddMovieToDatabase()
-	{
-		$screeningHelper = new ScreeningController();
-
-		if ($_GET['IdMovieIMDB'] != null) {
-
-			$idMovieIMDB = $_GET['IdMovieIMDB'];
-		} else {
-			$idMovieIMDB = 0;
-		}
-
-
-		if ($this->moviesDAO->getByIdMovieIMDB($idMovieIMDB) == NULL) {
-			$movies = $this->getInfoMovieApi($idMovieIMDB);
-			$this->moviesDAO->add($movies);
-		}
-
-		$screeningHelper->View($movies->getIdMovieIMDB());
 	}
 
 	private function getInfoMovieApi($idMovieIMDB)
@@ -205,5 +202,10 @@ class MoviesController
 			}
 		}
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
+	}
+	public function GetMovieByCity()
+	{
+		$var = json_encode($this->moviesDAO->GetMoviesByCity($_POST["cityId"]));
+		return $var;
 	}
 }

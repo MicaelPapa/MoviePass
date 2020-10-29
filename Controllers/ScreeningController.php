@@ -25,18 +25,19 @@ class ScreeningController{
 
 	}
 
-	public function View($idMovieIMDB){
+	public function View($idMovieIMDB){ //FIXEAR
 				$screenings = array();
 				$cinemas = array();
 				$rooms = array();
-				$movies = new Movies();
+				$movie = new Movies();
 
 				if($idMovieIMDB != NULL)
 				{
-					$movies = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
-					$screenings = $this->screeningDAO->getScreeningByIdMovie($movies);
+					$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
+					$screenings = $this->screeningDAO->getScreeningByIdMovie($movie);
 					$cinemas = $this->cinemaDAO->getAll();
-					$rooms = $this->roomDAO->getAll();
+					$rooms = $this->roomDAO->getAll(); //hay que pasarle un id cine al get all
+
 				}
 				else
 				{
@@ -45,20 +46,26 @@ class ScreeningController{
 				}
 				require_once(VIEWS_PATH."ScreeningView.php");
 	}
+
+
+
+
+
+	
 	public function AddScreeningToDatabase($idMovieIMDB){
 		
 		$screening = new Screening();
 			
-			$movies = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
-			$screening->setIdMovie($movies->getIdMovie());
-			$screening->setIdMovieIMDB($movies->getIdMovieIMDB());
+			$movie = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
+			$screening->setIdMovie($movie->getIdMovie());
+			$screening->setIdMovieIMDB($movie->getIdMovieIMDB());
 			$screening->setStartDate($_GET['inputFechaDesde']);
 			$screening->setLastDate($_GET['inputFechaHasta']);
 			$screening->setStartHour($_GET['inputHoraInicio']);
 			
 			//Calcula la hora en que termina la pelicula
 
-			$duration = $movies->getDuration();
+			$duration = $movie->getDuration();
 			$dateHour=$_GET['inputFechaDesde'] ." ".$_GET['inputHoraInicio'];
 			$stringHour = "+".$duration." minutes";
 			$newDate = strtotime($stringHour,strtotime($dateHour));
@@ -83,7 +90,7 @@ class ScreeningController{
 				if($this->screeningDAO->validateScreening($dateScreening)){
 					$this->screeningDAO->add($dateScreening);
 				}
-				else echo "La existe una función a esa hora";
+				else echo '<script>alert("Hay una funcion en ese horario");</script>';
 			}
 
 			$screenings = array();
@@ -92,7 +99,7 @@ class ScreeningController{
 			$cinemas = array();
 			$rooms = array();
 
-			$screenings = $this->screeningDAO->getScreeningByIdMovie($movies);
+			$screenings = $this->screeningDAO->getScreeningByIdMovie($movie);
 			$cinemas = $this->cinemaDAO->getAll();
 			$rooms = $this->roomDAO->getAll();
 
@@ -104,11 +111,11 @@ class ScreeningController{
 
 	public function EditScreening($idMovieIMDB){
 
-		$movies = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
+		$movie = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
 		$screening->setStartDate($_GET['inputFechaDesde']);
 		$screening->setLastDate($_GET['inputFechaHasta']);
 		$screening->setStartHour($_GET['inputHoraInicio']);
-		$duration = $movies->getDuration();
+		$duration = $movie->getDuration();
 		$dateHour=$_GET['inputFechaDesde'] ." ".$_GET['inputHoraInicio'];
 		$stringHour = "+".$duration." minutes";
 		$newDate = strtotime($stringHour,strtotime($dateHour));
@@ -132,13 +139,13 @@ class ScreeningController{
 		
 		if($_GET['IdScreening'] != null){
 			
-			$movies = new Movies();
+			$movie = new Movies();
 			$screening = new Screening();
 			$screening =$this->screeningDAO->GetScreeningById($IdScreening);
-			$movies = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB());
+			$movie = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB());
 			$screening =$this->screeningDAO->remove($screening);
 		}
-		$idMovieIMDB = $movies->getIdMovieIMDB();
+		$idMovieIMDB = $movie->getIdMovieIMDB();
 		$this->View($idMovieIMDB);
 	}
 

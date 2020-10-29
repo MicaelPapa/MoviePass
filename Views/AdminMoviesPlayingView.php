@@ -28,26 +28,26 @@
         </div>
   </div>
   <div class="row">
-    <?php foreach($movieList as $movies) { ?>
+    <?php foreach($movieList as $movie) { ?>
     <div class="col-md-3">
       <div class="flip-card movieBoxes">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <img src="<?php echo $movies->getPhoto()?>" alt="Avatar" style="width:100%;height:100%;">
+            <img src="<?php echo $movie->getPhoto()?>" alt="Avatar" style="width:100%;height:100%;">
           </div>
           <div class="flip-card-back">
-            <h1> <?php echo $movies->getMovieName(); ?> </h1>
-            <p><?php echo $movies->getReleaseDate(); ?></p>
-            <?php if($movies->getIsPlaying() == false) {?>
+            <h1> <?php echo $movie->getMovieName(); ?> </h1>
+            <p><?php echo $movie->getReleaseDate(); ?></p>
+            <?php if($movie->getIsPlaying() == false) {?>
             <p><a id="addMovie"
-                href="<?php echo FRONT_ROOT ?>Movies/AddMovieToDatabase?IdMovieIMDB=<?php echo $movies->getIdMovieIMDB(); ?>"><button
+                href="<?php echo FRONT_ROOT ?>Movies/AddMovieToDatabase?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button
                   id="add" class="button">Agregar</button></a></p>
             <?php } else {?>
             <p><a id="editMovie"
-                href="<?php echo FRONT_ROOT ?>Screening/View?IdMovieIMDB=<?php echo $movies->getIdMovieIMDB(); ?>"><button
+                href="<?php echo FRONT_ROOT ?>Screening/View?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button
                   id="edit" class="button">Editar</button></a></p>
             <p><a id="removeMovie"
-                href="<?php echo FRONT_ROOT ?>Movies/RemoveMovie?IdMovieIMDB=<?php echo $movies->getIdMovieIMDB(); ?>"><button
+                href="<?php echo FRONT_ROOT ?>Movies/RemoveMovie?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button
                   id="remove" class="button">Eliminar</button></a></p>
             <?php }?>
           </div>
