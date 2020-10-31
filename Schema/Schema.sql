@@ -91,9 +91,9 @@ create table Genders (
     constraint Pk_Genders primary key (IdGender)
 );
 
-create table MoviesXGender (
+create table MoviesXMoviesGenres (
     IdMovie int,
-    IdGender int,
+    IdMovieGenre int,
     constraint Pk_MoviesXGender primary key (IdMovie , IdGender),
     constraint Fk_Movie foreign key (IdMovie)
         references Movies (IdMovie),
@@ -101,30 +101,6 @@ create table MoviesXGender (
         references Genders (IdGender)
 );
 
-create table Actors (
-    IdActor int AUTO_INCREMENT,
-    ActorFirstName varchar(30) not null,
-    ActorLastName varchar(30) not null,
-    BirthDate Date,
-    Photo text,
-    IdCountry int,
-    IdGender int not null,
-    constraint Pk_Actors primary key (IdActor),
-    constraint Fk_Country foreign key (IdCountry)
-        references Countries (IdCountry),
-    constraint Fk_Gender foreign key (IdGender)
-        references Genders (IdGender)
-);
-
-create table MoviesXActor (
-    IdMovie int,
-    IdActor int,
-    constraint Pk_MoviesXActor primary key (IdMovie , IdActor),
-    constraint Fk_Movie foreign key (IdMovie)
-        references Movies (IdMovie),
-    constraint Fk_Actor foreign key (IdActor)
-        references Actors (IdActor)
-);
 
 create table Movies (
     IdMovie int AUTO_INCREMENT,
@@ -142,6 +118,13 @@ create table Movies (
     IsPlaying boolean,
     constraint Pk_Movies primary key (IdMovie)
 
+);
+
+create table MovieGenres (
+    IdMovieGenre int AUTO_INCREMENT,
+    IdIMDB int,
+    Name varchar(100),
+    constraint PK_MovieGenres primary key (IdMovieGenre)
 );
 
 create table Rooms (

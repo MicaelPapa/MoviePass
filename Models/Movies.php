@@ -16,7 +16,8 @@ class Movies
 	private $earnings;
 	private $budget;
 	private $originalLanguage;
-    private $clasification;
+	private $clasification;
+	private $genres;
     private $isPlaying = false;
 
 /**
@@ -313,6 +314,27 @@ class Movies
 	public function setClasification($clasification)
 	{
 	    $this->clasification = $clasification;
+	    return $this;
+	}
+		/**
+	 * Getter for IsPlaying
+	 *
+	 * @return [type]
+	 */
+	public function getGenres()
+	{
+	    return $this->genres;
+	}
+
+	/**
+	 * Setter for IsPlaying
+	 * @var [type] isPlaying
+	 *
+	 * @return self
+	 */
+	public function setGenres($genres)
+	{
+	    $this->genres = $genres;
 	    return $this;
 	}
 	/**
