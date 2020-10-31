@@ -176,6 +176,12 @@ class CinemaController
         
     }
 
+    public function SelectCinema()
+    {
+        $cinemaList = $this->CinemaDAO->GetAll();
+        require_once(VIEWS_PATH . "SelectCinemaView.php");
+    }
+
     public function GetAddressFromList($addressList, $id)
     {
 

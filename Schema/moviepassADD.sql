@@ -11,4 +11,8 @@ create table movieXcinema (
 	constraint fk_idMovie foreign key  (idMovie) references movies(idMovie)
 );
 
-INSERT INTO movieXcinema (idCinema, idMovie) SELECT idCinema, idMovie  from cinemas as c inner join movies as m on  
+select * from moviexcinema;
+select * from movies ;
+select * from cinemas;
+
+delete from movies

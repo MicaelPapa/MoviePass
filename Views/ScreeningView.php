@@ -88,7 +88,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-            <form action="<?php echo FRONT_ROOT ?>Screening/AddScreeningToDatabase" method="GET">
+            <form action="<?php echo FRONT_ROOT ?>Screening/Add" method="GET">
             <div class="modal-body">
                 
                     <div class="form-row">

@@ -21,21 +21,19 @@ class MoviesController
 	}
 
 	
-	public function AddMovieToDatabase()
+	public function AddMovieToDatabase($idCinema, $idMovieIMDB)
 	{
 		$screeningHelper = new ScreeningController();
 
-		if ($_GET['IdMovieIMDB'] != null) {
+		if ($idMovieIMDB == null) {
 
-			$idMovieIMDB = $_GET['IdMovieIMDB'];
-		} else {
 			$idMovieIMDB = 0;
+		
 		}
-
 
 		if ($this->moviesDAO->getByIdMovieIMDB($idMovieIMDB) == NULL) {
 			$movie = $this->getInfoMovieApi($idMovieIMDB);
-			$this->moviesDAO->add($movie);
+			$this->moviesDAO->Add($movie, $idCinema);
 		}
 
 		$screeningHelper->View($movie->getIdMovieIMDB());
@@ -43,35 +41,23 @@ class MoviesController
 
 
 
-	public function ShowApiMovies($movieList = null)
-	{
+	public function ShowApiMovies($idCinema)
+	 {/*
 		if ($movieList == null) {
 			$page = 1;
-		}
-		$movieList = $this->getNowPlayingMoviesInfoFromApi();
-
+		} */
+		$movieList = $this->getNowPlayingMoviesInfoFromApi($idCinema);
+/* 
 		while (count($movieList) == 0) {
 			$movieList = $this->getNowPlayingMoviesInfoFromApi(++$page);
-		}
+		} */
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
 	}
-
-	public function GetNowPlayingMoviesFromApi()
+	public function getNowPlayingMoviesInfoFromApi($idCinema)
 	{
-		return ApiResponse::HomologatesApiResponse('/movie/now_playing');
-	}
-
-	public function GetPosterFromApi($movieIdIMDB)
-	{
-		$respuesta = ApiResponse::HomologatesApiResponse('/movie/' . $movieIdIMDB . '/images');
-		return IMG_LINK . $respuesta['posters'][0]['file_path'];
-	}
-
-	public function getNowPlayingMoviesInfoFromApi($page = null)
-	{
-		if ($page == NULL) {
+		/* if ($page == NULL) {
 			$page = 1;
-		}
+		} */
 
 		$apiMovie = array();
 
@@ -79,9 +65,9 @@ class MoviesController
 
 		foreach ($arrayToDecode["results"] as $valuesArray) {
 
-			$movies = new Movies();
-
-			$movies->setIdMovieIMDB($valuesArray["id"]);
+			$movie = new Movies();
+			
+			$movie->setIdMovieIMDB($valuesArray["id"]);
 
 			if ($valuesArray["poster_path"] != NULL) {
 				$posterPath = "https://image.tmdb.org/t/p/w500" . $valuesArray["poster_path"];
@@ -89,15 +75,15 @@ class MoviesController
 				$posterPath = IMG_PATH . "noImage.jpg";
 			}
 
-			$movies->setPhoto($posterPath);
-			$movies->setMovieName($valuesArray["title"]);
-			$movies->setReleaseDate($valuesArray["release_date"]);
+			$movie->setPhoto($posterPath);
+			$movie->setMovieName($valuesArray["title"]);
+			$movie->setReleaseDate($valuesArray["release_date"]);
+			
 
-
-			if ($this->moviesDAO->getIsPlayingMovie($movies)) {
-				$movies->setIsPlaying(true);
+			if ($this->moviesDAO->getIsPlayingMovie($movie, $idCinema)) { 
+				$movie->setIsPlaying(true);
 			}
-			array_push($apiMovie, $movies);
+			array_push($apiMovie, $movie);
 		}
 		return $apiMovie;
 	}
@@ -137,6 +123,19 @@ class MoviesController
 		return $movies;
 	}
 
+	public function GetNowPlayingMoviesFromApi()
+	{
+		return ApiResponse::HomologatesApiResponse('/movie/now_playing');
+	}
+
+	public function GetPosterFromApi($movieIdIMDB)
+	{
+		$respuesta = ApiResponse::HomologatesApiResponse('/movie/' . $movieIdIMDB . '/images');
+		return IMG_LINK . $respuesta['posters'][0]['file_path'];
+	}
+
+	
+
 	public function ShowDataBaseMovies()
 	{
 		$movieList = $this->moviesDAO->getAll();
@@ -155,7 +154,7 @@ class MoviesController
 		}
 
 
-		if ($movies->getIdMovieIMDB() == $idMovieIMDB) {
+		if ($movies->getIdMovieIMDB() == $idMovieIMDB) { //<-------------------------------------------
 			$this->moviesDAO->remove($movies);
 		}
 

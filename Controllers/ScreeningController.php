@@ -25,6 +25,29 @@ class ScreeningController{
 
 	}
 
+	
+	public function ShowListView($idMovieIMDB){ //FIXEAR
+		$screenings = array();
+		$cinemas = array();
+		$rooms = array();
+		$movie = new Movies();
+
+		if($idMovieIMDB != NULL)
+		{
+			$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
+			$screenings = $this->screeningDAO->getScreeningByIdMovie($movie);
+			$cinemas = $this->cinemaDAO->getAll();
+			$rooms = $this->roomDAO->getAll(); //hay que pasarle un id cine al get all
+
+		}
+		else
+		{
+			$screenings = $this->screeningDAO->getScreeningByIdMovie($idMovie);
+			$cinemas = $this->cinemaDAO->getAll();
+		}
+		require_once(VIEWS_PATH."ScreeningView.php");
+}
+
 	public function View($idMovieIMDB){ //FIXEAR
 				$screenings = array();
 				$cinemas = array();
@@ -52,7 +75,7 @@ class ScreeningController{
 
 
 	
-	public function AddScreeningToDatabase($idMovieIMDB){
+	public function Add($idMovieIMDB){
 		
 		$screening = new Screening();
 			

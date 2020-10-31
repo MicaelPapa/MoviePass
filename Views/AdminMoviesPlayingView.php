@@ -28,7 +28,7 @@
         </div>
   </div>
   <div class="row">
-    <?php foreach($movieList as $movie) { ?>
+    <?php foreach($movieList as $movie) { ?> 
     <div class="col-md-3">
       <div class="flip-card movieBoxes">
         <div class="flip-card-inner">
@@ -40,7 +40,7 @@
             <p><?php echo $movie->getReleaseDate(); ?></p>
             <?php if($movie->getIsPlaying() == false) {?>
             <p><a id="addMovie"
-                href="<?php echo FRONT_ROOT ?>Movies/AddMovieToDatabase?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button
+                href="<?php echo FRONT_ROOT ?>Movies/AddMovieToDatabase?IdCinema=<?php echo $idCinema; ?> &IdMovieIMDB=<?php echo $movie->getIdMovieIMDB();?>"><button
                   id="add" class="button">Agregar</button></a></p>
             <?php } else {?>
             <p><a id="editMovie"
