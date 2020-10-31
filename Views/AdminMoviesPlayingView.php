@@ -3,7 +3,7 @@
 <div id="box" class="container" style="background-color: rgba(255, 255, 255, 0.5);">
   <div class="row">
     <div class="col-md-6">
-            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/SearchByName" method = "POST">
+            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/GetMovieFromApiByName" method = "POST">
               <div class="form-row justify-content-center">
                 <div class="form-group col-md-6">
                       <div class="input-group mb-3">
@@ -17,14 +17,29 @@
             </form>				 
         </div>
         <div class="col-md-6">
-          <div class="form-row justify-content-center">
-            <div class="form-group col-md-6">
-              <select id="selectGenre"  class="custom-select">
-                    <option value="0">Selecciona el Género</option>
-                    <option value="1"></option>
-              </select>
+          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/filterMoviesApi" method="POST">
+            <div class="form-row justify-content-center">
+              <div class="form-group col-md-6">
+                <select id="selectGenre" name="selectGenres"  class="custom-select">
+                      <option value="0">Selecciona el Género</option>
+                      <?php foreach($genreList as $genre) { ?>
+                      <option value="<?php echo $genre->getIdIMDB(); ?>"><?php echo $genre->getName(); ?></option>
+                      <?php }?>
+                </select>
+                <input id="submitGenre" type="submit" value="Filtrar"/>
+              </div>
             </div>
-          </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/filterDateMoviesApis" method="POST">
+            <div class="form-row justify-content-center">
+              <div class="form-group col-md-6">
+                <input type="date" name="dateFilter" value="<?php echo date('Y-m-d'); ?>" />
+                <input id="submitDate" type="submit" value="Filtrar"/>
+              </div>
+            </div>
+          </form>
         </div>
   </div>
   <div class="row">
@@ -161,7 +176,20 @@
 }
 
 #selectGenre {
-  margin-top: 9%;
+  margin-top: 3.4%;
+}
+
+#submitGenre {
+    background-color: rgba(39, 116, 70, 1);
+    border: none;
+    color: white;
+    padding: 5% 30%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
   .button {
