@@ -17,23 +17,38 @@
             </form>				 
         </div>
         <div class="col-md-6">
-          <div class="form-row justify-content-center">
-            <div class="form-group col-md-6">
-              <select id="selectGenre"  class="custom-select">
-                    <option value="0">Selecciona el Género</option>
-                    <option value="1"></option>
-              </select>
+          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/filterDataBaseMoviesByGenre" method="POST">
+            <div class="form-row justify-content-center">
+              <div class="form-group col-md-6">
+                <select id="selectGenre" name="selectGenres"  class="custom-select">
+                      <option value="0">Selecciona el Género</option>
+                      <?php foreach($genreList as $genre) { ?>
+                      <option value="<?php echo $genre->getIdIMDB(); ?>"><?php echo $genre->getName(); ?></option>
+                      <?php }?>
+                </select>
+                <input id="submitGenre" type="submit" value="Filtrar"/>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
-      </div>
+        <div class="col-md-6">
+          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/filterDateMoviesDataBase" method="POST">
+            <div class="form-row justify-content-center">
+              <div class="form-group col-md-6">
+                <input type="date" name="dateFilter" value="<?php echo date('Y-m-d'); ?>" />
+                <input id="submitDate" type="submit" value="Filtrar"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        </div>
        <div class="row"> 
       <?php foreach($movieList as $movies) { ?>   
         <div class="col-md-3">
           <div class="flip-card movieBoxes">
             <div class="flip-card-inner">
               <div class="flip-card-front">
-                  <img src= "<?php echo $movies->getPhoto()?>" alt="Avatar" style="width:100%;height:100%;">
+                <img src="<?php echo $movies->getPhoto()?>" alt="Avatar" style="width:100%;height:100%;">
               </div>
               <div class="flip-card-back">
                 <h1> <?php echo $movies->getMovieName(); ?> </h1> 
