@@ -62,12 +62,13 @@ class MoviesController
 
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
 	}
+
 	public function getNowPlayingMoviesInfoFromApi($idCinema)
 	{
 		/* if ($page == NULL) {
 			$page = 1;
 		} */
-
+       $filtro =
 		$apiMovie = array();
 
 		$arrayToDecode = ApiResponse::HomologatesApiResponse('/movie/now_playing');
@@ -84,10 +85,10 @@ class MoviesController
 				$posterPath = IMG_PATH . "noImage.jpg";
 			}
 
-			$movies->setPhoto($posterPath);
-			$movies->setMovieName($valuesArray["title"]);
-			$movies->setReleaseDate($valuesArray["release_date"]);
-			$movies->setGenres($valuesArray["genre_ids"]);
+			$movie->setPhoto($posterPath);
+			$movie->setMovieName($valuesArray["title"]);
+			$movie->setReleaseDate($valuesArray["release_date"]);
+			$movie->setGenres($valuesArray["genre_ids"]);
 
 
 			if ($this->moviesDAO->getIsPlayingMovie($movie, $idCinema)) { 
@@ -227,6 +228,7 @@ class MoviesController
 	public function filterMoviesApi(){
 
 		$IdIMDB = $_POST['selectGenres'];
+
 		$arrayToDecodeMovie = ApiResponse::HomologatesApiResponse('/movie/now_playing');
 
 		$movies = $arrayToDecodeMovie['results'];
@@ -234,6 +236,7 @@ class MoviesController
 		$movieList = array();
 		if ($IdIMDB != null) {
 			foreach($movies as $movie){
+				
 					foreach($movie['genre_ids'] as $movieGenre){
 						if($movieGenre == $IdIMDB){
 							$newMovies = new Movies();
@@ -262,7 +265,7 @@ class MoviesController
 		$genreList = $this->getGenresFromDataBase();
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
 	}
-	public function filterDateMoviesApis(){
+	public function filterDateMoviesApis($fecha, $idCinema){
 		$dateMovie = $_POST['dateFilter'];
 		$arrayToDecodeMovie = ApiResponse::HomologatesApiResponse('/movie/now_playing');
 

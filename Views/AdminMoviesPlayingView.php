@@ -36,7 +36,7 @@
             <div class="form-row justify-content-center">
               <div class="form-group col-md-6">
                 <input type="date" name="dateFilter" value="<?php echo date('Y-m-d'); ?>" />
-                <input id="submitDate" type="submit" value="Filtrar"/>
+                <button type="submit" class="btn btn-success" name="idCinema" value="<?php echo $idCinema ?>"><i class="fas fa-save"></i>&nbspFiltrar</button>
               </div>
             </div>
           </form>
