@@ -283,7 +283,7 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
                 $date = date("Y-m-d",strtotime($date ."+ 1 days"));
 
                 $newScreening->setIdScreening($screening->getIdScreening());
-		$newScreening->setIdMovie($screening->getIdMovie());
+		        $newScreening->setIdMovie($screening->getIdMovie());
                 $newScreening->setIdMovieIMDB($screening->getIdMovieIMDB());
                 $newScreening->setStartDate($date);
                 $newScreening->setLastDate($screening->getLastDate());
@@ -346,7 +346,7 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
                         
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-		$screening->setIdMovie($row["IdMovie"]);
+		        $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
@@ -391,5 +391,19 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
         
 		$this->connection = Connection::GetInstance();
 		return $this->connection->Execute($invokeStoredProcedure,$parameters, QueryType::StoredProcedure);
+    }
+
+    public function getIdAllIdMoviesByDate($Date, $CinemaId){
+        
+        try{
+            $query = "SELECT IdMovieIMDB FROM " .$this->tableName ." WHERE StartDate = '". $Date ."' AND IdCinema = '". $CinemaId . "' ;";
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+        }
+        catch(Exception $ex)
+        {
+            return null;
+        }
+        return $resultSet;
     }
 }

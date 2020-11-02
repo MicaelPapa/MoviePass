@@ -17,7 +17,7 @@
             </form>				 
         </div>
         <div class="col-md-6">
-          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/filterDataBaseMoviesByGenre" method="POST">
+          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/getNowPlayingMoviesInfoFromApi" method="POST">
             <div class="form-row justify-content-center">
               <div class="form-group col-md-6">
                 <select id="selectGenre" name="selectGenres"  class="custom-select">
