@@ -92,6 +92,17 @@ class MoviesDAO implements IMoviesDAO
 			throw $ex;
 		}
 	}
+
+	public function setMovieXcinema($idCinema, $idMovie)
+	{
+		$query = "INSERT INTO movieXcinema (idMovie, idCinema) VALUES( :idMovie, :idCinema );";
+		$parameters ["idMovie"] = $idMovie;	
+		$parameters ["idCinema"] = $idCinema;
+		
+
+		$this->connection = Connection::GetInstance();
+		$this->connection->ExecuteNonQuery($query, $parameters);
+	}
 	public function getIsPlayingMovie($movie, $idCinema)
 	{
 		try {
@@ -135,26 +146,27 @@ class MoviesDAO implements IMoviesDAO
 		}
 	}
 
-	public function getMovies($movies)
+	public function getMovie($movie)
 	{
 		try {
-			$query = "SELECT * FROM " . $this->tableName . " WHERE IdMovie = " . $movies->getIdMovie() . ";";
+			$query = "SELECT * FROM " . $this->tableName . " WHERE IdMovie = " . $movie->getIdMovie() . ";";
 			$this->connection = Connection::GetInstance();
 			$resultSet = $this->connection->Execute($query);
 
+			$movie = new Movies  ();
 			foreach ($resultSet as $row) {
-				$movies->setIdMovie($row["IdMovies"]);
-				$movies->setIdMovieIMDB($row["IdMovieIMDB"]);
-				$movies->setMovieName($row["MovieName"]);
-				$movies->setDuration($row["Duration"]);
-				$movies->setSynopsis($row["Synopsis"]);
-				$movies->setReleaseDate($row["ReleaseDate"]);
-				$movies->setPhoto($row["Photo"]);
-				$movies->setEarnings($row["Earnings"]);
-				$movies->setBudget($row["Budget"]);
-				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
-				$movies->setIsPlaying($row["IsPlaying"]);
-				return $movies;
+				$movie->setIdMovie($row["IdMovie"]);
+				$movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+				$movie->setMovieName($row["MovieName"]);
+				$movie->setDuration($row["Duration"]);
+				$movie->setSynopsis($row["Synopsis"]);
+				$movie->setReleaseDate($row["ReleaseDate"]);
+				$movie->setPhoto($row["Photo"]);
+				$movie->setEarnings($row["Earnings"]);
+				$movie->setBudget($row["Budget"]);
+				$movie->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movie->setIsPlaying($row["IsPlaying"]);
+				return $movie;
 			}
 		} catch (Exception $ex) {
 			return null;
@@ -237,19 +249,19 @@ class MoviesDAO implements IMoviesDAO
 			$resultSet = $this->connection->Execute($query);
 
 			foreach ($resultSet as $row) {
-				$movies = new Movies();
-				$movies->setIdMovie($row["IdMovie"]);
-				$movies->setIdMovieIMDB($row["IdMovieIMDB"]);
-				$movies->setMovieName($row["MovieName"]);
-				$movies->setDuration($row["Duration"]);
-				$movies->setSynopsis($row["Synopsis"]);
-				$movies->setReleaseDate($row["ReleaseDate"]);
-				$movies->setPhoto($row["Photo"]);
-				$movies->setEarnings($row["Earnings"]);
-				$movies->setBudget($row["Budget"]);
-				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
-				$movies->setIsPlaying($row["IsPlaying"]);
-				return $movies;
+				$movie = new Movies();
+				$movie->setIdMovie($row["IdMovie"]);
+				$movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+				$movie->setMovieName($row["MovieName"]);
+				$movie->setDuration($row["Duration"]);
+				$movie->setSynopsis($row["Synopsis"]);
+				$movie->setReleaseDate($row["ReleaseDate"]);
+				$movie->setPhoto($row["Photo"]);
+				$movie->setEarnings($row["Earnings"]);
+				$movie->setBudget($row["Budget"]);
+				$movie->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movie->setIsPlaying($row["IsPlaying"]);
+				return $movie;
 			}
 		} catch (Exception $ex) {
 			return null;

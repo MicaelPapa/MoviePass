@@ -9,5 +9,5 @@ interface IMoviesDAO
     function Add($movies, $idCinema);
     function AddToDatabase($idMovieIMDB);
     function remove($movies);
-    function getMovies($movies);
+    function getMovie($movie);
 }
