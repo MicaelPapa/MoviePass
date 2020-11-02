@@ -393,10 +393,23 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
 		return $this->connection->Execute($invokeStoredProcedure,$parameters, QueryType::StoredProcedure);
     }
 
-    public function getIdAllIdMoviesByDate($Date, $CinemaId){
+    public function getIdAllIdMoviesByDateAndCinema($Date, $CinemaId){
         
         try{
             $query = "SELECT IdMovieIMDB FROM " .$this->tableName ." WHERE StartDate = '". $Date ."' AND IdCinema = '". $CinemaId . "' ;";
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+        }
+        catch(Exception $ex)
+        {
+            return null;
+        }
+        return $resultSet;
+    }
+    public function getIdAllIdMoviesByDate($Date){
+        
+        try{
+            $query = "SELECT IdMovieIMDB FROM " .$this->tableName ." WHERE StartDate = '". $Date . "' ;";
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
         }

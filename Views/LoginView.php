@@ -1,3 +1,4 @@
+<?php require_once("navbar.php"); ?>
 <main>
      <section>
           <div class="container">

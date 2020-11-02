@@ -17,7 +17,7 @@
                             <p class="card-text">Vea la lista completa de películas.</p>
                         </div>
                         <div class="card-body">
-                            <a href=<?php echo FRONT_ROOT. "Movies/ShowApiMovies"?> class="btn btn-primary btn-block">Ver Cartelera</a>
+                            <a href=<?php echo FRONT_ROOT. "Cinema/SelectCinema"?> class="btn btn-primary btn-block">Ver Cartelera</a>
                         </div>
                     </div>
                 </div>
