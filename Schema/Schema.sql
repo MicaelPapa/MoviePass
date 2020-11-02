@@ -94,11 +94,11 @@ create table Genders (
 create table MoviesXMoviesGenres (
     IdMovie int,
     IdMovieGenre int,
-    constraint Pk_MoviesXGender primary key (IdMovie , IdGender),
+    constraint Pk_MoviesXGender primary key (IdMovie , IdMovieGenre),
     constraint Fk_Movie foreign key (IdMovie)
         references Movies (IdMovie),
-    constraint Fk_Gender foreign key (IdGender)
-        references Genders (IdGender)
+    constraint Fk_Gender foreign key (IdMovieGenre)
+        references Genders (IdMovieGenre)
 );
 
 
@@ -451,7 +451,8 @@ insert into addresses(street,numberstreet,department,departmentfloor,idcity) val
 insert into Users(UserName,Email,UserPassword,IdGender,Photo,BirthDate,IsAdmin,ChangedPassword) 
 values('Admin','admin@gmail.com','40bd001563085fc35165329ea1ff5c5ecbdbbeef',2,'photo',now(),1,0);
 
-/*Para probar el stored de estadisticas*/
+/*Para probar el stored de estadisticas
+
 insert into tickets(price,idroom,idseatrow,idseatcol,idorder) values(1,1,1,1,1),(1,1,1,1,2),(1,1,1,1,3);
 insert into orders(subtotal,total,datepurchase,discount,iduser,idscreening) values(1,1,now(),1,1,1),(1,1,now(),1,1,2),(1,1,now(),1,1,3);
 insert into screenings(idmovie,startdate,lastdate,starthour,finishhour,price,idroom,capacity,idcinema,subtitles,audio,dimension)
@@ -459,7 +460,7 @@ values(1,now(),now(),hour(now()),hour(now()),1,1,1,1,1,1,1),(2,now(),1,1,1,1,1),
 insert into movies(idmovieimdb,moviename,duration,synopsis,releasedate,photo,earnings,budget,originallanguage,isplaying) 
 values(1,'Rambo',1,"Una peli",now(),'asd',1,1,"spanish",1),(1,'Malefica',1,"Una peli",now(),'asd',1,1,"spanish",1),
 (1,'Duro de Matar',1,"Una peli",now(),'asd',1,1,"spanish",1);
-
+*/
 
 
 

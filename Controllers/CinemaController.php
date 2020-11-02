@@ -6,7 +6,6 @@ use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\CitiesDAO as CitiesDAO;
 use DAO\AddressDAO as AddressDAO;
-
 use Controllers\RoomController as RoomController;
 use Models\Movie as Movie;
 use Models\Cinema as Cinema;
@@ -19,8 +18,6 @@ use Models\City as City;
 use Models\State as State;
 use Models\Country as Country;
 use Models\Address as Address;
-
-
 
 class CinemaController
 {
