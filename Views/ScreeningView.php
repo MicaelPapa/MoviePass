@@ -11,14 +11,14 @@
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <img id="poster" src="<?php echo $movies->getPhoto();?>" alt="Avatar" width="160" height="160">
+                        <img id="poster" src="<?php echo $movie->getPhoto();?>" alt="Avatar" width="160" height="160">
                     </div>
                     <div class="form-group col-md-5 align-self-center">
-                        <p class="titleData"><i class="fas fa-file-signature">&nbsp</i>Titulo:&nbsp<span class="textData"><?php echo $movies->getMovieName();?></span>
+                        <p class="titleData"><i class="fas fa-file-signature">&nbsp</i>Titulo:&nbsp<span class="textData"><?php echo $movie->getMovieName();?></span>
                         </p>
-                        <p class="titleData"><i class="fas fa-video">&nbsp</i>Fecha de Salida:&nbsp<span class="textData"><?php echo $movies->getReleaseDate();?>
+                        <p class="titleData"><i class="fas fa-video">&nbsp</i>Fecha de Salida:&nbsp<span class="textData"><?php echo $movie->getReleaseDate();?>
                             </span></p>
-                        <p class="titleData"><i class="fas fa-clock">&nbsp</i>Duracion:&nbsp<span class="textData"><?php echo $movies->getDuration() . " minutos";?>
+                        <p class="titleData"><i class="fas fa-clock">&nbsp</i>Duracion:&nbsp<span class="textData"><?php echo $movie->getDuration() . " minutos";?>
                             </span></p>
                     </div>
                     <div class="form-group col-md-3 align-self-center">
@@ -62,7 +62,7 @@
                                                 class="ticketData"><?php echo $screening->getPrice();?></span></p>
                                     </div>
                                     <div class="col-md-2 align-self-end">
-                                        <a id="edit" href = "<?php echo FRONT_ROOT ?>Screening/EditScreening?IdMovieIMDB=<?php echo $movies->getIdMovieIMDB(); ?>" class="btn btn-primary" type="button" data-toggle="modal" data-target="#editFunctionModal"><i class="fas fa-edit"></i></a>
+                                        <a id="edit" href = "<?php echo FRONT_ROOT ?>Screening/EditScreening?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>" class="btn btn-primary" type="button" data-toggle="modal" data-target="#editFunctionModal"><i class="fas fa-edit"></i></a>
                                         <a id="remove" href = "<?php echo FRONT_ROOT ?>Screening/RemoveFromDataBase?IdScreening=<?php echo $screening->getIdScreening(); ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
     <!-- Fin Index -->
 </div>
 
-<!-- Modal -->
+<!-- Modal ingresar funcion  -->
 <div class="modal fade" id="editFunctionModal" tabindex="-1" role="dialog" aria-labelledby="editFunctionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -88,7 +88,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-            <form action="<?php echo FRONT_ROOT ?>Screening/AddScreeningToDatabase" method="GET">
+            <form action="<?php echo FRONT_ROOT ?>Screening/Add" method="GET">
             <div class="modal-body">
                 
                     <div class="form-row">
@@ -167,7 +167,7 @@
                             <label class="custom-control-label" for="OptionSubtitulosDesactivados" value="No">No</label>
                         </div>
                     </div>
-                    <input type="hidden" name="idMovieIMDB" value="<?php echo $movies->getIdMovieIMDB(); ?>">
+                    <input type="hidden" name="idMovieIMDB" value="<?php echo $movie->getIdMovieIMDB(); ?>">
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

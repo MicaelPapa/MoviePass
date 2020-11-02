@@ -2,41 +2,45 @@
 
 <div id="box" class="container" style="background-color: rgba(255, 255, 255, 0.5);"> 		
   <div class="row" >   
-        <div class="col-md-6">
-            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/SearchByName" method = "POST">
+        <div class="col-md-4">
+            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/ShowDataBaseMovies" method = "POST">
               <div class="form-row justify-content-center">
                 <div class="form-group col-md-6">
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
                         </div>
+                        <input type="hidden" name="type" value="filterName" />
                         <input id ="inputSearch" type="search" name="movieName" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
                       </div>
                 </div>
               </div>
             </form>				 
         </div>
-        <div class="col-md-6">
-          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/filterDataBaseMoviesByGenre" method="POST">
+        <div class="col-md-4">
+          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMovies" method="POST">
             <div class="form-row justify-content-center">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-12">
+                <input type="hidden" name="type" value="filterGenres" />
                 <select id="selectGenre" name="selectGenres"  class="custom-select">
                       <option value="0">Selecciona el Género</option>
                       <?php foreach($genreList as $genre) { ?>
                       <option value="<?php echo $genre->getIdIMDB(); ?>"><?php echo $genre->getName(); ?></option>
                       <?php }?>
                 </select>
-                <input id="submitGenre" type="submit" value="Filtrar"/>
+                <input type="hidden" name="type" value="filterGenres" />
+                <button type="submit" class="btn btn-succes" name="filtrar" id="submitGenre"><i class="fas fa-search"></i></button>
               </div>
             </div>
           </form>
         </div>
-        <div class="col-md-6">
-          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/filterDateMoviesDataBase" method="POST">
+        <div class="col-md-4">
+          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMovies" method="POST">
             <div class="form-row justify-content-center">
-              <div class="form-group col-md-6">
-                <input type="date" name="dateFilter" value="<?php echo date('Y-m-d'); ?>" />
-                <input id="submitDate" type="submit" value="Filtrar"/>
+              <div class="form-group col-md-12">
+              <input type="hidden" name="type" value="filterDate" />
+                <input type="date" name="dateFilter" id="inputDate" value="<?php echo date('Y-m-d'); ?>" />
+                <button type="submit" class="btn btn-success" id="submitDate" value="Filtrar"/><i class="fas fa-search"></i></button>
               </div>
             </div>
           </form>
@@ -146,7 +150,6 @@ h1{
     width: 85%;
     padding: 10px;
     margin-bottom: 10%;
-    margin-top: -10%;
 }
 
    .col-md-3 img {
@@ -185,7 +188,47 @@ h1{
 }
 
 #selectGenre {
-  margin-top: 9%;
+  margin-top: 2.8%;
+  width: 75%;
+  float:left;
+}
+
+#submitGenre {
+    background-color: rgba(39, 116, 70, 1);
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 3.5%;
+    padding: 2.2% 5%;
+
+}
+
+#dateMovie{
+  margin-top: 5.3%;
+}
+
+#inputDate{
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  padding: 1.8%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font: Monstserrat;
+  float:left;
+  
+}
+
+#submitDate{
+  background-color: rgba(39, 116, 70, 1);
+  border: none;
+  padding: 2.2% 5%;
 }
 
 #icon{

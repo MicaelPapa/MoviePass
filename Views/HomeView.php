@@ -13,24 +13,24 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="<?php echo FRONT_ROOT.VIEWS_PATH?>img/banner1.jpg" class="d-block w-100" alt="...">
+                        <img src="<?php echo FRONT_ROOT.VIEWS_PATH?>img/banner1.png" class="d-block w-100" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>Malefica</h5>
-                            <p>Angelina Jolie interpreta a la hada de grandes cuernos, quien es traicionada por su gran amor y que actúa movida por el dolor.</p>
+                            <h5>Mulán</h5>
+                            <p>Una jóven doncella china se disfraza de hombre para evitar que el padre vaya al ejercito.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="<?php echo FRONT_ROOT.VIEWS_PATH?>img/banner2.jpg" class="d-block w-100" alt="...">
+                        <img src="<?php echo FRONT_ROOT.VIEWS_PATH?>img/banner2.png" class="d-block w-100" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>Joker</h5>
-                            <p>La pasión de Arthur Fleck, un hombre ignorado por la sociedad, es hacer reír a la gente. Una serie de trágicos sucesos lo convertiran en un brillante criminal.</p>
+                            <h5>Hard Kill</h5>
+                            <p>La tecnología multimillonaria que posee el CEO Donovan Chalmers (Willis) es tan valiosa que contrata a un grupo de mercenarios para protegerla. Mientras tanto un grupo terrorista secuestra a su hija para obtenerla.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="<?php echo FRONT_ROOT.VIEWS_PATH?>img/banner3.jpg" class="d-block w-100" alt="...">
+                        <img src="<?php echo FRONT_ROOT.VIEWS_PATH?>img/banner3.png" class="d-block w-100" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>Avengers: EndGame</h5>
-                            <p>Los Vengadores restantes deben encontrar una manera de recuperar a sus aliados para un enfrentamiento épico con Thanos.</p>
+                            <h5>Kimetsu no Yaiba: El Tren Infinito</h5>
+                            <p>Continuación del exitoso anime "Kimetsu no Yaiba". Tanjiro y sus amigos deberán enfrentar a un poderoso demonio junto al pilar de fuego Rengoku para evitar que siga matando gente dentro del tren.</p>
                         </div>
                     </div>
                 </div>
@@ -57,9 +57,13 @@
                             <h5 class="card-title">Peliculas</h5>
                             <p class="card-text">Vea la lista completa de películas en cartelera.</p>
                         </div>
-                        <div class="card-body">
-                            <a href=<?php echo FRONT_ROOT. "Movies/ShowDataBaseMovies"?> class="btn btn-primary btn-block">Ver Cartelera</a>
-                        </div>
+                        <form action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMovies" method="post">
+                            <div class="card-body">
+                                <input type="hidden" name="type" value = "" />
+                                <input type="hidden" name="filter" value = "" />
+                                <a><input type="submit" value="Ver Cartelera" class="btn btn-primary btn-block"></a>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
