@@ -38,11 +38,19 @@ class MoviesController
 			$idMovieIMDB = 0;
 		
 		}
+		
+		$movie = null;
 
-		if ($this->moviesDAO->getByIdMovieIMDB($idMovieIMDB) == NULL) {
+		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
+		
+		if ($movie == null) {
 			$movie = $this->getInfoMovieApi($idMovieIMDB);
 			$this->moviesDAO->Add($movie, $idCinema);
 			$this->addGenreAndMovie($movie->getGenres(),$movie->getIdMovieIMDB());
+
+		}else{
+
+			$this->moviesDAO->setMovieXcinema($idCinema, $movie->getIdMovie());
 
 		}
 
@@ -104,9 +112,9 @@ class MoviesController
 		$get_data = IMDBController::callAPI('GET', API_MAIN_LINK . '/movie' . '/' . $idMovieIMDB, $arrayReque);
 		$arrayToDecode = json_decode($get_data, true);
 
-		$movies = new Movies();
+		$movie = new Movies();
 
-		$movies->setIdMovieIMDB($arrayToDecode["id"]);
+		$movie->setIdMovieIMDB($arrayToDecode["id"]);
 
 		if ($arrayToDecode["poster_path"] != NULL) {
 			$posterPath = "https://image.tmdb.org/t/p/w500" . $arrayToDecode["poster_path"];
@@ -114,17 +122,17 @@ class MoviesController
 			$arrayToDecode = IMG_PATH . "noImage.jpg";
 		}
 
-		$movies->setPhoto($posterPath);
-		$movies->setMovieName($arrayToDecode["title"]);
-		$movies->setReleaseDate($arrayToDecode["release_date"]);
-		$movies->setDuration($arrayToDecode["runtime"]);
-		$movies->setSynopsis($arrayToDecode["overview"]);
-		$movies->setBudget($arrayToDecode["budget"]);
-		$movies->setEarnings($arrayToDecode["revenue"]);
-		$movies->setOriginalLanguage($arrayToDecode["original_language"]);
-		$movies->setGenres($arrayToDecode["genres"]);
+		$movie->setPhoto($posterPath);
+		$movie->setMovieName($arrayToDecode["title"]);
+		$movie->setReleaseDate($arrayToDecode["release_date"]);
+		$movie->setDuration($arrayToDecode["runtime"]);
+		$movie->setSynopsis($arrayToDecode["overview"]);
+		$movie->setBudget($arrayToDecode["budget"]);
+		$movie->setEarnings($arrayToDecode["revenue"]);
+		$movie->setOriginalLanguage($arrayToDecode["original_language"]);
+		$movie->setGenres($arrayToDecode["genres"]);
 
-		return $movies;
+		return $movie;
 	}
 
 	public function GetNowPlayingMoviesFromApi()
@@ -235,7 +243,7 @@ class MoviesController
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
 	}
 
-	private function addGenreAndMovie($genres, $IdMovie){
+	private function 	addGenreAndMovie($genres, $IdMovie){
 		foreach($genres as $idGenre){
 			$this->movieXgenreDAO->add($idGenre['id'], $IdMovie);
 		}
