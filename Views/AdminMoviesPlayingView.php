@@ -3,39 +3,44 @@
 <div id="box" class="container" style="background-color: rgba(255, 255, 255, 0.5);">
   <div class="row">
     <div class="col-md-6">
-            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/GetMovieFromApiByName" method = "POST">
+            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/ShowApiMovies" method = "POST">
               <div class="form-row justify-content-center">
                 <div class="form-group col-md-6">
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
                         </div>
-                        <input id ="inputSearch" type="search" name="movieName" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                        <input type="hidden" name="filterName" value="filterName" />
+                        <input id ="inputSearch" type="search" name="searchName" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                        <input type="hidden" name="idCinema" value="<?php echo $idCinema ?>" />
                       </div>
                 </div>
               </div>
             </form>				 
         </div>
         <div class="col-md-6">
-          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/filterMoviesApi" method="POST">
+          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/ShowApiMovies" method="POST">
             <div class="form-row justify-content-center">
               <div class="form-group col-md-6">
+                <input type="hidden" name="filterGenres" value="filterGenres" />
                 <select id="selectGenre" name="selectGenres"  class="custom-select">
                       <option value="0">Selecciona el Género</option>
                       <?php foreach($genreList as $genre) { ?>
                       <option value="<?php echo $genre->getIdIMDB(); ?>"><?php echo $genre->getName(); ?></option>
                       <?php }?>
                 </select>
+                <input type="hidden" name="idCinema" value="<?php echo $idCinema ?>" />
                 <input id="submitGenre" type="submit" value="Filtrar"/>
               </div>
             </div>
           </form>
         </div>
         <div class="col-md-6">
-          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/filterDateMoviesApis" method="POST">
+          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/ShowApiMovies" method="POST">
             <div class="form-row justify-content-center">
               <div class="form-group col-md-6">
-                <input type="date" name="dateFilter" value="<?php echo date('Y-m-d'); ?>" />
+                <input type="hidden" name="filterDate" value="filterDate" />
+                <input type="date" name="inputDate" value="<?php echo date('Y-m-d'); ?>" />
                 <button type="submit" class="btn btn-success" name="idCinema" value="<?php echo $idCinema ?>"><i class="fas fa-save"></i>&nbspFiltrar</button>
               </div>
             </div>
