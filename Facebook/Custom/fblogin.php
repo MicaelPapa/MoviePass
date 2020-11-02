@@ -9,6 +9,6 @@ $fb = new Facebook\Facebook([
 $helper = $fb->getRedirectLoginHelper();
 
 $permissions = ['email']; // Optional permissions for more permission you need to send your application for review
-$loginUrl = $helper->getLoginUrl('http://localhost/MoviePass/Facebook/Custom/fblogin-callback.php', $permissions);
+$loginUrl = $helper->getLoginUrl('http://localhost/MoviePass/Facebook/logIn', $permissions);
 header("location: ".$loginUrl);
 ?>

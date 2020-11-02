@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use DAO\UserDAO as UserDAO;
@@ -19,6 +20,14 @@ class LoginController
     }
 
     #region: LOGIN
+
+    public function facebookIndex($user)
+    {
+        $_SESSION['User'] = $user;
+        $_SESSION['isLogged'] = true;
+        HomeController::Index();
+    }
+
     public function Index()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
