@@ -2,13 +2,12 @@
 
 namespace Controllers;
 
-
 use DAO\UserDAO as UserDAO;
 use Exception;
 use PHPMailer\Mail as Mail;
 use Models\User as User;
 use Util\Validate as Validate;
-use Util\Hash as Hash;   
+use Util\Hash as Hash;
 use Util\Random as Random;
 
 class LoginController
@@ -21,23 +20,31 @@ class LoginController
     }
 
     #region: LOGIN
+
+    public function facebookIndex($user)
+    {
+        $_SESSION['User'] = $user;
+        $_SESSION['isLogged'] = true;
+        HomeController::Index();
+    }
+
     public function Index()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user =Validate :: ValidateData($_POST["email"]);
-            $password =Validate :: ValidateData($_POST["pass"]);
+            $user = Validate::ValidateData($_POST["email"]);
+            $password = Validate::ValidateData($_POST["pass"]);
 
             try {
-                $password = Hash :: Hashing($password);
+                $password = Hash::Hashing($password);
                 $selectedUser = $this->userDAO->LogIn($user, $password);
 
                 if ($selectedUser != null) {
-                    $_SESSION['User'] = $selectedUser[0];                  
+                    $_SESSION['User'] = $selectedUser[0];
                     $_SESSION['isLogged'] = true;
-                    if($selectedUser[0]['IsAdmin']){
+                    if ($selectedUser[0]['IsAdmin']) {
                         $_SESSION['isAdmin'] = true;
                     }
-                    HomeController :: Index();
+                    HomeController::Index();
                 } else {
                     $this->View("Email o contraseña incorrecta");
                 }
@@ -51,22 +58,17 @@ class LoginController
 
     public function LogInWithFacebookHandler()
     {
-        require_once(FACEBOOK_PATH);
-        //require_once('../FacebookLogIn/index.php');
-        //require_once(FACEBOOK_PATH . "Config.php");
-
-
-        //echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+        require_once(FACEBOOK_CUSTOM_PATH . "fblogin.php");
     }
 
     public function RecoverPassword()
     {
-        $email =Validate :: ValidateData($_POST["email"]);
+        $email = Validate::ValidateData($_POST["email"]);
 
         try {
-            $selectedUser = new User(null, null, null, null, null,null);
+            $selectedUser = new User(null, null, null, null, null, null);
             $selectedUser = $this->userDAO->SearchUserByEmail($email);
-            $newPassword = Random :: CreateRandomNumber(10);
+            $newPassword = Random::CreateRandomNumber(10);
 
             if ($selectedUser != null) {
                 if (Mail::SendNewPassword($email, $selectedUser[0]["UserName"], $newPassword)) {
@@ -94,9 +96,9 @@ class LoginController
         require_once(VIEWS_PATH . "LoginView.php");
     }
 
-    public function Logout(){
+    public function Logout()
+    {
         session_destroy();
-        $this->View();  
+        $this->View();
     }
-
 }
