@@ -30,4 +30,11 @@ class MovieGenreController{
             $this->movieGenreDAO->add($genre);
         }
     }
+
+    public function getGenresFromDataBaseAdmin(){
+
+        $genreList = array();
+        $genreList = $this->MovieGenreDAO->getAll();
+		return $genreList;
+    }
 }
