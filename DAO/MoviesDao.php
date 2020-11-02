@@ -44,6 +44,7 @@ class MoviesDAO implements IMoviesDAO
 				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movies->setIsPlaying($row["IsPlaying"]);
 
 				array_push($list, $movies);
 			}
@@ -152,6 +153,7 @@ class MoviesDAO implements IMoviesDAO
 				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movies->setIsPlaying($row["IsPlaying"]);
 				return $movies;
 			}
 		} catch (Exception $ex) {
@@ -218,6 +220,7 @@ class MoviesDAO implements IMoviesDAO
 				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movies->setIsPlaying($row["IsPlaying"]);
 
 				return $movies;
 			}
@@ -245,6 +248,7 @@ class MoviesDAO implements IMoviesDAO
 				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movies->setIsPlaying($row["IsPlaying"]);
 				return $movies;
 			}
 		} catch (Exception $ex) {
@@ -272,6 +276,7 @@ class MoviesDAO implements IMoviesDAO
 				$movies->setEarnings($row["Earnings"]);
 				$movies->setBudget($row["Budget"]);
 				$movies->setOriginalLAnguage($row["OriginalLanguage"]);
+				$movies->setIsPlaying($row["IsPlaying"]);
 
 				array_push($list, $movies);
 			}
@@ -294,6 +299,7 @@ class MoviesDAO implements IMoviesDAO
 			$parameters["Earnings"] = $movies->getEarnings();
 			$parameters["Budget"] = $movies->getBudget();
 			$parameters["OriginalLanguage"] = $movies->getOriginalLanguage();
+			$movies->setIsPlaying($row["IsPlaying"]);
 
 
 			$this->connection = Connection::GetInstance();
