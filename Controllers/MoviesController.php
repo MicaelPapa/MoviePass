@@ -38,7 +38,9 @@ class MoviesController
 			$idMovieIMDB = 0;
 		
 		}
-
+		
+		$movie = new Movies ();
+		
 		if ($this->moviesDAO->getByIdMovieIMDB($idMovieIMDB) == NULL) {
 			$movie = $this->getInfoMovieApi($idMovieIMDB);
 			$this->moviesDAO->Add($movie, $idCinema);
