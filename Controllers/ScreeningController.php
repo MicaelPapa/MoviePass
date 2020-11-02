@@ -48,7 +48,7 @@ class ScreeningController{
 		require_once(VIEWS_PATH."ScreeningView.php");
 }
 
-	public function View($idMovieIMDB){ //FIXEAR
+	public function View($idMovieIMDB){
 				$screenings = array();
 				$cinemas = array();
 				$rooms = array();
