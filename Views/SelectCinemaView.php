@@ -21,8 +21,11 @@ require_once("navbar.php");
 
                             <tbody>
                                 <div class="form-group col-md-12">
-                                    <input type="hidden" name="type" value="" />
+                                    <input type="hidden" name="filterType" value="" />
                                     <input type="hidden" name="filter" value="" />
+                                    <input type="hidden" name="alertMessage" value="" />
+                                    <input type="hidden" name="alertType" value="" />
+
                                     <select id="inputSala" name="cinema" class="form-control">
                                         <option selected>Elige un cine</option>
                                         <?php foreach ($cinemaList as $cinema) { ?>

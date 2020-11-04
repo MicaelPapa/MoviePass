@@ -52,7 +52,7 @@ if(isset($alertType)){
 
 #alert {
           display: block;
-          width: 80%;
+          width: 100%;
           margin-top: 2%;
      }
 

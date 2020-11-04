@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use DAO\ScreeningDAO as ScreeningDAO;
@@ -10,139 +11,151 @@ use Models\Cinema as Cinema;
 use Models\Movies as Movies;
 use Models\Room as Room;
 
-class ScreeningController{
+class ScreeningController
+{
 
 	private $moviesDAO;
 	private $screeningDAO;
 	private $cinemaDAO;
-	
+
 	function __construct()
 	{
 		$this->moviesDAO = new MoviesDAO();
 		$this->screeningDAO = new ScreeningDAO();
 		$this->cinemaDAO = new CinemaDAO();
 		$this->roomDAO = new RoomDAO();
-
 	}
 
-	
-	public function ShowListView($idMovieIMDB){ //FIXEAR
-		$screenings = array();
+
+	public function ShowListView($idMovieIMDB, $idCinema)
+	{
 		$cinemas = array();
 		$rooms = array();
 		$movie = new Movies();
-
-		if($idMovieIMDB != NULL)
-		{
+		$cinema = new Cinema();
+		if ($idMovieIMDB != NULL) {
+			$cinema = $this->cinemaDAO->GetCinemaById($idCinema);
 			$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
-			$screenings = $this->screeningDAO->getScreeningByIdMovie($movie);
+			$screenings = $this->GetAll($movie);
 			$cinemas = $this->cinemaDAO->getAll();
-			$rooms = $this->roomDAO->getAll(); //hay que pasarle un id cine al get all
-
+			$rooms = $this->roomDAO->GetRoomsByCinema($idCinema);
+		} else {
+			$screenings = $this->screeningDAO->GetScreeningsByIdMovie($idMovie);
+			$cinemas = $this->cinemaDAO->getAll();
 		}
-		else
+		require_once(VIEWS_PATH . "ScreeningView.php");
+	}
+	public function GetAll($movie)
+	{	
+
+		$room = new Room();
+		$screenings = array ();
+		
+		$screenings = $this->screeningDAO->GetScreeningsByIdMovie($movie);
+
+		foreach ($screenings as $value)
 		{
-			$screenings = $this->screeningDAO->getScreeningByIdMovie($idMovie);
-			$cinemas = $this->cinemaDAO->getAll();
+			$idRoom = $value->getIdRoom();
+			$room = $this->roomDAO->GetRoomById($idRoom);
+			$value->setRoom($room);
+
 		}
-		require_once(VIEWS_PATH."ScreeningView.php");
-}
 
-	public function View($idMovieIMDB){
-				$screenings = array();
-				$cinemas = array();
-				$rooms = array();
-				$movie = new Movies();
-
-				if($idMovieIMDB != NULL)
-				{
-					$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
-					$screenings = $this->screeningDAO->getScreeningByIdMovie($movie);
-					$cinemas = $this->cinemaDAO->getAll();
-					$rooms = $this->roomDAO->getAll(); //hay que pasarle un id cine al get all
-
-				}
-				else
-				{
-					$screenings = $this->screeningDAO->getScreeningByIdMovie($idMovie);
-					$cinemas = $this->cinemaDAO->getAll();
-				}
-				require_once(VIEWS_PATH."ScreeningView.php");
+		return $screenings;
 	}
 
-
-
-
-
-	
-	public function Add($idMovieIMDB){
-		
+	public function Add($idMovieIMDB, $idCinema)
+	{
+		$validate =
+			$continue = true;
+		$i = 0;
 		$screening = new Screening();
-			
-			$movie = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
-			$screening->setIdMovie($movie->getIdMovie());
-			$screening->setIdMovieIMDB($movie->getIdMovieIMDB());
-			$screening->setStartDate($_GET['inputFechaDesde']);
-			$screening->setLastDate($_GET['inputFechaHasta']);
-			$screening->setStartHour($_GET['inputHoraInicio']);
-			
-			//Calcula la hora en que termina la pelicula
 
-			$duration = $movie->getDuration();
-			$dateHour=$_GET['inputFechaDesde'] ." ".$_GET['inputHoraInicio'];
-			$stringHour = "+".$duration." minutes";
-			$newDate = strtotime($stringHour,strtotime($dateHour));
-			$newDate= date('Y-m-d H:i:s', $newDate);
 
-			$screening->setFinishHour($newDate);
-			$screening->setIdCinema(1);
-			$screening->setIdRoom(1);
-			$screening->setDimension($_GET['dimension']);
+		$idCinema = $_GET['idCinema'];
+		$idMovieIMDB = $_GET['idMovieIMDB'];
+		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
+		$screening->setIdMovie($movie->getIdMovie());
+		$screening->setIdMovieIMDB($movie->getIdMovieIMDB());
+		$screening->setStartDate($_GET['inputFechaDesde']);
+		$screening->setLastDate($_GET['inputFechaHasta']);
+		$date = $_GET['inputFechaDesde'] . " " . $_GET['inputHoraInicio'];
+		$date = strtotime($date);
+		$date = date('Y-m-d H:i:s', $date);
+		$screening->setStartHour($date);
 
-			$screening->setIdCinema($_GET['inputCinema']);
-			$screening->setIdRoom($_GET['inputSala']);
-			$screening->setAudio($_GET['audio']);
-			$screening->setPrice($_GET['price']);
-			$screening->setSubtitles($_GET['subtitulos']);
+		//Calcula la hora en que termina la pelicula
 
-			$screeningsXday = array();
-			$screeningsXday = $this->screeningDAO->distinctScreeningPerDay($screening);
 
-			foreach($screeningsXday as $dateScreening){
-			
-				if($this->screeningDAO->validateScreening($dateScreening)){
-					$this->screeningDAO->add($dateScreening);
-				}
-				else echo '<script>alert("Hay una funcion en ese horario");</script>';
+		$duration = $movie->getDuration();
+		$dateHour = $_GET['inputFechaDesde'] . " " . $_GET['inputHoraInicio'];
+		$stringHour = "+" . $duration . " minutes";
+		$newDate = strtotime($stringHour, strtotime($dateHour));
+		$newDate = date('Y-m-d H:i:s', $newDate);
+
+		$screening->setFinishHour($newDate);
+
+		$screening->setDimension($_GET['dimension']);
+
+		$screening->setIdCinema($idCinema);
+		$screening->setIdRoom($_GET['inputSala']);
+		$screening->setAudio($_GET['audio']);
+		$screening->setPrice($_GET['price']);
+		$screening->setSubtitles($_GET['subtitulos']);
+
+		$screeningsXday = array();
+		$screeningsXday = $this->screeningDAO->distinctScreeningPerDay($screening);
+
+		while ($i <  sizeof($screeningsXday) or $continue) {
+			$value = $screeningsXday[$i];
+
+			$validate = ($this->screeningDAO->validateScreening($value));
+
+			$alertMessage = array_shift($validate);
+
+			$validate = array_shift($validate);
+
+			if (!$validate) {
+				echo '<script>alert("' . $alertMessage . '");</script>';
+				$continue = false;
+			} else if ($i < sizeof($screeningsXday)) $continue = false;
+
+			$i++;
+		}
+		if ($validate) {
+			foreach ($screeningsXday as $value) {
+				$this->screeningDAO->add($value, $idCinema);
 			}
+		}
 
-			$screenings = array();
+		$this->ShowListView($idMovieIMDB, $idCinema);
+		/* 	$screenings = array();
 
 			$screenings = $this->screeningDAO->getAll();
 			$cinemas = array();
 			$rooms = array();
 
-			$screenings = $this->screeningDAO->getScreeningByIdMovie($movie);
+			$screenings = $this->screeningDAO->GetScreeningsByIdMovie($movie);
 			$cinemas = $this->cinemaDAO->getAll();
-			$rooms = $this->roomDAO->getAll();
+			$rooms = $this->roomDAO->GetRoomsByCinema($idCinema);
 
 
-
-			require_once(VIEWS_PATH."ScreeningView.php");
+			require_once(VIEWS_PATH."ScreeningView.php"); */
 	}
 
 
-	public function EditScreening($idMovieIMDB){
+	public function EditScreening($idMovieIMDB)
+	{
 
 		$movie = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
 		$screening->setStartDate($_GET['inputFechaDesde']);
 		$screening->setLastDate($_GET['inputFechaHasta']);
 		$screening->setStartHour($_GET['inputHoraInicio']);
 		$duration = $movie->getDuration();
-		$dateHour=$_GET['inputFechaDesde'] ." ".$_GET['inputHoraInicio'];
-		$stringHour = "+".$duration." minutes";
-		$newDate = strtotime($stringHour,strtotime($dateHour));
-		$newDate= date('Y-m-d H:i:s', $newDate);
+		$dateHour = $_GET['inputFechaDesde'] . " " . $_GET['inputHoraInicio'];
+		$stringHour = "+" . $duration . " minutes";
+		$newDate = strtotime($stringHour, strtotime($dateHour));
+		$newDate = date('Y-m-d H:i:s', $newDate);
 		$screening->setFinishHour($newDate);
 		$screening->setIdCinema($_GET['inputCinema']);
 		$screening->setIdRoom($_GET['inputSala']);
@@ -154,23 +167,22 @@ class ScreeningController{
 		$screening->setSubtitles($_GET['subtitulos']);
 
 		$this->screeningDAO->edit($screening);
-	
-		require_once(VIEWS_PATH."ScreeningView.php");
+
+		require_once(VIEWS_PATH . "ScreeningView.php");
 	}
 
-	public function RemoveFromDataBase($IdScreening){
-		
-		if($_GET['IdScreening'] != null){
-			
+	public function RemoveFromDataBase($IdScreening, $idCinema)
+	{
+
+		if ($_GET['IdScreening'] != null) {
+
 			$movie = new Movies();
 			$screening = new Screening();
-			$screening =$this->screeningDAO->GetScreeningById($IdScreening);
+			$screening = $this->screeningDAO->GetScreeningById($IdScreening);
 			$movie = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB());
-			$screening =$this->screeningDAO->remove($screening);
+			$screening = $this->screeningDAO->remove($screening);
 		}
 		$idMovieIMDB = $movie->getIdMovieIMDB();
-		$this->View($idMovieIMDB);
+		$this->ShowListView($idMovieIMDB, $idCinema);
 	}
-
 }
-?>

@@ -4,12 +4,12 @@
     
     interface IScreeningDAO
     {
-    function add($screening);
+    function add($screening, $idCinema);
     function GetAll();
     function GetScreeningById($idScreening);
     function remove($screening);
     function edit($screening);
-    function GetScreeningByIdMovie($movies);
+    function GetScreeningsByIdMovie($movies);
     function GetScreeningByIdCinema($idCinema);
     function existInDataBase($idMovieIMDB);
     }

@@ -48,18 +48,18 @@
                                             </span>
                                         </p>
                                         
-                                        <p class="ticketText">Cinema:&nbsp<span class="ticketData"><?php echo $screening->getIdCinema();?></span></p>
-                                        <p class="ticketText">Sala:&nbsp<span class="ticketData"><?php echo $screening->getIdRoom();?></span></p>
+                                        <p class="ticketText">Cine:&nbsp<span class="ticketData"><?php echo $cinema->getCinemaName();?></span></p>
+                                        <p class="ticketText">Sala:&nbsp<span class="ticketData"><?php echo $screening->getRoom()->getRoomNumber();?></span></p>
                                         <p class="ticketText">Dimension:&nbsp<span class="ticketData"><?php echo $screening->getDimension();?></span></p>
 
                                     </div>
                                     <div class="col-md-5">
                                         <p class="ticketText">Audio:&nbsp<span class="ticketData"><?php echo $screening->getAudio();?></span></p>
                                         <p class="ticketText">Subtitulos:&nbsp<span class="ticketData"><?php echo $screening->getSubtitles();?></span></p>
-                                        <p class="ticketText">Horario de inicio:&nbsp<span class="ticketData"><?php echo $screening->getStartHour();?></span>
+                                        <p class="ticketText">Horario de inicio:&nbsp<span class="ticketData"><?php $date = date_create($screening->getStartHour()); echo date_format($date,'h:i:a');?></span>
                                         </p>
                                         <p class="ticketText">Precio:&nbsp<span
-                                                class="ticketData"><?php echo $screening->getPrice();?></span></p>
+                                                class="ticketData"><?php echo "$" . $screening->getPrice();?></span></p>
                                     </div>
                                     <div class="col-md-2 align-self-end">
                                         <a id="edit" href = "<?php echo FRONT_ROOT ?>Screening/EditScreening?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>" class="btn btn-primary" type="button" data-toggle="modal" data-target="#editFunctionModal"><i class="fas fa-edit"></i></a>
@@ -112,15 +112,7 @@
                             </div>
                         </div>
                     <div class="form-row justify-content-center">
-                        <div class="form-group col-md-12">
-                            <label for="inputCinema"><i style="color: red;">&#42&nbsp</i>Cinema</label>
-                            <select id="inputCinema" name="inputCinema" class="form-control">
-                            <option selected>Elije una</option>
-                            <?php foreach ($cinemas as $cinema) {?>
-                            <option value="<?php echo $cinema->getIdCinema();?>"   ><?php echo $cinema->getCinemaName();?></option>
-                            <?php } ?>
-                            </select>
-                        </div>  
+                        
                         <div class="form-group col-md-12">
                             <label for="inputSala"><i style="color: red;">&#42&nbsp</i>Sala</label>
                             <select id="inputSala" name="inputSala" class="form-control">
@@ -168,6 +160,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="idMovieIMDB" value="<?php echo $movie->getIdMovieIMDB(); ?>">
+                    <input type="hidden" name="idCinema" value="<?php echo $idCinema; ?>">
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -262,3 +255,6 @@
     }
 
 </style>
+
+<!-- 
+ -->

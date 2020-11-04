@@ -10,6 +10,7 @@ use Models\Movies as Movies;
 use Models\MovieGenre as MovieGenre;
 use API\IMDBController as IMDBController;
 use Controllers\ScreeningController as ScreeningController;
+use Models\Cinema;
 use Util\apiResponse as ApiResponse;
 
 
@@ -31,7 +32,7 @@ class MoviesController
 	
 	public function AddMovieToDatabase($idCinema, $idMovieIMDB)
 	{
-		$screeningHelper = new ScreeningController();
+	//	$screeningHelper = new ScreeningController();
 
 		if ($idMovieIMDB == null) {
 
@@ -40,29 +41,34 @@ class MoviesController
 		}
 		
 		$movie = null;
-
+		$cinema = new Cinema ();
+		$cinema->setIdCinema($idCinema);
 		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
 		
 		if ($movie == null) {
 			$movie = $this->getInfoMovieApi($idMovieIMDB);
-			$this->moviesDAO->Add($movie, $idCinema);
+			$this->moviesDAO->Add($movie, $cinema);
 			$this->addGenreAndMovie($movie->getGenres(),$movie->getIdMovieIMDB());
 
-		}else{
-
-			$this->moviesDAO->setMovieXcinema($idCinema, $movie->getIdMovie());
+		}else if (!$this->moviesDAO->isExistMovieXCinema($cinema,$movie)){ //valida que no exista esa pelicula para ese cine
+			
+			$this->moviesDAO->setMovieXcinema($cinema, $movie);
 
 		}
 
-		$screeningHelper->View($movie->getIdMovieIMDB());
+		$this->ShowApiMovies("La pelicula se ha agregado correctamente", "success",null,null, $idCinema);
+	//	$screeningHelper->View($movie->getIdMovieIMDB());
 	}
 
 
 
-	public function ShowApiMovies($type, $filter, $idCinema)
-	 {
-		$movieList = $this->getNowPlayingMoviesInfoFromApi($type, $filter, $idCinema);
+
+	public function ShowApiMovies($alertMessage = "", $alertType = "", $filterType = "", $filter = "", $idCinema)
+	{
+
+		$movieList = $this->getNowPlayingMoviesInfoFromApi($filterType, $filter, $idCinema);
 		$genreList = $this->getGenresFromDataBase();
+		$this->getGenresFromApi();
 
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
 	}
@@ -152,6 +158,7 @@ class MoviesController
 	{	
 		$movieList = array();
 		$movie = New Movies();
+		$this->getGenresFromApi();
 		if($type == "filterGenres"){
 			$movieGenreList = $this->movieXgenreDAO->getIdMovie($filter);
 			foreach ($movieGenreList as $IdMovieIMDB){
@@ -296,4 +303,27 @@ class MoviesController
 		$movies = $this->screeningDAO->getIdAllIdMoviesByDate($date);
 		return $movies;
 	}
+
+	public function getGenresFromApi(){
+
+        $arrayToDecode =ApiResponse::HomologatesApiResponse('/genre/movie/list');
+
+        if($this->getGenresFromDataBaseAdmin() == null){
+            foreach($arrayToDecode['genres'] as $values){
+                $genre = new MovieGenre();
+                $genre->setIdIMDB($values["id"]);
+                $genre->setName($values["name"]);
+                   
+                $this->movieGenreDAO->add($genre);
+            }
+        }
+        
+    }
+
+    public function getGenresFromDataBaseAdmin(){
+
+        $genreList = array();
+        $genreList = $this->movieGenreDAO->getAll();
+		return $genreList;
+    }
 }

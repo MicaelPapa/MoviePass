@@ -61,10 +61,10 @@ class MoviesDAO implements IMoviesDAO
 		return $this->connection->Execute($query);
 	}
 
-	public function Add($movie, $idCinema)
+	public function Add($movie, $cinema)
 	{
 		try {
-
+			$idCinema = $cinema->getIdCinema();
 			$query = "INSERT INTO " . $this->tableName . " (IdMovieIMDB, MovieName, ReleaseDate, Photo,
 			Duration,Synopsis,Earnings,Budget,OriginalLanguage,IsPlaying)
 			 VALUES (:IdMovieIMDB, :MovieName, :ReleaseDate, :Photo, :Duration, :Synopsis, :Earnings,
@@ -93,8 +93,11 @@ class MoviesDAO implements IMoviesDAO
 		}
 	}
 
-	public function setMovieXcinema($idCinema, $idMovie)
+	public function setMovieXcinema($cinema, $movie)
 	{
+		$idMovie = $movie->getIdMovie();
+		$idCinema = $cinema->getIdCinema();
+
 		$query = "INSERT INTO movieXcinema (idMovie, idCinema) VALUES( :idMovie, :idCinema );";
 		$parameters ["idMovie"] = $idMovie;	
 		$parameters ["idCinema"] = $idCinema;
@@ -102,6 +105,20 @@ class MoviesDAO implements IMoviesDAO
 
 		$this->connection = Connection::GetInstance();
 		$this->connection->ExecuteNonQuery($query, $parameters);
+	}
+
+	public function isExistMovieXCinema ($cinema, $movie)
+	{
+		$idMovie = $movie->getIdMovie();
+		$idCinema = $cinema->getIdCinema();
+		$query = "SELECT * FROM movieXcinema WHERE idMovie = ".$idMovie." AND idCinema =" .$idCinema. " ;";
+
+		$this->connection = Connection::GetInstance();
+		$result =	$this->connection->Execute($query);
+
+		return $result;
+
+
 	}
 	public function getIsPlayingMovie($movie, $idCinema)
 	{
