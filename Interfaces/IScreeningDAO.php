@@ -4,7 +4,7 @@
     
     interface IScreeningDAO
     {
-    function add($screening, $idCinema);
+    function Add($screening, $idCinema);
     function GetAll();
     function GetScreeningById($idScreening);
     function remove($screening);

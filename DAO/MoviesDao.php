@@ -13,6 +13,7 @@ class MoviesDAO implements IMoviesDAO
 {
 	private $connection;
 	private $tableName = "Movies";
+	private $moviexcinemaTableName = "moviexcinema";
 	private $movieGenreTableName = "MoviesXGenres";
 
 	public function GetMoviesByCity($CityId)
@@ -146,10 +147,10 @@ class MoviesDAO implements IMoviesDAO
 		return true;
 	}
 
-	function remove($movies)
+	function remove($movies, $idCinema)
 	{
 		try {
-			$query = "DELETE FROM " . $this->tableName . " WHERE IdMovieIMDB = " . $movies->getIdMovieIMDB() . ";";
+			$query = "DELETE FROM " . $this->moviexcinemaTableName . " WHERE IdMovieIMDB = " . $movies->getIdMovieIMDB() . " AND idCinema = $idCinema ;";
 
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query);
@@ -239,6 +240,7 @@ class MoviesDAO implements IMoviesDAO
 			$resultSet = $this->connection->Execute($query);
 
 			foreach ($resultSet as $row) {
+				$movies = new Movies();
 				$movies->setIdMovie($row["IdMovie"]);
 				$movies->setIdMovieIMDB($row["IdMovieIMDB"]);
 				$movies->setMovieName($row["MovieName"]);

@@ -3,7 +3,7 @@
 namespace DAO;
 
 use Models\Movies as Movies;
-use Models\Cinemas as Cinema;
+use Models\Cinema as Cinema;
 use Models\Screening as Screening;
 use Models\Room as Room;
 use Interfaces\IScreeningDAO as IScreeningDAO;
@@ -17,7 +17,7 @@ class ScreeningDAO implements IScreeningDAO
     private $cinemaTableName = "Cinemas";
     private $roomTableName = "Rooms";
 
-    public function add($screening, $idCinema)
+    public function Add($screening, $idCinema)
     {
 
         try {
@@ -27,12 +27,12 @@ class ScreeningDAO implements IScreeningDAO
                 :IdCinema, :Dimension, :Audio, :Subtitles, :StartHour, :FinishHour, :Price);";
 
 
-            $parameters["IdMovie"] = $screening->getIdMovie();
-            $parameters["IdMovieIMDB"] = $screening->getIdMovieIMDB();
+            $parameters["IdMovie"] = $screening->getMovie()->getIdMovie();
+            $parameters["IdMovieIMDB"] = $screening->getMovie()->getIdMovieIMDB();
             $parameters["StartDate"] = $screening->getStartDate();
             $parameters["LastDate"] = $screening->getLastDate();
-            $parameters["IdRoom"] = $screening->getIdRoom();
-            $parameters["IdCinema"] = $idCinema;
+            $parameters["IdRoom"] = $screening->getRoom()->getIdRoom();
+            $parameters["IdCinema"] = $screening->getCinema()->GetIdCinema();
             $parameters["Dimension"] = $screening->getDimension();
             $parameters["Audio"] = $screening->getAudio();
             $parameters["Price"] = $screening->getPrice();
@@ -64,7 +64,6 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
                 $screening->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
@@ -73,6 +72,16 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
 
+                $room = new Room();
+                $room->setIdRoom($row["IdRoom"]);
+                $screening->setRoom($room);
+                $cinema = new Cinema();
+                $cinema->setIdCinema($row["IdCinema"]);
+                $screening->setCinema($cinema);
+                $movie = new Movie();
+                $movie->setIdMovie($row["IdMovie"]);
+                $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $screening->setMovie($movie);
                 array_push($list, $screening);
             }
             return $list;
@@ -159,6 +168,9 @@ class ScreeningDAO implements IScreeningDAO
     {
 
         $room = new Room();
+        $cinema = new Cinema();
+    
+
         try {
             $list = array();
             $query = "SELECT * FROM " . $this->tableName . " as s INNER JOIN movieXcinema as mc ON s.idMovie = mc.idMovie  WHERE s.IdMovieIMDB = " . $movie->getIdMovieIMDB() . " ;"; //--------------------------------//
@@ -168,12 +180,12 @@ class ScreeningDAO implements IScreeningDAO
             if ($resultSet == null) {
                 $screening = new Screening();
                 $screening->setIdScreening("-");
-                //   $screening->setIdMovie($movie->getIdMovie());
+                $screening->setIdMovie($movie->getIdMovie());
                 $screening->setIdMovieIMDB($movie->getIdMovieIMDB());
                 $screening->setStartDate("-");
                 $screening->setLastDate("-");
-                //  $screening->setIdRoom("-");
-                //  $screening->setIdCinema("-");
+                $screening->setIdRoom("-");
+                $screening->setIdCinema("-");
                 $screening->setDimension("-");
                 $screening->setPrice("-");
                 $screening->setAudio($movie->getOriginalLanguage());
@@ -185,18 +197,16 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setRoom("-");
                 array_push($list, $screening);
             } else {
-               
+
 
                 foreach ($resultSet as $row) {
 
                     $screening = new Screening();
                     $screening->setIdScreening($row["IdScreening"]);
                     //  $screening->setIdMovie($row["IdMovie"]);
-                    $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
+                   // $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                     $screening->setStartDate($row["StartDate"]);
                     $screening->setLastDate($row["LastDate"]);
-                    $screening->setIdRoom($row["IdRoom"]);
-                    $screening->setIdCinema($row["IdCinema"]);
                     $screening->setDimension($row["Dimension"]);
                     $screening->setAudio($row["Audio"]);
                     $screening->setPrice($row["Price"]);
@@ -204,6 +214,12 @@ class ScreeningDAO implements IScreeningDAO
                     $screening->setStartHour($row["StartHour"]);
                     $screening->setFinishHour($row["FinishHour"]);
 
+
+                    $room = new Room();
+                    $room->setIdRoom($row["IdRoom"]);
+                    $screening->setRoom($room);
+                    $cinema->setIdCinema($row["IdCinema"]);
+                    $screening->setCinema($cinema);
                     $screening->setRoom($room);
                     $screening->setMovie($movie);
                     array_push($list, $screening);
@@ -275,18 +291,19 @@ class ScreeningDAO implements IScreeningDAO
             $date = date("Y-m-d", strtotime($date . "+ 1 days"));
 
             $newScreening->setIdScreening($screening->getIdScreening());
-            $newScreening->setIdMovie($screening->getIdMovie());
-            $newScreening->setIdMovieIMDB($screening->getIdMovieIMDB());
             $newScreening->setStartDate($date);
             $newScreening->setLastDate($screening->getLastDate());
-            $newScreening->setIdRoom($screening->getIdRoom());
-            $newScreening->setIdCinema($screening->getIdCinema());
             $newScreening->setDimension($screening->getDimension());
             $newScreening->setAudio($screening->getAudio());
             $newScreening->setPrice($screening->getPrice());
             $newScreening->setSubtitles($screening->getSubtitles());
             $newScreening->setStartHour($screening->getStartHour());
             $newScreening->setFinishHour($screening->getFinishHour());
+            $newScreening->setMovie($screening->getMovie());
+            $newScreening->setRoom($screening->getRoom());
+            $newScreening->setCinema($screening->getCinema());
+
+
             array_push($screeningList, $newScreening);
         }
 
@@ -360,35 +377,30 @@ class ScreeningDAO implements IScreeningDAO
     {  //valida que en la sala a la que pertenece cada funcion no haya funciones en ese horario
         $notExist = false;
         $alertMessage = "";
-        $query  = "select * from " . $this->tableName . "  where  IdMovieIMDB = " . $screening->getIdMovieIMDB() . " and  StartDate = " . $screening->getStartDate() . " and IdCinema != " . $screening->getIdCinema() . " ;"; //cine unico en ese dia
-        $query2 = "select * from " . $this->tableName . " where IdMovieIMDB = " . $screening->getIdMovieIMDB() . " and IdRoom != " . $screening->getIdRoom() . " AND idCinema = ".$screening->getIdCinema(). " ;"; //sala unica
-        $query3 =  "select * from " .$this->tableName. " where  IdMovieIMDB = ". $screening->getIdMovieIMDB(). " and StartDate = '" . $screening->getStartDate() . "' and (( CAST('".$screening->getStartHour() ."' AS  DATETIME) between StartHour AND finishhour) or (CAST('".$screening->getFinishHour()."' AS  DATETIME) between StartHour AND finishhour));" ; //horario unico
+        $query  = "select * from " . $this->tableName . "  where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and  StartDate = " . $screening->getStartDate() . " and IdCinema != " . $screening->getCinema()->getIdCinema() . " ;"; //cine unico en ese dia
+        $query2 = "select * from " . $this->tableName . " where IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and IdRoom != " . $screening->getRoom()->getIdRoom() . " AND idCinema = " . $screening->getCinema()->getIdCinema() . " ;"; //sala unica
+        $query3 =  "select * from " . $this->tableName . " where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and StartDate = '" . $screening->getStartDate() . "' and (( CAST('" . $screening->getStartHour() . "' AS  DATETIME) between StartHour AND finishhour) or (CAST('" . $screening->getFinishHour() . "' AS  DATETIME) between StartHour AND finishhour));"; //horario unico
 
         $this->connection = Connection::GetInstance();
-        
+
         $notUniqueCinema = $this->connection->Execute($query);
         $notUniqueRoom = $this->connection->Execute($query2);
         $notUniqueHour = $this->connection->Execute($query3);
-        if(!$notUniqueCinema && !$notUniqueRoom && !$notUniqueHour) //si ningun select matchea significa que la funcion no existe y ademas es valida para ser agregada.
+        if (!$notUniqueCinema && !$notUniqueRoom && !$notUniqueHour) //si ningun select matchea significa que la funcion no existe y ademas es valida para ser agregada.
         {
             $notExist = true;
-        }else if ($notUniqueCinema)
-        {
+        } else if ($notUniqueCinema) {
             $alertMessage = "No es posible agregar una funcion en este dia debido a que ya existe en otro cine.";
-        }
-        else if ($notUniqueRoom)
-        {
+        } else if ($notUniqueRoom) {
             $alertMessage = "Por favor ingresa la sala a la cual le pertenece esta pelicula";
-        }
-        else if($notUniqueHour)
-        {
+        } else if ($notUniqueHour) {
             $alertMessage = "Ya existe una funcion para esta pelicula en el horario que queres ingresar.";
         }
 
         $validate = array();
-     //   $screeningList = $this->GetScreeningByIdRoom($screening->getIdRoom());
-        
-      /*   if ($screeningList != null) {
+        //   $screeningList = $this->GetScreeningByIdRoom($screening->getIdRoom());
+
+        /*   if ($screeningList != null) {
             foreach ($screeningList as $value) {
                 if ($value->getStartDate() == $screening->getStartDate()) {
                     if ($value->getStartHour() == $screening->getStartHour()) {
@@ -398,7 +410,7 @@ class ScreeningDAO implements IScreeningDAO
             }
         } */
 
-        array_push($validate,$alertMessage,$notExist);
+        array_push($validate, $alertMessage, $notExist);
         return $validate;
     }
 

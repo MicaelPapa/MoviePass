@@ -45,41 +45,65 @@ class ScreeningController
 		}
 		require_once(VIEWS_PATH . "ScreeningView.php");
 	}
+
+
 	public function GetAll($movie)
 	{	
 
 		$room = new Room();
+		$cinema = new Cinema();
+		
 		$screenings = array ();
 		
-		$screenings = $this->screeningDAO->GetScreeningsByIdMovie($movie);
+		$screeningsList = $this->screeningDAO->GetScreeningsByIdMovie($movie);
 
-		foreach ($screenings as $value)
-		{
-			$idRoom = $value->getIdRoom();
-			$room = $this->roomDAO->GetRoomById($idRoom);
-			$value->setRoom($room);
+	
+			foreach ($screeningsList as $screening)
+			{
+			
+				$idRoom = $screening->getRoom()->getIdRoom();
+				
+			
+				if($idRoom != "-")
+				{
+					$room = $this->roomDAO->GetRoomById($idRoom);
+					$screening->setRoom($room);
+					$cinema = $this->cinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
+					$screening->setCinema($cinema);
+					$movie = $this->moviesDAO->getByMovieId($screening->getMovie()->getIdMovie());
+					$screening->setMovie($movie);
 
-		}
 
-		return $screenings;
+				} 
+	
+			}
+	
+		
+	
+		return $screeningsList;
 	}
 
-	public function Add($idMovieIMDB, $idCinema)
+	public function Add($fechaorigen, $fechafinal, $hora, $precio, $idRoom, $dimension, $audio, $sub,$idMovieIMDB, $idCinema) //fecha1 fecha 2  horario inicio  dimension  sala  audio precio subtitulos 
 	{
-		$validate =
-			$continue = true;
+		$validate =true;
+		$continue = true;
 		$i = 0;
 		$screening = new Screening();
+		$movie  = new Movies();
+		$cinema = new Cinema();
+		$room = new Room();
 
-
-		$idCinema = $_GET['idCinema'];
-		$idMovieIMDB = $_GET['idMovieIMDB'];
+		$cinema->setIdCinema($idCinema);
 		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
-		$screening->setIdMovie($movie->getIdMovie());
-		$screening->setIdMovieIMDB($movie->getIdMovieIMDB());
-		$screening->setStartDate($_GET['inputFechaDesde']);
-		$screening->setLastDate($_GET['inputFechaHasta']);
-		$date = $_GET['inputFechaDesde'] . " " . $_GET['inputHoraInicio'];
+		$room->setIdRoom($idRoom);
+
+		$screening->setCinema($cinema);
+		$screening->setMovie($movie);
+		$screening->setRoom($room);
+		$screening->setStartDate($fechaorigen);
+		$screening->setLastDate($fechafinal);
+
+		$date = $fechaorigen . " " . $hora;
 		$date = strtotime($date);
 		$date = date('Y-m-d H:i:s', $date);
 		$screening->setStartHour($date);
@@ -88,20 +112,20 @@ class ScreeningController
 
 
 		$duration = $movie->getDuration();
-		$dateHour = $_GET['inputFechaDesde'] . " " . $_GET['inputHoraInicio'];
+		$dateHour = $fechaorigen . " " . $hora;
 		$stringHour = "+" . $duration . " minutes";
 		$newDate = strtotime($stringHour, strtotime($dateHour));
 		$newDate = date('Y-m-d H:i:s', $newDate);
 
 		$screening->setFinishHour($newDate);
 
-		$screening->setDimension($_GET['dimension']);
+		$screening->setDimension($dimension);
 
-		$screening->setIdCinema($idCinema);
-		$screening->setIdRoom($_GET['inputSala']);
-		$screening->setAudio($_GET['audio']);
-		$screening->setPrice($_GET['price']);
-		$screening->setSubtitles($_GET['subtitulos']);
+	
+		
+		$screening->setAudio($audio);
+		$screening->setPrice($precio);
+		$screening->setSubtitles($sub);
 
 		$screeningsXday = array();
 		$screeningsXday = $this->screeningDAO->distinctScreeningPerDay($screening);
@@ -124,23 +148,12 @@ class ScreeningController
 		}
 		if ($validate) {
 			foreach ($screeningsXday as $value) {
-				$this->screeningDAO->add($value, $idCinema);
+				$this->screeningDAO->Add($value, $idCinema);
 			}
 		}
 
 		$this->ShowListView($idMovieIMDB, $idCinema);
-		/* 	$screenings = array();
-
-			$screenings = $this->screeningDAO->getAll();
-			$cinemas = array();
-			$rooms = array();
-
-			$screenings = $this->screeningDAO->GetScreeningsByIdMovie($movie);
-			$cinemas = $this->cinemaDAO->getAll();
-			$rooms = $this->roomDAO->GetRoomsByCinema($idCinema);
-
-
-			require_once(VIEWS_PATH."ScreeningView.php"); */
+	
 	}
 
 

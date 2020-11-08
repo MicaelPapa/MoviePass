@@ -185,7 +185,7 @@ class MoviesController
 		require_once(VIEWS_PATH . "MoviesPlayingView.php");
 	}
 
-	public function RemoveMovie($idMovieIMDB)
+	public function RemoveMovie($idMovieIMDB, $idCinema)
 	{
 
 		if ($_GET['IdMovieIMDB'] != null) {
@@ -198,10 +198,10 @@ class MoviesController
 
 
 		if ($movies->getIdMovieIMDB() == $idMovieIMDB) { 
-			$this->moviesDAO->remove($movies);
+			$this->moviesDAO->remove($movies, $idCinema);
 		}
 
-		$this->ShowApiMovies($movieList = null);
+		$this->ShowApiMovies("La pelicula se borro satisfactoriamente", "danger", null,null,$idCinema);
 	}
 	
 	private function getGenresFromDataBase(){

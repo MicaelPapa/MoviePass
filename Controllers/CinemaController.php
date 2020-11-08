@@ -156,7 +156,7 @@ class CinemaController
             $cinemaName = Validate::ValidateData($cinemaName);
             $street = Validate::ValidateData($street);
             $number = Validate::ValidateData($number);
-            $cityId = Validate::ValidateData($cityId);
+         
             
             $address = new Address();
             $address->setStreet($street);
@@ -195,6 +195,7 @@ class CinemaController
 
     public function GetAll()
     {
+        
         return $this->CinemaDAO->GetAll();
     }
 }

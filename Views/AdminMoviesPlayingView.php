@@ -71,7 +71,7 @@
                 <p><a id="addMovie" href="<?php echo FRONT_ROOT ?>Movies/AddMovieToDatabase?IdCinema=<?php echo $idCinema; ?> &IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button id="add" class="button">Agregar Pelicula</button></a></p>
               <?php } else { ?>
                 <p><a id="editMovie" href="<?php echo FRONT_ROOT ?>Screening/ShowListView?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?> &IdCinema=<?php echo $idCinema ?>"><button id="edit" class="button">Agregar Funcion</button></a></p>
-                <p><a id="removeMovie" href="<?php echo FRONT_ROOT ?>Movies/RemoveMovie?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button id="remove" class="button">Eliminar</button></a></p>
+                <p><a id="removeMovie" href="<?php echo FRONT_ROOT ?>Movies/RemoveMovie?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>  &IdCinema=<?php echo $idCinema ?>"><button id="remove" class="button">Eliminar</button></a></p>
               <?php } ?>
             </div>
           </div>

@@ -46,9 +46,9 @@
                                                         }                                                
                                                 ?>
                                             </span>
-                                        </p>
+                                        </p>   
                                         
-                                        <p class="ticketText">Cine:&nbsp<span class="ticketData"><?php echo $cinema->getCinemaName();?></span></p>
+                                        <p class="ticketText">Cine:&nbsp<span class="ticketData"><?php echo $screening->getCinema()->getCinemaName();?></span></p>
                                         <p class="ticketText">Sala:&nbsp<span class="ticketData"><?php echo $screening->getRoom()->getRoomNumber();?></span></p>
                                         <p class="ticketText">Dimension:&nbsp<span class="ticketData"><?php echo $screening->getDimension();?></span></p>
 
@@ -56,7 +56,13 @@
                                     <div class="col-md-5">
                                         <p class="ticketText">Audio:&nbsp<span class="ticketData"><?php echo $screening->getAudio();?></span></p>
                                         <p class="ticketText">Subtitulos:&nbsp<span class="ticketData"><?php echo $screening->getSubtitles();?></span></p>
-                                        <p class="ticketText">Horario de inicio:&nbsp<span class="ticketData"><?php $date = date_create($screening->getStartHour()); echo date_format($date,'h:i:a');?></span>
+                                        <p class="ticketText">Horario de inicio:&nbsp<span class="ticketData">
+                                            <?php if($screening->getStartDate() == '-'){
+                                                          echo $screening->getStartHour();
+                                                        } else {
+                                                            $date = date_create($screening->getStartHour()); echo date_format($date,'h:i:a');
+                                                        }                                                
+                                                ?></span>
                                         </p>
                                         <p class="ticketText">Precio:&nbsp<span
                                                 class="ticketData"><?php echo "$" . $screening->getPrice();?></span></p>
