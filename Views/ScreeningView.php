@@ -18,7 +18,7 @@
                         </p>
                         <p class="titleData"><i class="fas fa-video">&nbsp</i>Fecha de Salida:&nbsp<span class="textData"><?php echo $movie->getReleaseDate();?>
                             </span></p>
-                        <p class="titleData"><i class="fas fa-clock">&nbsp</i>Duracion:&nbsp<span class="textData"><?php echo $movie->getDuration() . " minutos";?>
+                        <p class="titleData"><i class="fas fa-clock">&nbsp</i>Duración:&nbsp<span class="textData"><?php echo $movie->getDuration() . " minutos";?>
                             </span></p>
                     </div>
                     <div class="form-group col-md-3 align-self-center">
@@ -77,7 +77,6 @@
     </div>
     <!-- Fin Index -->
 </div>
-
 <!-- Modal ingresar funcion  -->
 <div class="modal fade" id="editFunctionModal" tabindex="-1" role="dialog" aria-labelledby="editFunctionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -104,7 +103,7 @@
                     <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputFechaDesde"><i style="color: red;">&#42&nbsp</i>Hora de Inicio</label>
-                                <input type="time" class="form-control" id="inputHoraInicio" name="inputHoraInicio" placeholder="Hora de Inicio">
+                                <input type="time" min="16:00:00" max="24:00:00" class="form-control" id="inputHoraInicio" name="inputHoraInicio" placeholder="Hora de Inicio">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputPrecio"><i style="color: red;">&#42&nbsp</i>Precio</label>

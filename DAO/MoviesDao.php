@@ -222,6 +222,7 @@ class MoviesDAO implements IMoviesDAO
 			$resultSet = $this->connection->Execute($query);
 
 			foreach ($resultSet as $row) {
+				$movies = New Movies();
 				$movies->setIdMovie($row["IdMovie"]);
 				$movies->setIdMovieIMDB($row["IdMovieIMDB"]);
 				$movies->setMovieName($row["MovieName"]);

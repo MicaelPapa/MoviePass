@@ -150,4 +150,6 @@ class RoomDAO implements IRoomDAO
             return null;
         }
     }
+
+    public
 }

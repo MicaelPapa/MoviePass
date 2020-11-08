@@ -15,6 +15,7 @@ class ScreeningController{
 	private $moviesDAO;
 	private $screeningDAO;
 	private $cinemaDAO;
+	private $roomDAO;
 	
 	function __construct()
 	{
@@ -104,6 +105,7 @@ class ScreeningController{
 			$screening->setAudio($_GET['audio']);
 			$screening->setPrice($_GET['price']);
 			$screening->setSubtitles($_GET['subtitulos']);
+
 
 			$screeningsXday = array();
 			$screeningsXday = $this->screeningDAO->distinctScreeningPerDay($screening);
