@@ -100,7 +100,6 @@ class CinemaController
         if (Validate::Logged() && Validate::AdminLog()) { 
 
         $cinemaName = Validate::ValidateData($cinemaName);        
-     //   $cityId = Validate::ValidateData($cityId);
         $street = Validate::ValidateData($street);
         $numberStreet = Validate::ValidateData($numberStreet);
 

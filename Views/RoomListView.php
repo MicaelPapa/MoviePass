@@ -48,7 +48,7 @@ require_once("navbar.php");
                   echo '<h2 class="text-center display-4">No hay Salas disponibles para mostrar</h2>';
                 }
               ?>
-          <a href = "<?php echo FRONT_ROOT ?>Room/ShowAddView? cinema = <?php echo $cinema->getIdCinema() ;?>"  class="btn btn-success btn-block" ><i class="fas fa-plus-square"></i>&nbspAgregar nueva sala</a>
+          <a href = "<?php echo FRONT_ROOT ?>Room/ShowAddView? alertMessage = null & alertType = null &idCinema = <?php echo $cinema->getIdCinema() ;?>"  class="btn btn-success btn-block" ><i class="fas fa-plus-square"></i>&nbspAgregar nueva sala</a>
           <a type="button" href="<?php echo FRONT_ROOT ?>Cinema/ShowListView" class="btn btn-primary btn-block"><i class="fas fa-arrow-left"></i>&nbspVolver a lista de cines</a>
         </form>
         <!-- form -->

@@ -1,4 +1,6 @@
-<?php require_once("navbar.php"); ?>
+<?php require_once("navbar.php"); 
+
+?>
 
 <div class="container">
   <!-- Inicio Index -->
@@ -13,7 +15,8 @@
           <div class="form-group col-md-12">
             <label for="inputPelicula"><i style="color: red;">&#42&nbsp</i>Pelicula</label>
             <select id="inputPelicula" name="inputPelicula" class="form-control" required>
-            <option value=''>Elija una...</option>
+            <?php if (isset($screening)) { echo '<option value="' . $screening->getMovie()->getIdMovie() . '">' . $screening->getMovie()->getMovieName() . '</option>';} 
+            else{ echo("<option value=''>Elija una...</option>");}?>
             <?php if (isset($movies)) {
                 foreach ($movies as $movie) {
                   echo '<option value="' . $movie->getIdMovie() . '">' . $movie->getMovieName() . '</option>';
@@ -22,10 +25,9 @@
             </select>
           </div>
           <div class="form-group col-md-12">
+          <p class="titleData" style="font-size: 32px">&nbsp</i><?php echo $movie->getMovieName();?>&nbsp</p>
             <label for="inputCine"><i style="color: red;">&#42&nbsp</i>Cine</label>
-            <select id="inputCine" name="inputCine" class="form-control" required>
-            </select>
-
+      
           </div>
           <div class="form-group col-md-12">
             <label for="inputFuncion"><i style="color: red;">&#42&nbsp</i>Funcion</label>
@@ -34,7 +36,7 @@
           </div>
           <div class="form-group col-md-12">
             <label for="inputCantAsientos"><i style="color: red;">&#42&nbsp</i>Cantidad de asientos</label>
-            <input type="number" name="inputCantAsientos"  max="10" min="1" class="form-control" id="inputCantAsientos" placeholder="Cantidad de asientos" required>
+            <input type="number" name="inputCantAsientos"  max="<?php echo $screening->getRemainTickets(); ?>" min="1" class="form-control" id="inputCantAsientos" placeholder="Cantidad de asientos" required>
           </div>
         </div>
 

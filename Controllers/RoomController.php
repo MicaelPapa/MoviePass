@@ -21,27 +21,37 @@ class RoomController
         $this->cinemaDAO = new CinemaDAO();
     }
 
-    public function Add($roomNumber, $capacity, $cinemaName)
+    public function Add($roomNumber, $capacity,  $cinemaName)
     {
 
         $roomNumber = Validate::ValidateData($roomNumber);
         $capacity = Validate::ValidateData($capacity);
+        $cinemaName =  Validate::ValidateData($cinemaName);
 
         $cinema = new Cinema();
         $cinema = $this->cinemaDAO->getCinemaByName($cinemaName);
 
-        $room = new Room();
-        $room->setRoomNumber($roomNumber);
-        $room->setCapacity($capacity);
-        $room->setCinema($cinema);
-        $this->RoomDAO->Add($room, $cinema);
+        if ($this->RoomDAO->getRoomByName($roomNumber)) {
+            $this->ShowAddView("Sala ya existente", "danger", $cinema->getIdCinema());
+        }else{
+          
+           
+    
+            $room = new Room();
+            $room->setRoomNumber($roomNumber);
+            $room->setCapacity($capacity);
+            $room->setCinema($cinema);
+            $this->RoomDAO->Add($room, $cinema);
+    
+            $cinemaList = $this->cinemaDAO->GetAll();
+    
+            require_once(VIEWS_PATH . "CinemaListView.php");
 
-        $cinemaList = $this->cinemaDAO->GetAll();
-
-        require_once(VIEWS_PATH . "CinemaListView.php");
+        }
+       
     }
 
-    public  function ShowAddView($idCinema)
+    public  function ShowAddView($alertMessage = "", $alertType = "", $idCinema)
     {
 
         $cinema =  $this->cinemaDAO->GetCinemaById($idCinema);

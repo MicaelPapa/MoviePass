@@ -22,9 +22,9 @@ class ScreeningDAO implements IScreeningDAO
 
         try {
             $query = "INSERT INTO " . $this->tableName . " (IdMovie, IdMovieIMDB, StartDate, LastDate, IdRoom, 
-                IdCinema, Dimension, Audio, Subtitles, StartHour, FinishHour, Price)
+                IdCinema, Dimension, Audio, Subtitles, StartHour, FinishHour, Price, RemainTickets)
                 VALUES (:IdMovie, :IdMovieIMDB, :StartDate, :LastDate, :IdRoom, 
-                :IdCinema, :Dimension, :Audio, :Subtitles, :StartHour, :FinishHour, :Price);";
+                :IdCinema, :Dimension, :Audio, :Subtitles, :StartHour, :FinishHour, :Price, :RemainTickets);";
 
 
             $parameters["IdMovie"] = $screening->getMovie()->getIdMovie();
@@ -39,7 +39,8 @@ class ScreeningDAO implements IScreeningDAO
             $parameters["Subtitles"] = $screening->getSubtitles();
             $parameters["StartHour"] = $screening->getStartHour();
             $parameters["FinishHour"] = $screening->getFinishHour();
-
+            $parameters["RemainTickets"] = $screening->getRemainTickets();
+            
             $this->connection = Connection::GetInstance();
             $result = $this->connection->ExecuteNonQuery($query, $parameters);
 
@@ -71,6 +72,7 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setSubtitles($row["Subtitles"]);
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
+                $screening->setRemainTickets($row["RemainTickets"]);
 
                 $room = new Room();
                 $room->setIdRoom($row["IdRoom"]);
@@ -115,6 +117,21 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setSubtitles($row["Subtitles"]);
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
+                $screening->setRemainTickets($row["RemainTickets"]);
+
+                
+                $cinema = new Cinema();
+                $room = new Room();
+                $movie = new Movies();
+                $movie->setIdMovie($row["IdMovie"]);
+                $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $room->setIdRoom($row["IdRoom"]);
+                $screening->setRoom($room);
+                $cinema->setIdCinema($row["IdCinema"]);
+                $screening->setCinema($cinema);
+                $screening->setRoom($room);
+                $screening->setMovie($movie);
+
                 return $screening;
             }
         } catch (Exception $ex) {
@@ -144,7 +161,7 @@ class ScreeningDAO implements IScreeningDAO
             LastDate = :LastDate, IdRoom = :IdRoom, IdCinema = :IdCinema, Dimension = :Dimension,
 
             Audio = :Audio, Subtitles = :Subtitles, StartHour = :StartHour, FinishHour = :FinishHour, Price = :Price
-            WHERE IdScreening = " . $screening->getId() . " ;";
+            WHERE IdScreening = " . $screening->getIdScreening() . " ;";
 
             $parameters["StartDate"] = $screening->getStartDate();
             $parameters["LastDate"] = $screening->getLastDate();
@@ -157,7 +174,6 @@ class ScreeningDAO implements IScreeningDAO
             $parameters["StartHour"] = $screening->getStartHour();
             $parameters["FinishHour"] = $screening->getFinishHour();
 
-
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters);
         } catch (Exception $ex) {
@@ -167,7 +183,7 @@ class ScreeningDAO implements IScreeningDAO
     public function GetScreeningsByIdMovie($movie)
     {
 
-        $room = new Room();
+     
         $cinema = new Cinema();
     
 
@@ -213,6 +229,8 @@ class ScreeningDAO implements IScreeningDAO
                     $screening->setSubtitles($row["Subtitles"]);
                     $screening->setStartHour($row["StartHour"]);
                     $screening->setFinishHour($row["FinishHour"]);
+                    $screening->setRemainTickets($row["RemainTickets"]);
+
 
 
                     $room = new Room();
@@ -252,6 +270,7 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setPhoto($row["Photo"]);
                 $screening->setEarnings($row["Earnings"]);
                 $screening->setBudget($row["Budget"]);
+                $screening->setRemainTickets($row["RemainTickets"]);
                 return $screening;
             }
             return null;
@@ -302,7 +321,7 @@ class ScreeningDAO implements IScreeningDAO
             $newScreening->setMovie($screening->getMovie());
             $newScreening->setRoom($screening->getRoom());
             $newScreening->setCinema($screening->getCinema());
-
+            $newScreening->setRemainTickets($screening->getRemainTickets());
 
             array_push($screeningList, $newScreening);
         }
@@ -336,6 +355,7 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setSubtitles($row["Subtitles"]);
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
+                $screening->setRemainTickets($row["RemainTickets"]);
                 return $screening;
             }
         } catch (Exception $ex) {
@@ -366,6 +386,7 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setSubtitles($row["Subtitles"]);
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
+                $screening->setRemainTickets($row["RemainTickets"]);
                 return $screening;
             }
         } catch (Exception $ex) {
@@ -448,4 +469,59 @@ class ScreeningDAO implements IScreeningDAO
         }
         return $resultSet;
     }
+
+    public function GetSpecificScreeningByIdMovie($IdMovie){
+        try{
+            $list = array();
+            $query = "SELECT * FROM " .$this->tableName ." WHERE IdMovie = ". $IdMovie;
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+
+            $screeningList = array();
+    
+                    
+            foreach ($resultSet as $row) {
+                    
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+		        $screening->setIdMovie($row["IdMovie"]);
+                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $screening->setStartDate($row["StartDate"]);
+                $screening->setLastDate($row["LastDate"]);
+                $screening->setIdRoom($row["IdRoom"]);
+                $screening->setIdCinema($row["IdCinema"]);
+                $screening->setDimension($row["Dimension"]);
+                $screening->setAudio($row["Audio"]);
+                $screening->setPrice($row["Price"]);
+                $screening->setSubtitles($row["Subtitles"]);
+                $screening->setStartHour($row["StartHour"]);
+                $screening->setFinishHour($row["FinishHour"]);
+                $screening->setRemainTickets($row["RemainTickets"]);
+                array_push($screeningList, $screening);
+                }
+            }
+            catch(Exception $ex)
+            {
+                return null;
+            }
+            return $screeningList;
+        }
+        public function getCinemaByIdCinema($idCinema){
+            try {
+                $query = "SELECT * FROM " . $this->cinemaTableName . " WHERE idCinema = " . $idCinema. ";";
+            
+            
+                $this->connection = Connection::GetInstance();
+                $result = $this->connection->Execute($query);
+    
+                foreach ($result as $row) {
+                    $cinema = new Cinema();
+                    $cinema->setIdCinema($row["IdCinema"]);
+                    $cinema->setCinemaName($row["CinemaName"]);
+                    return $cinema;
+                }
+            } catch (Exception $ex) {
+                return null;
+            }
+        }
 }

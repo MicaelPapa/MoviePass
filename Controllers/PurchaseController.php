@@ -4,9 +4,12 @@ namespace Controllers;
 
 use DAO\CitiesDAO as CitiesDAO;
 use DAO\MoviesDAO as MoviesDAO;
-use DAO\CinemaDAO as CinemasDAO;
+use DAO\CinemaDAO as CinemaDAO;
+use DAO\RoomDAO as RoomDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
 use DAO\PurchaseDAO as PurchaseDAO;
+
+use Models\Screening as Screening;
 
 class PurchaseController
 {
@@ -21,11 +24,42 @@ class PurchaseController
     {
         $this->CitiesDAO = new CitiesDAO();
         $this->MoviesDAO = new MoviesDAO();
-        $this->CinemasDAO = new CinemasDAO();
+        $this->CinemaDAO = new CinemaDAO();
         $this->ScreeningDAO = new ScreeningDAO();
         $this->PurchaseDAO = new PurchaseDAO();
+        $this->RoomDAO = new RoomDAO();
     }
 
+    public function ViewPreSelected($idScreening,$message = "")
+    {
+        if (isset($_SESSION['isLogged'])) {
+            $screening = $this->LoadScreeningToPuchase($idScreening);
+            require_once(VIEWS_PATH . "PurchaseView.php");
+        } else {
+            require_once(VIEWS_PATH . "LoginView.php");
+        }
+    }
+
+    public function LoadScreeningToPuchase($idScreening)
+    {
+        $screening = new Screening();
+
+        $screening = $this->ScreeningDAO->GetScreeningById($idScreening);
+
+        $movie = $this->MoviesDAO->getByMovieId($screening->getMovie()->getIdMovie());
+
+        $cinema = $this->CinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
+
+        $room = $this->RoomDAO->getRoomById($screening->getRoom()->getIdRoom());
+
+        $screening->setCinema($cinema);
+        $screening->setMovie($movie);
+        $screening->setRoom($room);
+        
+        return $screening;
+
+    }
+    
     public function View($message = "")
     {
         if (isset($_SESSION['isLogged'])) {
@@ -63,7 +97,7 @@ class PurchaseController
         }
     }
 
-    public function Index()
+    public function Index($functionId)
     {
         if ($_POST)
             if (isset($_SESSION['isLogged'])) {

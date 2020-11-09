@@ -16,7 +16,8 @@
 		private $Price;
         private $Subtitles;
         private $startHour;
-        private $finishHour;
+		private $finishHour;
+		private $remainTickets;
 		private $room;
 		private $cinema;
 		private $movie;
@@ -122,6 +123,14 @@
 
 	public function setPrice($price) {
 		$this->Price = $price;
+	}
+
+	public function getRemainTickets() {
+		return $this->remainTickets;
+	}
+
+	public function setRemainTickets($remainTickets) {
+		$this->remainTickets = $remainTickets;
 	}
 
 
