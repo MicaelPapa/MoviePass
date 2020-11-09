@@ -12,3 +12,4 @@ $permissions = ['email']; // Optional permissions for more permission you need t
 $loginUrl = $helper->getLoginUrl('http://localhost/MoviePass/Facebook/logIn', $permissions);
 header("location: ".$loginUrl);
 ?>
+

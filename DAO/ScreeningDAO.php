@@ -1,101 +1,109 @@
 <?php
+
 namespace DAO;
 
 use Models\Movies as Movies;
-use Models\Cinemas as Cinema;
+use Models\Cinema as Cinema;
 use Models\Screening as Screening;
+use Models\Room as Room;
 use Interfaces\IScreeningDAO as IScreeningDAO;
 
-    class ScreeningDAO implements IScreeningDAO{
+class ScreeningDAO implements IScreeningDAO
+{
 
-        private $connection;
-        private $tableName = "Screenings";
-        private $movieTableName = "Movies";
-        private $cinemaTableName = "Cinemas";
-        private $roomTableName = "Rooms";
+    private $connection;
+    private $tableName = "Screenings";
+    private $movieTableName = "Movies";
+    private $cinemaTableName = "Cinemas";
+    private $roomTableName = "Rooms";
 
-        public function add($screening){
+    public function Add($screening, $idCinema)
+    {
 
-            try{
-                $query = "INSERT INTO " . $this->tableName . " (IdMovie, IdMovieIMDB, StartDate, LastDate, IdRoom, 
+        try {
+            $query = "INSERT INTO " . $this->tableName . " (IdMovie, IdMovieIMDB, StartDate, LastDate, IdRoom, 
                 IdCinema, Dimension, Audio, Subtitles, StartHour, FinishHour, Price)
                 VALUES (:IdMovie, :IdMovieIMDB, :StartDate, :LastDate, :IdRoom, 
                 :IdCinema, :Dimension, :Audio, :Subtitles, :StartHour, :FinishHour, :Price);";
 
 
-                $parameters["IdMovie"] = $screening->getIdMovie();
-                $parameters["IdMovieIMDB"] = $screening->getIdMovieIMDB();
-                $parameters["StartDate"] = $screening->getStartDate();
-                $parameters["LastDate"] = $screening->getLastDate();
-                $parameters["IdRoom"] = $screening->getIdRoom();
-                $parameters["IdCinema"] = $screening->getIdCinema();
-                $parameters["Dimension"] = $screening->getDimension();
-                $parameters["Audio"] = $screening->getAudio();
-                $parameters["Price"] = $screening->getPrice();
-                $parameters["Subtitles"] = $screening->getSubtitles();
-                $parameters["StartHour"] = $screening->getStartHour();
-                $parameters["FinishHour"] = $screening->getFinishHour();
-                
-                $this->connection = Connection::GetInstance();
-                $result = $this->connection->ExecuteNonQuery($query, $parameters);
-                
-                return $result;
+            $parameters["IdMovie"] = $screening->getMovie()->getIdMovie();
+            $parameters["IdMovieIMDB"] = $screening->getMovie()->getIdMovieIMDB();
+            $parameters["StartDate"] = $screening->getStartDate();
+            $parameters["LastDate"] = $screening->getLastDate();
+            $parameters["IdRoom"] = $screening->getRoom()->getIdRoom();
+            $parameters["IdCinema"] = $screening->getCinema()->GetIdCinema();
+            $parameters["Dimension"] = $screening->getDimension();
+            $parameters["Audio"] = $screening->getAudio();
+            $parameters["Price"] = $screening->getPrice();
+            $parameters["Subtitles"] = $screening->getSubtitles();
+            $parameters["StartHour"] = $screening->getStartHour();
+            $parameters["FinishHour"] = $screening->getFinishHour();
 
-		        } 
-		    catch (Exception $ex){
-			    throw $ex;
-		        }
-        }
-
-    public function GetAll(){
-        try{
-            $list = array();
-            $query = "SELECT * FROM " .$this->tableName;
             $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
+            $result = $this->connection->ExecuteNonQuery($query, $parameters);
 
-                foreach ($resultSet as $row) 
-                {
-                    $screening = new Screening();
-                    $screening->setIdScreening($row["IdScreening"]);
-		    $screening->setIdMovie($row["IdMovie"]);
-                    $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                    $screening->setStartDate($row["StartDate"]);
-                    $screening->setLastDate($row["LastDate"]);
-                    $screening->setIdRoom($row["IdRoom"]);
-                    $screening->setIdCinema($row["IdCinema"]);
-                    $screening->setDimension($row["Dimension"]);
-                    $screening->setAudio($row["Audio"]);
-                    $screening->setPrice($row["Price"]);
-                    $screening->setSubtitles($row["Subtitles"]);
-                    $screening->setStartHour($row["StartHour"]);
-                    $screening->setFinishHour($row["FinishHour"]);
-
-                    array_push($list,$screening);
-                }	
-                return $list;
-            
-		} 
-	catch (Exception $ex) 
-	{
-		return null;
-	}
-
+            return $result;
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 
-    public function GetScreeningById($idScreening){
-        try{
+    public function GetAll()
+    {
+        try {
             $list = array();
-            $query = "SELECT * FROM " .$this->tableName ." WHERE IdScreening = ". $idScreening;
+            $query = "SELECT * FROM " . $this->tableName;
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
-    
-                    
+
             foreach ($resultSet as $row) {
-                    
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-		        $screening->setIdMovie($row["IdMovie"]);
+                $screening->setIdMovie($row["IdMovie"]);
+                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $screening->setStartDate($row["StartDate"]);
+                $screening->setLastDate($row["LastDate"]);
+                $screening->setIdCinema($row["IdCinema"]);
+                $screening->setDimension($row["Dimension"]);
+                $screening->setAudio($row["Audio"]);
+                $screening->setPrice($row["Price"]);
+                $screening->setSubtitles($row["Subtitles"]);
+                $screening->setStartHour($row["StartHour"]);
+                $screening->setFinishHour($row["FinishHour"]);
+
+                $room = new Room();
+                $room->setIdRoom($row["IdRoom"]);
+                $screening->setRoom($room);
+                $cinema = new Cinema();
+                $cinema->setIdCinema($row["IdCinema"]);
+                $screening->setCinema($cinema);
+                $movie = new Movie();
+                $movie->setIdMovie($row["IdMovie"]);
+                $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $screening->setMovie($movie);
+                array_push($list, $screening);
+            }
+            return $list;
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+
+    public function GetScreeningById($idScreening)
+    {
+        try {
+            $list = array();
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdScreening = " . $idScreening;
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+
+
+            foreach ($resultSet as $row) {
+
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
@@ -108,39 +116,36 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
                 return $screening;
-                }
             }
-            catch(Exception $ex)
-            {
-                return null;
-            }
-    
+        } catch (Exception $ex) {
+            return null;
         }
+    }
     function remove($screening)
-        {
-            try{
-                $query = "DELETE FROM " . $this->tableName . " WHERE IdScreening = :IdScreening;";
-                    
-                $parameters['IdScreening'] = $screening->getIdScreening();
-                    
-                $this->connection = Connection::GetInstance();
-                $this->connection->ExecuteNonQuery($query, $parameters);
-            }
-            catch(Exception $ex){
-                
-                return null;
-            }
-        }
-        
-    public function edit($screening){
+    {
+        try {
+            $query = "DELETE FROM " . $this->tableName . " WHERE IdScreening = :IdScreening;";
 
-        try{
-            $query = "UPDATE ". $this->tableName ." SET IdMovieIMDB = :IdMovieIMDB, StartDate = :StartDate, 
+            $parameters['IdScreening'] = $screening->getIdScreening();
+
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query, $parameters);
+        } catch (Exception $ex) {
+
+            return null;
+        }
+    }
+
+    public function edit($screening)
+    {
+
+        try {
+            $query = "UPDATE " . $this->tableName . " SET IdMovieIMDB = :IdMovieIMDB, StartDate = :StartDate, 
             LastDate = :LastDate, IdRoom = :IdRoom, IdCinema = :IdCinema, Dimension = :Dimension,
 
             Audio = :Audio, Subtitles = :Subtitles, StartHour = :StartHour, FinishHour = :FinishHour, Price = :Price
             WHERE IdScreening = " . $screening->getId() . " ;";
-                       
+
             $parameters["StartDate"] = $screening->getStartDate();
             $parameters["LastDate"] = $screening->getLastDate();
             $parameters["IdRoom"] = $screening->getIdRoom();
@@ -152,30 +157,35 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
             $parameters["StartHour"] = $screening->getStartHour();
             $parameters["FinishHour"] = $screening->getFinishHour();
 
-                    
+
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters);
-            } 
-        catch (Exception $ex){
+        } catch (Exception $ex) {
             throw $ex;
         }
     }
-    public function GetScreeningByIdMovie($movie){
-        try{
+    public function GetScreeningsByIdMovie($movie)
+    {
+
+        $room = new Room();
+        $cinema = new Cinema();
+    
+
+        try {
             $list = array();
-            $query = "SELECT * FROM " . $this->tableName ." as s INNER JOIN movieXcinema as mc ON s.idMovie = mc.idMovie  WHERE s.IdMovieIMDB = ". $movie->getIdMovieIMDB() . " ;";//--------------------------------//
+            $query = "SELECT * FROM " . $this->tableName . " as s INNER JOIN movieXcinema as mc ON s.idMovie = mc.idMovie  WHERE s.IdMovieIMDB = " . $movie->getIdMovieIMDB() . " ;"; //--------------------------------//
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
 
-            if($resultSet == null){
+            if ($resultSet == null) {
                 $screening = new Screening();
                 $screening->setIdScreening("-");
-		     //   $screening->setIdMovie($movie->getIdMovie());
+                $screening->setIdMovie($movie->getIdMovie());
                 $screening->setIdMovieIMDB($movie->getIdMovieIMDB());
                 $screening->setStartDate("-");
                 $screening->setLastDate("-");
-              //  $screening->setIdRoom("-");
-              //  $screening->setIdCinema("-");
+                $screening->setIdRoom("-");
+                $screening->setIdCinema("-");
                 $screening->setDimension("-");
                 $screening->setPrice("-");
                 $screening->setAudio($movie->getOriginalLanguage());
@@ -186,52 +196,54 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
                 $screening->setCinema("-");
                 $screening->setRoom("-");
                 array_push($list, $screening);
-            }
+            } else {
 
-            else{
-                $resultSet = $this->connection->Execute($query);
-          
-                    foreach ($resultSet as $row){
-                  
-                        $screening = new Screening();
-                        $screening->setIdScreening($row["IdScreening"]);
-			          //  $screening->setIdMovie($row["IdMovie"]);
-                        $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                        $screening->setStartDate($row["StartDate"]);
-                        $screening->setLastDate($row["LastDate"]);
-                        $screening->setIdRoom($row["IdRoom"]);
-                        $screening->setIdCinema($row["IdCinema"]);
-                        $screening->setDimension($row["Dimension"]);
-                        $screening->setAudio($row["Audio"]);
-                        $screening->setPrice($row["Price"]);
-                        $screening->setSubtitles($row["Subtitles"]);
-                        $screening->setStartHour($row["StartHour"]);
-                        $screening->setFinishHour($row["FinishHour"]);
-                        $screening->setMovie($movie);
-                        array_push($list, $screening);
-                    }
+
+                foreach ($resultSet as $row) {
+
+                    $screening = new Screening();
+                    $screening->setIdScreening($row["IdScreening"]);
+                    //  $screening->setIdMovie($row["IdMovie"]);
+                   // $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
+                    $screening->setStartDate($row["StartDate"]);
+                    $screening->setLastDate($row["LastDate"]);
+                    $screening->setDimension($row["Dimension"]);
+                    $screening->setAudio($row["Audio"]);
+                    $screening->setPrice($row["Price"]);
+                    $screening->setSubtitles($row["Subtitles"]);
+                    $screening->setStartHour($row["StartHour"]);
+                    $screening->setFinishHour($row["FinishHour"]);
+
+
+                    $room = new Room();
+                    $room->setIdRoom($row["IdRoom"]);
+                    $screening->setRoom($room);
+                    $cinema->setIdCinema($row["IdCinema"]);
+                    $screening->setCinema($cinema);
+                    $screening->setRoom($room);
+                    $screening->setMovie($movie);
+                    array_push($list, $screening);
+                }
             }
             return $list;
-        }  
-        catch(Exception $ex){
+        } catch (Exception $ex) {
             return null;
         }
-
     }
 
-        public function GetScreeningByIdCinema($idCinema){
-            try{
-                $list = array();
-                $query = "SELECT * FROM" .$this->tableName ."WHERE IdCinema =". $idCinema;
-                $this->connection = Connection::GetInstance();
-                $resultSet = $this->connection->Execute($query);
+    public function GetScreeningByIdCinema($idCinema)
+    {
+        try {
+            $list = array();
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdCinema =" . $idCinema;
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
 
-                
-            foreach ($resultSet as $row) 
-            {
+
+            foreach ($resultSet as $row) {
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-		$screening->setIdMovie($row["IdMovie"]);
+                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setMovieName($row["MovieName"]);
                 $screening->setDuration($row["Duration"]);
@@ -243,178 +255,195 @@ use Interfaces\IScreeningDAO as IScreeningDAO;
                 return $screening;
             }
             return null;
-        }
-        catch(Exception $ex)
-        {
+        } catch (Exception $ex) {
             return null;
         }
-
-        }
-        public function existInDataBase($idMovieIMDB){
-            try{
-                $list = array();
-                $query = "SELECT * FROM " . $this->tableName ." WHERE IdMovieIMDB = ". $idMovieIMDB;
-                $this->connection = Connection::GetInstance();
-                $resultSet = $this->connection->Execute($query);
-
-                if($resultSet != null){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-            catch(Exception $ex)
-            {
-                return null;
-            }
-        }
-
-        //public function existFunction($idCinema,$idRoom,$startDate)
-
-        public function distinctScreeningPerDay($screening){
-
-            $screeningList = array();
-            $date = $screening->getStartDate();
-            array_push($screeningList, $screening);
-
-            while($screening->getLastDate()> $date){
-                $newScreening = new Screening();
-                $date = date("Y-m-d",strtotime($date ."+ 1 days"));
-
-                $newScreening->setIdScreening($screening->getIdScreening());
-		        $newScreening->setIdMovie($screening->getIdMovie());
-                $newScreening->setIdMovieIMDB($screening->getIdMovieIMDB());
-                $newScreening->setStartDate($date);
-                $newScreening->setLastDate($screening->getLastDate());
-                $newScreening->setIdRoom($screening->getIdRoom());
-                $newScreening->setIdCinema($screening->getIdCinema());
-                $newScreening->setDimension($screening->getDimension());
-                $newScreening->setAudio($screening->getAudio());
-                $newScreening->setPrice($screening->getPrice());
-                $newScreening->setSubtitles($screening->getSubtitles());
-                $newScreening->setStartHour($screening->getStartHour());
-                $newScreening->setFinishHour($screening->getFinishHour());
-                array_push($screeningList, $newScreening);
-            }
-
-
-            return $screeningList;
-        }
-
-    public function GetScreeningByIdRoom($IdRoom){
-        try{
+    }
+    public function existInDataBase($idMovieIMDB)
+    {
+        try {
             $list = array();
-            $query = "SELECT * FROM " .$this->tableName ." WHERE IdRoom = ". $IdRoom;
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdMovieIMDB = " . $idMovieIMDB;
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
-    
-                    
-            foreach ($resultSet as $row) {
-                    
-                $screening = new Screening();
-                $screening->setIdScreening($row["IdScreening"]);
-		        $screening->setIdMovie($row["IdMovie"]);
-                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                $screening->setStartDate($row["StartDate"]);
-                $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
-                $screening->setDimension($row["Dimension"]);
-                $screening->setAudio($row["Audio"]);
-                $screening->setPrice($row["Price"]);
-                $screening->setSubtitles($row["Subtitles"]);
-                $screening->setStartHour($row["StartHour"]);
-                $screening->setFinishHour($row["FinishHour"]);
-                return $screening;
-                }
-            }
-            catch(Exception $ex)
-            {
-                return null;
-            }
-    
-        }
-        public function GetScreeningByStartDate($startDate){
-        try{
-            $list = array();
-            $query = "SELECT * FROM " .$this->tableName ." WHERE StartDate = ". $startDate;
-            $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
-                 
-            foreach ($resultSet as $row) {
-                        
-                $screening = new Screening();
-                $screening->setIdScreening($row["IdScreening"]);
-		        $screening->setIdMovie($row["IdMovie"]);
-                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                $screening->setStartDate($row["StartDate"]);
-                $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
-                $screening->setDimension($row["Dimension"]);
-                $screening->setAudio($row["Audio"]);
-                $screening->setPrice($row["Price"]);
-                $screening->setSubtitles($row["Subtitles"]);
-                $screening->setStartHour($row["StartHour"]);
-                $screening->setFinishHour($row["FinishHour"]);
-                return $screening;
-                }
-            }
-            catch(Exception $ex)
-            {
-                return null;
-            }
 
+            if ($resultSet != null) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $ex) {
+            return null;
         }
-    public function validateScreening($screening){
+    }
+
+
+    //separa  las funciones por dia en un arreglo.
+    public function distinctScreeningPerDay($screening)
+    {
+
         $screeningList = array();
-        $screeningList = $this->GetScreeningByIdRoom($screening->getIdRoom());
-        $exist = true;
-        if($screeningList != null){
-            foreach($screeningList as $value){
-                if($value->getStartDate()==$screening->getStartDate()){
-                    if($value->getStartHour()==$screening->getStartHour()){
-                        $exist=false;
+        $date = $screening->getStartDate();
+        array_push($screeningList, $screening);
+
+        while ($screening->getLastDate() > $date) {
+            $newScreening = new Screening();
+            $date = date("Y-m-d", strtotime($date . "+ 1 days"));
+
+            $newScreening->setIdScreening($screening->getIdScreening());
+            $newScreening->setStartDate($date);
+            $newScreening->setLastDate($screening->getLastDate());
+            $newScreening->setDimension($screening->getDimension());
+            $newScreening->setAudio($screening->getAudio());
+            $newScreening->setPrice($screening->getPrice());
+            $newScreening->setSubtitles($screening->getSubtitles());
+            $newScreening->setStartHour($screening->getStartHour());
+            $newScreening->setFinishHour($screening->getFinishHour());
+            $newScreening->setMovie($screening->getMovie());
+            $newScreening->setRoom($screening->getRoom());
+            $newScreening->setCinema($screening->getCinema());
+
+
+            array_push($screeningList, $newScreening);
+        }
+
+
+        return $screeningList;
+    }
+
+    public function GetScreeningByIdRoom($IdRoom)
+    {
+        try {
+            $list = array();
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdRoom = " . $IdRoom;
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+
+
+            foreach ($resultSet as $row) {
+
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+                $screening->setIdMovie($row["IdMovie"]);
+                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $screening->setStartDate($row["StartDate"]);
+                $screening->setLastDate($row["LastDate"]);
+                $screening->setIdRoom($row["IdRoom"]);
+                $screening->setIdCinema($row["IdCinema"]);
+                $screening->setDimension($row["Dimension"]);
+                $screening->setAudio($row["Audio"]);
+                $screening->setPrice($row["Price"]);
+                $screening->setSubtitles($row["Subtitles"]);
+                $screening->setStartHour($row["StartHour"]);
+                $screening->setFinishHour($row["FinishHour"]);
+                return $screening;
+            }
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+    public function GetScreeningByStartDate($startDate)
+    {
+        try {
+            $list = array();
+            $query = "SELECT * FROM " . $this->tableName . " WHERE StartDate = " . $startDate;
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+
+            foreach ($resultSet as $row) {
+
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+                $screening->setIdMovie($row["IdMovie"]);
+                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $screening->setStartDate($row["StartDate"]);
+                $screening->setLastDate($row["LastDate"]);
+                $screening->setIdRoom($row["IdRoom"]);
+                $screening->setIdCinema($row["IdCinema"]);
+                $screening->setDimension($row["Dimension"]);
+                $screening->setAudio($row["Audio"]);
+                $screening->setPrice($row["Price"]);
+                $screening->setSubtitles($row["Subtitles"]);
+                $screening->setStartHour($row["StartHour"]);
+                $screening->setFinishHour($row["FinishHour"]);
+                return $screening;
+            }
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+
+    public function validateScreening($screening)
+    {  //valida que en la sala a la que pertenece cada funcion no haya funciones en ese horario
+        $notExist = false;
+        $alertMessage = "";
+        $query  = "select * from " . $this->tableName . "  where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and  StartDate = " . $screening->getStartDate() . " and IdCinema != " . $screening->getCinema()->getIdCinema() . " ;"; //cine unico en ese dia
+        $query2 = "select * from " . $this->tableName . " where IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and IdRoom != " . $screening->getRoom()->getIdRoom() . " AND idCinema = " . $screening->getCinema()->getIdCinema() . " ;"; //sala unica
+        $query3 =  "select * from " . $this->tableName . " where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and StartDate = '" . $screening->getStartDate() . "' and (( CAST('" . $screening->getStartHour() . "' AS  DATETIME) between StartHour AND finishhour) or (CAST('" . $screening->getFinishHour() . "' AS  DATETIME) between StartHour AND finishhour));"; //horario unico
+
+        $this->connection = Connection::GetInstance();
+
+        $notUniqueCinema = $this->connection->Execute($query);
+        $notUniqueRoom = $this->connection->Execute($query2);
+        $notUniqueHour = $this->connection->Execute($query3);
+        if (!$notUniqueCinema && !$notUniqueRoom && !$notUniqueHour) //si ningun select matchea significa que la funcion no existe y ademas es valida para ser agregada.
+        {
+            $notExist = true;
+        } else if ($notUniqueCinema) {
+            $alertMessage = "No es posible agregar una funcion en este dia debido a que ya existe en otro cine.";
+        } else if ($notUniqueRoom) {
+            $alertMessage = "Por favor ingresa la sala a la cual le pertenece esta pelicula";
+        } else if ($notUniqueHour) {
+            $alertMessage = "Ya existe una funcion para esta pelicula en el horario que queres ingresar.";
+        }
+
+        $validate = array();
+        //   $screeningList = $this->GetScreeningByIdRoom($screening->getIdRoom());
+
+        /*   if ($screeningList != null) {
+            foreach ($screeningList as $value) {
+                if ($value->getStartDate() == $screening->getStartDate()) {
+                    if ($value->getStartHour() == $screening->getStartHour()) {
+                        $notExist = false;
                     }
                 }
             }
-        }     
-        return $exist;
+        } */
+
+        array_push($validate, $alertMessage, $notExist);
+        return $validate;
     }
 
     public function GetScreeningsByMovieAndCinema($MovieId, $CinemaId)
     {
-		$invokeStoredProcedure = 'CALL GetScreeningsByMovieAndCinema(?,?)';
-        $parameters ["idMovie"] = $MovieId;
-        $parameters ["idCinema"] = $CinemaId;
-        
-		$this->connection = Connection::GetInstance();
-		return $this->connection->Execute($invokeStoredProcedure,$parameters, QueryType::StoredProcedure);
+        $invokeStoredProcedure = 'CALL GetScreeningsByMovieAndCinema(?,?)';
+        $parameters["idMovie"] = $MovieId;
+        $parameters["idCinema"] = $CinemaId;
+
+        $this->connection = Connection::GetInstance();
+        return $this->connection->Execute($invokeStoredProcedure, $parameters, QueryType::StoredProcedure);
     }
 
-    public function getIdAllIdMoviesByDateAndCinema($Date, $CinemaId){
-        
-        try{
-            $query = "SELECT IdMovieIMDB FROM " .$this->tableName ." WHERE StartDate = '". $Date ."' AND IdCinema = '". $CinemaId . "' ;";
+    public function getIdAllIdMoviesByDateAndCinema($Date, $CinemaId)
+    {
+
+        try {
+            $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' AND IdCinema = '" . $CinemaId . "' ;";
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
-        }
-        catch(Exception $ex)
-        {
+        } catch (Exception $ex) {
             return null;
         }
         return $resultSet;
     }
-    public function getIdAllIdMoviesByDate($Date){
-        
-        try{
-            $query = "SELECT IdMovieIMDB FROM " .$this->tableName ." WHERE StartDate = '". $Date . "' ;";
+    public function getIdAllIdMoviesByDate($Date)
+    {
+
+        try {
+            $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' ;";
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
-        }
-        catch(Exception $ex)
-        {
+        } catch (Exception $ex) {
             return null;
         }
         return $resultSet;

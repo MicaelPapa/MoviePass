@@ -42,7 +42,7 @@ class CinemaController
         require_once(VIEWS_PATH."CinemaListView.php");
     }
 
-    public function ShowAddView($alertMessage = "")
+    public function ShowAddView($alertMessage = "", $alertType = "")
     {
          if (Validate::Logged() && Validate::AdminLog()) {
         
@@ -95,7 +95,7 @@ class CinemaController
         }
     }
 
-    public function Add($cinemaName, $street, $numberStreet) /*public function Add($cinemaName, $cityId, $street, $numberStreet)*/
+    public function Add($cinemaName, $street, $numberStreet) 
     {
         if (Validate::Logged() && Validate::AdminLog()) { 
 
@@ -106,7 +106,7 @@ class CinemaController
 
 
         if ($this->CinemaDAO->getCinemaByName($cinemaName)) {
-            $this->ShowAddView("Cine ya existente");
+            $this->ShowAddView("Cine ya existente", "danger");
         } 
         else{
           
@@ -156,7 +156,7 @@ class CinemaController
             $cinemaName = Validate::ValidateData($cinemaName);
             $street = Validate::ValidateData($street);
             $number = Validate::ValidateData($number);
-            $cityId = Validate::ValidateData($cityId);
+         
             
             $address = new Address();
             $address->setStreet($street);
@@ -195,6 +195,7 @@ class CinemaController
 
     public function GetAll()
     {
+        
         return $this->CinemaDAO->GetAll();
     }
 }

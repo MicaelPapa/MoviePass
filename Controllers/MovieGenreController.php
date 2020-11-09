@@ -20,15 +20,18 @@ class MovieGenreController{
 
     public function getGenresFromApi(){
 
-        $arrayToDecode = $this->HomologatesApiResponse('/genre/movie/list');
+        $arrayToDecode =ApiResponse::HomologatesApiResponse('/genre/movie/list');
 
-        foreach($arrayToDecode['genres'] as $values){
-            $genre = new MovieGenre();
-            $genre->setIdIMDB($values["id"]);
-            $genre->setName($values["name"]);
-               
-            $this->movieGenreDAO->add($genre);
+        if($this->getGenresFromDataBaseAdmin() == null){
+            foreach($arrayToDecode['genres'] as $values){
+                $genre = new MovieGenre();
+                $genre->setIdIMDB($values["id"]);
+                $genre->setName($values["name"]);
+                   
+                $this->movieGenreDAO->add($genre);
+            }
         }
+        
     }
 
     public function getGenresFromDataBaseAdmin(){

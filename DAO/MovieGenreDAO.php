@@ -37,11 +37,10 @@ class MovieGenreDAO implements IMovieGenreDAO
     public function add($movieGenre)
     {
         try{
-           if($this->isIdIMDB($movieGenre->getIdIMDB)){
+           if(!$this->isIdIMDB($movieGenre->getIdIMDB())){
             
-            $query = "INSERT INTO " . $this->tableName . " (IdMovieGenre, Name) VALUES (:IdMovieGenre, :Name);";
+            $query = "INSERT INTO " . $this->tableName . " (IdIMDB, Name) VALUES (:IdIMDB, :Name);";
             
-            $parameters["IdMovieGenre"] = $movieGenre->getId();
             $parameters["IdIMDB"] = $movieGenre->getIdIMDB();
             $parameters["Name"] = $movieGenre->getName();
             
@@ -86,7 +85,7 @@ class MovieGenreDAO implements IMovieGenreDAO
 
     public function isIdIMDB($idIMDB){ /*CORREGIR*/
         try {
-            $query = "SELECT * FROM " . $this->tableName . "WHERE IdMovieGenreIMDB = " . $movieGenre->getIdMovieGenreIMDB() . ";";
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdIMDB = " . $idIMDB . " ;";
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
 
