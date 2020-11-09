@@ -108,7 +108,7 @@ class PurchaseController
             }
     }
 
-    public function ViewCreditCard($alertMessage = ""){
+    public function ViewCreditCard($cantEntradas, $precioTotal){
         require_once(VIEWS_PATH . "creditCardView.php");
     }
 

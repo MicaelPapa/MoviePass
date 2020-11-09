@@ -13,35 +13,28 @@
       <form action="<?php echo FRONT_ROOT ?>Purchase/ViewCreditCard" method="post">
         <div class="form-row">
           <div class="form-group col-md-12">
-            <label for="inputPelicula"><i style="color: red;">&#42&nbsp</i>Pelicula</label>
-            <select id="inputPelicula" name="inputPelicula" class="form-control" required>
-            <?php if (isset($screening)) { echo '<option value="' . $screening->getMovie()->getIdMovie() . '">' . $screening->getMovie()->getMovieName() . '</option>';} 
-            else{ echo("<option value=''>Elija una...</option>");}?>
-            <?php if (isset($movies)) {
-                foreach ($movies as $movie) {
-                  echo '<option value="' . $movie->getIdMovie() . '">' . $movie->getMovieName() . '</option>';
-                }
-              } ?>
-            </select>
+            <p class="titleData" style="font-size: 24px"><label for="inputPelicula"><br>Película: <?php echo $screening->getMovie()->getMovieName(); ?></label></p>
           </div>
           <div class="form-group col-md-12">
-          <p class="titleData" style="font-size: 32px">&nbsp</i><?php echo $movie->getMovieName();?>&nbsp</p>
-            <label for="inputCine"><i style="color: red;">&#42&nbsp</i>Cine</label>
-      
+            <p class="titleData" style="font-size: 24px"><label for="inputPelicula">Cine: <?php echo $screening->getCinema()->getCinemaName(); ?></label></p>
           </div>
           <div class="form-group col-md-12">
-            <label for="inputFuncion"><i style="color: red;">&#42&nbsp</i>Funcion</label>
-            <select id="inputFuncion" name="inputFuncion" class="form-control" required>
-            </select>
+            <p class="titleData" style="font-size: 24px"><label for="inputPelicula">Sala: <?php echo $screening->getRoom()->getRoomNumber(); ?></label></p>
           </div>
           <div class="form-group col-md-12">
-            <label for="inputCantAsientos"><i style="color: red;">&#42&nbsp</i>Cantidad de asientos</label>
-            <input type="number" name="inputCantAsientos"  max="<?php echo $screening->getRemainTickets(); ?>" min="1" class="form-control" id="inputCantAsientos" placeholder="Cantidad de asientos" required>
+            <p class="titleData" style="font-size: 24px"><label for="inputPelicula">Función: <?php echo date_format(date_create($screening->getStartDate()),"d/m/Y");?> <?php $date = date_create($screening->getStartHour()); echo date_format($date,'h:i:a'); ?></label></p>
+          </div>
+          <div class="form-group col-md-12">
+            <p class="titleData" style="font-size: 24px"><label for="inputCantAsientos">Cantidad de asientos</label><i style="color: red;">&#42&nbsp</i>: <input type="number" style="width: 7%; display: inline;" id="cantidadDeAsientos" onchange="onSum(<?php echo $screening->getPrice(); ?>)" name="inputCantAsientos"  max="<?php echo $screening->getRemainTickets(); ?>" min="1" class="form-control" value="1" required></p>
+          </div>
+          <div class="form-group col-md-12">
+              <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Precio Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $screening->getPrice(); ?></p></p>
+              <input type="hidden" name="precioTotal" id="precioTotal" value="<?php echo $screening->getPrice(); ?>" >
           </div>
         </div>
 
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>&nbspContinuar</button>
         <button type="button" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbspVolver</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>&nbspContinuar</button>
       </form>
       <!-- form -->
     </div>
@@ -52,130 +45,11 @@
 
 <script>
  
- $(document).ready(function(){
-  
-  var idMovieFunc;
+   function onSum($precio) {
+    document.getElementById("precio").textContent =" " + $precio * document.getElementById("cantidadDeAsientos").value;
+    document.getElementById("precioTotal").value = $precio * document.getElementById("cantidadDeAsientos").value;
+}
 
-  $("#inputCine").prop('disabled', true);
-  $("#inputFuncion").prop('disabled', true);
-
-  function loadCinemas(pelicula, datos){
-
-      var url = <?php echo FRONT_ROOT ?> + "Purchase/LoadCinemas";        
-      var cines = $("#inputCine");
-
-      if(pelicula.val() != '') {
-
-        $.ajax({ 
-          url: url,
-          method: 'POST',
-          data: datos,
-          context: 'document.body',
-          beforeSend: function () 
-          {
-              pelicula.prop('disabled', true);
-          },
-          success:  function (r) 
-          {
-              pelicula.prop('disabled', false);
-              // Limpiamos el select
-              cines.find('option').remove();
-              cines.append("<option value=''>Elija uno...</option>");
-
-              var jsonText = r.substring(r.indexOf('$')+1 ,r.indexOf('%'));
-              var json = JSON.parse(jsonText);
-
-              $(json).each(function(i, v){ 
-                  cines.append('<option value="' + v.idcinema + '">' + v.cinemaname + '</option>');
-              })
-
-              cines.prop('disabled', false);
-          },
-          error: function(jqXHR, textStatus )
-          {
-              alert('Ocurrio un error en el servidor: ' + textStatus);
-              pelicula.prop('disabled', false);
-          }
-
-        });
-      }  
-      else
-      {
-          cines.find('option').remove();
-          cines.prop('disabled', true);
-      }
-  }
-
-  function loadFunciones(cine, datos){
-
-    var url = <?php echo FRONT_ROOT ?> + "Purchase/LoadFunciones";        
-    var funciones = $("#inputFuncion");
-
-    if(cine.val() != '') {
-
-      $.ajax({ 
-        url: url,
-        method: 'POST',
-        data: datos,
-        context: 'document.body',
-        beforeSend: function () 
-        {
-          cine.prop('disabled', true);
-        },
-        success:  function (r) 
-        {
-            cine.prop('disabled', false);
-            // Limpiamos el select
-            funciones.find('option').remove();
-            funciones.append("<option value=''>Elija una...</option>");
-
-            var jsonText = r.substring(r.indexOf('$')+1 ,r.indexOf('%'));
-            var json = JSON.parse(jsonText);
-            console.log(json);
-            
-            $(json).each(function(i, v){ 
-                funciones.append('<option value="' + v.idscreening + '">' + 'Fecha: ' + v.StartDate + ' Hora: ' + v.starthour + '</option>');
-            })
-
-            funciones.prop('disabled', false);
-        },
-        error: function(jqXHR, textStatus )
-        {
-            alert('Ocurrio un error en el servidor: ' + textStatus);
-            cine.prop('disabled', false);
-        }
-
-      });
-    }  
-    else
-    {
-        funciones.find('option').remove();
-        funciones.prop('disabled', true);
-    }
-  }
-
-  $('#inputPelicula').change(function() {
-
-    var id = $(this).val();
-    var datos = { idMovie: id };
-    idMovieFunc = id;
-    var pelicula = $("#inputPelicula");
-
-    loadCinemas(pelicula, datos);
-
-  });
-
-  $('#inputCine').change(function() {
-
-    var id = $(this).val();
-    var datos = { idMovie: idMovieFunc, idCinema: id };
-    var cine = $("#inputCine");
-
-    loadFunciones(cine, datos);
-
-  });
-
-});
 
 </script>
 
