@@ -22,9 +22,9 @@ class ScreeningDAO implements IScreeningDAO
 
         try {
             $query = "INSERT INTO " . $this->tableName . " (IdMovie, IdMovieIMDB, StartDate, LastDate, IdRoom, 
-                IdCinema, Dimension, Audio, Subtitles, StartHour, FinishHour, Price)
+                IdCinema, Dimension, Audio, Subtitles, StartHour, FinishHour, Price, RemainTickets)
                 VALUES (:IdMovie, :IdMovieIMDB, :StartDate, :LastDate, :IdRoom, 
-                :IdCinema, :Dimension, :Audio, :Subtitles, :StartHour, :FinishHour, :Price);";
+                :IdCinema, :Dimension, :Audio, :Subtitles, :StartHour, :FinishHour, :Price, :RemainTickets);";
 
 
             $parameters["IdMovie"] = $screening->getMovie()->getIdMovie();

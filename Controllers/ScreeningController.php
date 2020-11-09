@@ -62,11 +62,9 @@ class ScreeningController
 			foreach ($screeningsList as $screening)
 			{
 			
-				$idRoom = $screening->getRoom()->getIdRoom();
-				
-			
-				if($idRoom != "-")
+				if($screening->getIdScreening() != "-")
 				{
+					$idRoom = $screening->getRoom()->getIdRoom();
 					$room = $this->roomDAO->GetRoomById($idRoom);
 					$screening->setRoom($room);
 					$cinema = $this->cinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
@@ -96,7 +94,7 @@ class ScreeningController
 
 		$cinema->setIdCinema($idCinema);
 		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
-		$room->setIdRoom($idRoom);
+		$room = $this->roomDAO->getRoomById($idRoom);
 
 		$screening->setCinema($cinema);
 		$screening->setMovie($movie);
@@ -122,11 +120,10 @@ class ScreeningController
 
 		$screening->setDimension($dimension);
 
-	
-		
 		$screening->setAudio($audio);
 		$screening->setPrice($precio);
 		$screening->setSubtitles($sub);
+		$screening->setRemainTickets($room->getCapacity());
 
 		$screeningsXday = array();
 		$screeningsXday = $this->screeningDAO->distinctScreeningPerDay($screening);

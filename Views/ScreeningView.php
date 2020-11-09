@@ -48,8 +48,8 @@
                                             </span>
                                         </p>   
                                         
-                                        <p class="ticketText">Cine:&nbsp<span class="ticketData"><?php echo $screening->getCinema()->getCinemaName();?></span></p>
-                                        <p class="ticketText">Sala:&nbsp<span class="ticketData"><?php echo $screening->getRoom()->getRoomNumber();?></span></p>
+                                        <p class="ticketText">Cine:&nbsp<span class="ticketData"><?php if($screening->getCinema() === '-'){echo $screening->getCinema();}else { echo $screening->getCinema()->getCinemaName();}?></span></p>
+                                        <p class="ticketText">Sala:&nbsp<span class="ticketData"><?php if($screening->getRoom() === '-'){ echo $screening->getRoom();}else{ echo $screening->getRoom()->getRoomNumber();}?></span></p>
                                         <p class="ticketText">Dimension:&nbsp<span class="ticketData"><?php echo $screening->getDimension();?></span></p>
 
                                     </div>

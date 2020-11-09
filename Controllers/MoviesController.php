@@ -11,7 +11,6 @@ use Models\MovieGenre as MovieGenre;
 use Models\Cinema as Cinema;
 use API\IMDBController as IMDBController;
 use Controllers\ScreeningController as ScreeningController;
-use Models\Cinema;
 use Util\apiResponse as ApiResponse;
 
 
