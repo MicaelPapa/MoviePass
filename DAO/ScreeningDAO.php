@@ -118,6 +118,20 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
                 $screening->setRemainTickets($row["RemainTickets"]);
+
+                
+                $cinema = new Cinema();
+                $room = new Room();
+                $movie = new Movies();
+                $movie->setIdMovie($row["IdMovie"]);
+                $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $room->setIdRoom($row["IdRoom"]);
+                $screening->setRoom($room);
+                $cinema->setIdCinema($row["IdCinema"]);
+                $screening->setCinema($cinema);
+                $screening->setRoom($room);
+                $screening->setMovie($movie);
+
                 return $screening;
             }
         } catch (Exception $ex) {
@@ -169,7 +183,7 @@ class ScreeningDAO implements IScreeningDAO
     public function GetScreeningsByIdMovie($movie)
     {
 
-        $room = new Room();
+     
         $cinema = new Cinema();
     
 

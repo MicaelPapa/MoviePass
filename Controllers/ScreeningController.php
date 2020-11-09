@@ -17,13 +17,8 @@ class ScreeningController
 	private $moviesDAO;
 	private $screeningDAO;
 	private $cinemaDAO;
-<<<<<<< HEAD
-	
-
-=======
 	private $roomDAO;
 	
->>>>>>> vista-funciones
 	function __construct()
 	{
 		$this->moviesDAO = new MoviesDAO();
@@ -52,7 +47,7 @@ class ScreeningController
 		require_once(VIEWS_PATH . "ScreeningView.php");
 	}
 
-
+	
 	public function GetAll($movie)
 	{	
 
@@ -67,14 +62,7 @@ class ScreeningController
 			foreach ($screeningsList as $screening)
 			{
 			
-<<<<<<< HEAD
-				
-				
-			
-				if($idRoom != "-")
-=======
 				if($screening->getIdScreening() != "-")
->>>>>>> vista-funciones
 				{
 					$idRoom = $screening->getRoom()->getIdRoom();
 					$room = $this->roomDAO->GetRoomById($idRoom);

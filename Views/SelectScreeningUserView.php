@@ -40,13 +40,13 @@
         
         <?php foreach($screeningList as $screening){ ?>  
         <div role="tabpanel" id="nav-<?php echo $screening->getIdScreening();?>" class="tab-pane fade" aria-labelledby="nav-<?php echo $screening->getIdScreening();?>-tab">
-        <form action="" method="POST">
+        <form action="<?php echo FRONT_ROOT ?>Purchase/ViewPreSelected" method="POST">
             <p class="titleData" style="margin-top: 1%" >Cine <?php echo ($this->screeningDAO->getCinemaByIdCinema($screening->getIdCinema()))->getCinemaName();?></p>
             <?php foreach($screeningListCopy as $screeningCopy){ 
                 if($screening->getStartDate() === $screeningCopy->getStartDate()){ ?>
                     <p class="titleData"><input type="checkbox" name="chackScreening" class="radio" value="<?php echo $screeningCopy->getIdScreening();?>"><?php $date = date_create($screeningCopy->getStartHour()); echo date_format($date,'h:i:a');?></p>
                 <?php }} ?>
-            <p class="titleData"><label>Cantidad de Entradas<input class="quantity" id="inputCantidad" name="cantEntradas" type="number" min=1 max=10></input></label><p>
+           
             <button type="submit" style="float:right; margin-bottom: 2%" class="btn btn-success" name="selectScreening" id="selectScreening">Ir a Compras </t></button>
         </form>
         <button class="btn btn-danger" onclick="goBack()">Regresar</button>
