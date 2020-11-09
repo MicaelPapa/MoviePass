@@ -15,7 +15,7 @@ select * from moviexcinema;
 select * from movies ;
 select * from cinemas;
 
-delete from movies;
+
 /*
                         $screening = new Screening();
                         $screening->setIdScreening($row["IdScreening"]);
@@ -46,8 +46,7 @@ select *  from screenings s inner join moviexcinema mc on s.idmovie = mc.idMovie
 
 select * from Screenings  where  IdMovieIMDB = 724989 and  StartDate = 2020-11-07 and IdCinema != 13 ;
 select * from Screenings where IdMovieIMDB = 724989 and IdRoom != 25 and IdCinema = 13 ;
-
-select * from Screenings where  IdMovieIMDB = 724989 and  (CAST('2020-11-04 01:50:00' AS  DATE) > StartHour);
+select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-04' and (( CAST('2020-11-04 01:32:00' AS  DATETIME) between StartHour AND finishhour) or (CAST('2020-11-04 03:17:00' AS  DATETIME) between StartHour AND finishhour)); /*nueva*/
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-05'  and ( (CAST('2020-11-04 01:30:00' AS  DATETIME) between StartHour and finishHour) or (CAST('2020-11-04 03:25:00' AS  DATETIME) between StartHour and finishHour) ) ;
 
 
@@ -60,5 +59,8 @@ select * from Screenings where  IdMovieIMDB = 724989 and StartDate = 2020-11-07 
 
 delete from moviexcinema where idmovieXcinema = 39;
 
+select * from movies;
+
+
+SELECT * FROM rooms WHERE RoomNumber = 'Sala Aldrey 2';
 ALTER TABLE `screenings` CHANGE `StartHour` `StartHour` DATETIME NOT NULL;
-ALTER TABLE screenings ADD RemainTickets INT;

@@ -15,15 +15,8 @@ class MoviesDAO implements IMoviesDAO
 	private $tableName = "Movies";
 	private $moviexcinemaTableName = "moviexcinema";
 	private $movieGenreTableName = "MoviesXGenres";
+	private $screeningTableName = "screenings";
 
-	public function GetMoviesByCity($CityId)
-	{
-		$invokeStoredProcedure = 'CALL GetMoviesByCity(?)';
-		$parameters["CityId"] = $CityId;
-
-		$this->connection = Connection::GetInstance();
-		return $this->connection->Execute($invokeStoredProcedure, $parameters, QueryType::StoredProcedure);
-	}
 
 	public function getAll()
 	{
@@ -150,15 +143,13 @@ class MoviesDAO implements IMoviesDAO
 	function remove($movies, $idCinema)
 	{
 		try {
-			$query = "DELETE FROM " . $this->moviexcinemaTableName . " WHERE IdMovieIMDB = " . $movies->getIdMovieIMDB() . " AND idCinema = $idCinema ;";
-
+			$query = "DELETE FROM " . $this->moviexcinemaTableName . " WHERE IdMovie = " . $movies->getIdMovie() . " AND idCinema = ".$idCinema.";";
+			$query2 = "DELETE FROM ". $this->screeningTableName . " WHERE IdMovie = " . $movies->getIdMovie() . " AND idCinema = ". $idCinema. ";" ;
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query);
-			/* 
-			$query = "DELETE FROM " . $this->generoTableName . " WHERE IdMovieIMDB = " . $movies->getIdMovieIMDB) . ";";
-
-			$this->connection = Connection::GetInstance();
-			$this->connection->ExecuteNonQuery($query); */
+			$this->connection->ExecuteNonQuery($query2);
+		
+			
 		} catch (Exception $ex) {
 			throw $ex;
 		}
