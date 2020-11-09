@@ -17,6 +17,7 @@ class ScreeningController
 	private $moviesDAO;
 	private $screeningDAO;
 	private $cinemaDAO;
+	
 
 	function __construct()
 	{
@@ -61,11 +62,12 @@ class ScreeningController
 			foreach ($screeningsList as $screening)
 			{
 			
-				$idRoom = $screening->getRoom()->getIdRoom();
+				
 				
 			
 				if($idRoom != "-")
 				{
+					$idRoom = $screening->getRoom()->getIdRoom();
 					$room = $this->roomDAO->GetRoomById($idRoom);
 					$screening->setRoom($room);
 					$cinema = $this->cinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
