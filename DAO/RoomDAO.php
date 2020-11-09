@@ -150,4 +150,25 @@ class RoomDAO implements IRoomDAO
             return null;
         }
     }
+
+    public function GetRoomByName($name)
+    {
+        try {
+            $query = "SELECT * FROM " . $this->tableName . " WHERE RoomNumber = '" . $name . "' ;";
+
+
+            $this->connection = Connection::GetInstance();
+            $result = $this->connection->Execute($query);
+
+            foreach ($result as $row) {
+                $room = new Room();
+                $room->setIdRoom($row["IdRoom"]);
+                $room->setRoomNumber($row["RoomNumber"]);
+                $room->setCapacity($row["Capacity"]);
+                return $room;
+            }
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
 }
