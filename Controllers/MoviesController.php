@@ -188,16 +188,16 @@ class MoviesController
 	public function RemoveMovie($idMovieIMDB, $idCinema)
 	{
 
-		if ($_GET['IdMovieIMDB'] != null) {
+		if ($idMovieIMDB != null) {
 
-			$idMovieIMDB = $_GET['IdMovieIMDB'];
+		//	$idMovieIMDB = $_GET['IdMovieIMDB'];
 			$movies = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
 		} else {
 			$idMovieIMDB = 0;
 		}
 
 
-		if ($movies->getIdMovieIMDB() == $idMovieIMDB) { 
+		if ($movies->getIdMovieIMDB() === $idMovieIMDB) { 
 			$this->moviesDAO->remove($movies, $idCinema);
 		}
 
@@ -250,7 +250,7 @@ class MoviesController
 		require_once(VIEWS_PATH . "AdminMoviesPlayingView.php");
 	}
 
-	private function 	addGenreAndMovie($genres, $IdMovie){
+	private function addGenreAndMovie($genres, $IdMovie){
 		foreach($genres as $idGenre){
 			$this->movieXgenreDAO->add($idGenre['id'], $IdMovie);
 		}
@@ -290,6 +290,9 @@ class MoviesController
 
 				if ($this->moviesDAO->getIsPlayingMovie($movies, $idCinema)) { 
 					$movies->setIsPlaying(true);
+				}else
+				{
+					$movies->setIsPlaying(false);
 				}
 			}
 		}
