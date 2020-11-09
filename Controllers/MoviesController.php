@@ -8,9 +8,9 @@ use DAO\MovieXMovieGenresDAO as MovieXMovieGenresDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
 use Models\Movies as Movies;
 use Models\MovieGenre as MovieGenre;
+use Models\Cinema as Cinema;
 use API\IMDBController as IMDBController;
 use Controllers\ScreeningController as ScreeningController;
-use Models\Cinema;
 use Util\apiResponse as ApiResponse;
 
 
@@ -302,6 +302,17 @@ class MoviesController
 	private function getMoviesScreeningDataBase($date){
 		$movies = $this->screeningDAO->getIdAllIdMoviesByDate($date);
 		return $movies;
+	}
+	public function ShowScreeningUserView($idMovie){
+		$movie = $this->moviesDAO->getByMovieId($idMovie);
+		$screeningList = $this->screeningDAO->GetSpecificScreeningByIdMovie($idMovie);
+		usort($screeningList,array($this, "sortFunctionByDate"));		
+		$screeningListCopy = $screeningList;
+		$screeningCondition = null;
+		require_once(VIEWS_PATH . "SelectScreeningUserView.php");
+	}
+	function sortFunctionByDate( $a, $b ) {
+		return strtotime($a->getStartDate()) - strtotime($b->getStartDate());
 	}
 
 	public function getGenresFromApi(){

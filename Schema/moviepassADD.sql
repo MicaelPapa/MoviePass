@@ -61,3 +61,4 @@ select * from Screenings where  IdMovieIMDB = 724989 and StartDate = 2020-11-07 
 delete from moviexcinema where idmovieXcinema = 39;
 
 ALTER TABLE `screenings` CHANGE `StartHour` `StartHour` DATETIME NOT NULL;
+ALTER TABLE screenings ADD RemainTickets INT;

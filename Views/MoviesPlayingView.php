@@ -40,7 +40,7 @@
               <div class="form-group col-md-12">
               <input type="hidden" name="type" value="filterDate" />
                 <input type="date" name="dateFilter" id="inputDate" value="<?php echo date('Y-m-d'); ?>" />
-                <button type="submit" class="btn btn-success" id="submitDate" value="Filtrar"/><i class="fas fa-search"></i></button>
+                <button type="submit" class="btn btn-success" id="submitDate" value="Filtrar"><i class="fas fa-search"></i></button>
               </div>
             </div>
           </form>
@@ -57,7 +57,7 @@
               <div class="flip-card-back">
                 <h1> <?php echo $movies->getMovieName(); ?> </h1> 
                 <p><?php echo $movies->getReleaseDate(); ?></p> 
-                <p><a id="buyTicket" href = "#"></a><button class="button">Comprar</a><i class="fas fa-ticket-alt"></i></button></p>
+                <p><a type="button" class="button" id="buyTicket" href = "<?php echo FRONT_ROOT?>Movies/ShowScreeningUserView?idMovie=<?php echo $movies->getIdMovie()?>">Ver Funciones</a></p>
               </div>
             </div>
           </div>
@@ -239,7 +239,7 @@ h1{
   background-color: rgba(39, 116, 70, 1);
   border: none;
   color: white;
-  padding: 5% 30%;
+  padding: 5% 26.8%;
   text-align: center;
   text-decoration: none;
   display: inline-block;
