@@ -98,10 +98,13 @@ class MoviesController
 			foreach ($arrayToDecode["results"] as $movie) {
 					$newMovies = $this->getMovieFromApi($movie['id'], $arrayToDecode, $idCinema);
 					$moviesCinema = $this->moviesDAO->getByCinema($idCinema);
-					$flag = true;
+					$flag = null;
 					foreach($moviesCinema as $mc){
-						if($newMovies->getIdMovieIMDB() === $mc->getIdMovieIMDB()){
+						if($newMovies->getIdMovieIMDB() == $mc->getIdMovieIMDB()){
 							$flag = false;
+						}
+						if($flag === null && $moviesCinema[sizeof($moviesCinema) - 1] === $mc ){
+							$flag = true;
 						}
 					}
 					if($flag){
@@ -193,21 +196,39 @@ class MoviesController
 		$this->getGenresFromApi();
 		if($filterType == "filterGenres"){
 			$movieGenreList = $this->movieXgenreDAO->getIdMovie($filter);
+			$movieCinemaList = $this->moviesDAO->getByCinema($idCinema);
 			foreach ($movieGenreList as $IdMovieIMDB){
 				$movie = $this->moviesDAO->getByIdMovieIMDB($IdMovieIMDB['IdMovieIMDB']);
-				array_push($movieList, $movie);
+				foreach($movieCinemaList as $movieCinema){
+					if($movieCinema->getIdMovieIMDB() === $movie->getIdMovieIMDB()){
+						array_push($movieList, $movie);
+					}
+				}	
 			}
 
 		}else if($filterType == "filterName"){
 			if ($filter != null) {
-				$movieList = $this->moviesDAO->getByMovieName($filter);
+				$movieCinemaList = $this->moviesDAO->getByCinema($idCinema);
+				$movieNameList = $this->moviesDAO->getByMovieName($filter);
+				foreach($movieNameList as $movie){
+					foreach($movieCinemaList as $movieCinema){
+						if($movieCinema->getIdMovieIMDB() === $movie->getIdMovieIMDB()){
+							array_push($movieList, $movie);
+						}
+					}	
+				}
 			}
 
 		}else if($filterType == "filterDate"){
 			$dateMovies = $this->getMoviesScreeningDataBase($filter);
+			$movieCinemaList = $this->moviesDAO->getByCinema($idCinema);
 			foreach($dateMovies as $idMovieIMDB){
 				$movie =  $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB["IdMovieIMDB"]);
-				array_push($movieList, $movie);
+				foreach($movieCinemaList as $movieCinema){
+					if($movieCinema->getIdMovieIMDB() === $movie->getIdMovieIMDB()){
+						array_push($movieList, $movie);
+					}
+				}						
 			}
 		}else{
 			$movieList = $this->moviesDAO->getByCinema($idCinema);

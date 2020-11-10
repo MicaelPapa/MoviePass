@@ -28,7 +28,7 @@
 
             <input type="hidden" name="alertMessage" value="" />
             <input type="hidden" name="alertType" value="" />
-            <input type="hidden" name="filterGenres" value="filterGenres" />
+            <input type="hidden" name="filterType" value="filterGenres" />
 
             <select id="selectGenre" name="selectGenres" class="custom-select">
               <option value="0">Selecciona el Género</option>
