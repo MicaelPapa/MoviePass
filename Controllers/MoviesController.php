@@ -223,7 +223,6 @@ class MoviesController
 
 		if ($idMovieIMDB != null) {
 
-		//	$idMovieIMDB = $_GET['IdMovieIMDB'];
 			$movies = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
 		} else {
 			$idMovieIMDB = 0;
@@ -291,7 +290,7 @@ class MoviesController
 
 	public function filterDateMoviesDataBase(){
 		
-		$dateMovie = $_POST['dateFilter'];
+		$dateMovie = $_POST['dateFilter']; //<-----------------------------------------
 		$listDateMovies = $this->moviesDAO->getAll();
 		$movieList = array();
 		foreach($listDateMovies as $movie){

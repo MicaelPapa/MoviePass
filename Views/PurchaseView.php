@@ -10,7 +10,7 @@
     </div>
     <!-- form-->
     <div class="col-md-10">
-      <form action="<?php echo FRONT_ROOT ?>Purchase/ViewCreditCard" method="post">
+      <form action="<?php echo FRONT_ROOT ?>Purchase/BuyTickets" method="post"> //debe ir a la validacion de la tarjeta
         <div class="form-row">
           <div class="form-group col-md-12">
             <p class="titleData" style="font-size: 24px"><label for="inputPelicula"><br>Película: <?php echo $screening->getMovie()->getMovieName(); ?></label></p>
@@ -29,7 +29,9 @@
           </div>
           <div class="form-group col-md-12">
               <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Precio Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $screening->getPrice(); ?></p></p>
-              <input type="hidden" name="precioTotal" id="precioTotal" value="<?php echo $screening->getPrice(); ?>" >
+            
+           
+            <input type="hidden" name="idScreening"  value="<?php echo $screening->getIdScreening(); ?>" >
           </div>
         </div>
 

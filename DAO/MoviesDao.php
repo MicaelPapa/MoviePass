@@ -321,7 +321,7 @@ class MoviesDAO implements IMoviesDAO
 			$parameters["Earnings"] = $movies->getEarnings();
 			$parameters["Budget"] = $movies->getBudget();
 			$parameters["OriginalLanguage"] = $movies->getOriginalLanguage();
-			$movies->setIsPlaying($row["IsPlaying"]);
+		//	$movies->setIsPlaying($row["IsPlaying"]);
 
 
 			$this->connection = Connection::GetInstance();

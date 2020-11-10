@@ -30,7 +30,8 @@ class PurchaseController
         $this->RoomDAO = new RoomDAO();
     }
 
-    public function ViewPreSelected($idScreening,$message = "")
+    public function ViewPreSelected($idScreening,$message = "") //falta pasarle el id USer
+
     {
         if (isset($_SESSION['isLogged'])) {
             $screening = $this->LoadScreeningToPuchase($idScreening);
@@ -163,11 +164,15 @@ class PurchaseController
 		}
 		
 
-    public function BuyTickets()
+    public function BuyTickets($cantTickets,$idScreening) 
     {
+
+        $screening = $this->LoadScreeningToPuchase($idScreening);
+
         if (isset($_SESSION['isLogged'])) {
             if (count($_POST, COUNT_NORMAL) > 0) {
-                $this->PurchaseDAO->BuyTickets($_POST['inputCine'], $_SESSION['User']['IdUser'], $_POST['inputFuncion'], $_POST['inputCantAsientos'],);
+                $this->PurchaseDAO->BuyTickets($screening, $_SESSION['User']['IdUser'],$cantTickets);
+                HomeController::Index(); // tiene que mandarte a vista intermedia con compra exitosa/ email enviado
             }
         } else {
             require_once(VIEWS_PATH . "LoginView.php");
