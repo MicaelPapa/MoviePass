@@ -54,23 +54,7 @@ class CinemaController
         }
     }
 
-    public function LoadStates(){
-        return $this->CitiesDAO->GetAllStates(); 
-    }
 
-    public function LoadCities($idState = ''){
-              
-        if(isset($_POST["idState"])){
-
-            $cities = $this->CitiesDAO->getCitiesByState($_POST['idState']); 
-            $json = json_encode($cities);
-            echo "$".$json."%";            
-        }
-        else {
-            return $cities = $this->CitiesDAO->getCitiesObjectByState($idState);
-        }
-         
-    }
 
     public function ShowEditView($idCinema)
     {

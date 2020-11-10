@@ -11,10 +11,10 @@ create table movieXcinema (
 	constraint fk_idMovie foreign key  (idMovie) references movies(idMovie)
 );
 
-select * from moviexcinema;
+select * from moviexcinema WHERE IdMovieIMDB = 635302 AND idCinema = 13;
 select * from movies ;
 select * from cinemas;
-
+DELETE FROM moviexcinema WHERE IdMovieIMDB = 635302 AND idCinema = 13;
 
 /*
                         $screening = new Screening();
@@ -49,8 +49,39 @@ select * from Screenings where IdMovieIMDB = 724989 and IdRoom != 25 and IdCinem
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-04' and (( CAST('2020-11-04 01:32:00' AS  DATETIME) between StartHour AND finishhour) or (CAST('2020-11-04 03:17:00' AS  DATETIME) between StartHour AND finishhour)); /*nueva*/
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-05'  and ( (CAST('2020-11-04 01:30:00' AS  DATETIME) between StartHour and finishHour) or (CAST('2020-11-04 03:25:00' AS  DATETIME) between StartHour and finishHour) ) ;
 
+/*BEGIN
+
+select    // ID ORDER, SUBTOTAL, TOTAL, HORA DE LA PELICULA, NOMBRE SALA, NOMBRE PELICULA,  SUBTITULOS, NOMBRE DE CINE, DIRECCION DEL CINE, NOMBRE DEL USUARIO//
+orders.idorder,
+concat('$',orders.Discount) as Discount,
+concat('$',orders.SubTotal) as SubTotal,
+concat('$',orders.Total) as Total,
+screenings.startdate,
+rooms.roomnumber,
+movies.moviename,
+if(screenings.Subtitles is null, screenings.audio, concat('Sub ',screenings.subtitles)) as MovieLanguage,
+screenings.Dimension,
+cinemas.cinemaname,
+concat(addresses.street,' ',addresses.numberstreet) as CinemaAddress,
+users.UserName
+FROM orders
+inner join screenings on screenings.IdScreening = orders.IdScreening
+inner join rooms on screenings.IdRoom = rooms.IdRoom
+inner join movies on screenings.IdMovie = movies.IdMovie
+inner join cinemas on rooms.CinemaId = cinemas.IdCinema
+inner join addresses on cinemas.IdAddress = addresses.IdAddress
+inner join users on users.IdUser = orders.IdUser
+WHERE (users.IdUser = UserId AND screenings.StartDate > if(TodayDate is null,'0001-01-01',TodayDate))
+GROUP BY(orders.IdOrder) ORDER BY screenings.StartDate ASC;
+
+END*/
 
 
+
+select * from screenings;
+
+CALL BuyTickets(3,69,1,150);
+ select * from orders;
 select * from Screenings where  IdMovieIMDB = 724989 and StartHour between CAST('23:02' AS  DATE) and CAST('00:47' AS  DATE);
 describe screenings;
 

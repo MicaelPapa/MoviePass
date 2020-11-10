@@ -448,7 +448,9 @@ select Capacity from screenings where IdScreening = IdFuncion;
 
 END $$
 DELIMITER ;
-
+DELIMITER $$
+DROP PROCEDURE `BuyTickets`; 
+DELIMITER ;
 /*Insert Genders*/
 insert into genders(GenderName) values('Female'),('Male'),('Other');
 
@@ -475,6 +477,9 @@ insert into movies(idmovieimdb,moviename,duration,synopsis,releasedate,photo,ear
 values(1,'Rambo',1,"Una peli",now(),'asd',1,1,"spanish",1),(1,'Malefica',1,"Una peli",now(),'asd',1,1,"spanish",1),
 (1,'Duro de Matar',1,"Una peli",now(),'asd',1,1,"spanish",1);
 
+ /*cambiar procedure buy */
 
 
+DROP PROCEDURE `BuyTickets`; 
 
+CREATE PROCEDURE `BuyTickets`(IN `IdUser` INT, IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT) NOT DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER BEGIN declare MoviePrice decimal default 0.0; declare Discount decimal default 0.0; declare LastInsertIdOrders int default 0; declare AsignedRoom int default 0; insert into orders(SubTotal,Total,DatePurchase,Discount,IdUser,IdScreening) values(Price * CantTickets, Price * CantTickets * (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 0.75 ELSE 1 END), now(), (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 25 ELSE 0 END), IdUser, IdFuncion); update screenings set RemainTickets = RemainTickets - CantTickets where idScreening = IdFuncion; END
