@@ -4,39 +4,44 @@
 <div id="box" class="container" style="background-color: rgba(255, 255, 255, 0.5);"> 		
   <div class="row" >   
         <div class="col-md-4">
-            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/ShowDataBaseMovies" method = "POST">
+            <form id ="searchBox" action="<?php echo FRONT_ROOT ?> Movies/ShowDataBaseMoviesAdmin" method = "POST">
               <div class="form-row justify-content-center">
                 <div class="form-group col-md-6">
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
                         </div>
-                        <input type="hidden" name="type" value="filterName" />
-                        <input id ="inputSearch" type="search" name="movieName" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                        <input type="hidden" name="alertMessage" value="" />
+                        <input type="hidden" name="alertType" value="" />
+                        <input type="hidden" name="filterName" value="filterName" />
+                        <input id="inputSearch" type="search" name="searchName" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                        <input type="hidden" name="idCinema" value="<?php echo $idCinema ?>" />
                       </div>
                 </div>
               </div>
             </form>				 
         </div>
         <div class="col-md-4">
-          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMovies" method="POST">
+          <form id="selectGenre" action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMoviesAdmin" method="POST">
             <div class="form-row justify-content-center">
               <div class="form-group col-md-12">
-                <input type="hidden" name="type" value="filterGenres" />
+                <input type="hidden" name="alertMessage" value="" />
+                <input type="hidden" name="alertType" value="" />
+                <input type="hidden" name="filterGenres" value="filterGenres" />
                 <select id="selectGenre" name="selectGenres"  class="custom-select">
                       <option value="0">Selecciona el Género</option>
                       <?php foreach($genreList as $genre) { ?>
                       <option value="<?php echo $genre->getIdIMDB(); ?>"><?php echo $genre->getName(); ?></option>
                       <?php }?>
                 </select>
-                <input type="hidden" name="type" value="filterGenres" />
+                <input type="hidden" name="idCinema" value="<?php echo $idCinema ?>" />
                 <button type="submit" class="btn btn-succes" name="filtrar" id="submitGenre"><i class="fas fa-search"></i></button>
               </div>
             </div>
           </form>
         </div>
         <div class="col-md-4">
-          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMovies" method="POST">
+          <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/ShowDataBaseMoviesAdmin" method="POST">
             <div class="form-row justify-content-center">
               <div class="form-group col-md-12">
               <input type="hidden" name="alertMessage" value="" />
