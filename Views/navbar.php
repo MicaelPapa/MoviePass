@@ -18,7 +18,10 @@
               <a class="nav-link" href="'; echo FRONT_ROOT. 'Home/View"><i class="fas fa-home"></i>&nbspInicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="';echo FRONT_ROOT. 'Cinema/SelectCinema"><i class="fas fa-film"></i>&nbspCartelera</a>
+            <a class="nav-link" href="';echo FRONT_ROOT. 'Cinema/SelectCinema?view=api"><i class="fas fa-film"></i>&nbspPelículas Api</a>
+          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="';echo FRONT_ROOT. 'Cinema/SelectCinema?view=db"><i class="fas fa-film"></i>&nbspCartelera</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="';echo FRONT_ROOT. 'Cinema/ShowListView" tabindex="-1" aria-disabled="true"><i class="fas fa-compact-disc"></i>&nbspCines</a>

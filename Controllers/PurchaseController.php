@@ -131,7 +131,37 @@ class PurchaseController
             $this->ViewCreditCard($alertMessage);
         }
 
+        if(!$this->validatePay($name,$mmyy,$number,$cvc))
+        {			
+            $params = array();
+            array_push($params,$idFuncion);
+            array_push($params,$cantidad);
+            Functions::flash("Los datos de la tarjeta son incorrectos.","warning");
+            Functions::redirect("Compra","Pay",$params);
+        }
+
     }
+
+    private function validatePay($name,$mmyy,$number,$cvc)
+		{
+			//Validamos numeros de la tarjeta
+			$validateCard = CreditCard::validCreditCard($number);
+			if($validateCard['valid'] == false) return false;
+
+			//Validamos codigo de seguridad
+			$validateCvc = CreditCard::validCvc($cvc, $validateCard['type']);
+			if($validateCvc == false) return false;
+
+			//Validamos fecha de expiracion
+			$date = explode(" / ", $mmyy);
+			$validateDate = CreditCard::validDate("20".$date[1], $date[0]);
+			if(!$validateDate) return false;
+
+			//Si pasa todas las validaciones procesamos la compra
+			Functions::flash("Tu compra con tarjeta ".$validateCard['type']." fue procesada con éxito.","success");
+			return true;
+		}
+		
 
     public function BuyTickets()
     {

@@ -42,19 +42,6 @@
         </div>
       </form>
     </div>
-    <div class="col-md-4">
-      <form id="dateMovie" action="<?php echo FRONT_ROOT ?>Movies/ShowApiMovies" method="POST">
-        <div class="form-row justify-content-center">
-          <div class="form-group col-md-12">
-            <input type="hidden" name="alertMessage" value="" />
-            <input type="hidden" name="alertType" value="" />
-            <input type="hidden" name="filterDate" value="filterDate" />
-            <input type="date" id="inputDate" name="inputDate" value="<?php echo date('Y-m-d'); ?>" />
-            <button type="submit" class="btn btn-success" id="submitDate" name="idCinema" value="<?php echo $idCinema ?>"><i class="fas fa-search"></i></button>
-          </div>
-        </div>
-      </form>
-    </div>
   </div>
   <div class="row">
     <?php foreach ($movieList as $movie) { ?>
@@ -69,9 +56,6 @@
               <p><?php echo $movie->getReleaseDate(); ?></p>
               <?php if ($movie->getIsPlaying() == false) { ?>
                 <p><a id="addMovie" href="<?php echo FRONT_ROOT ?>Movies/AddMovieToDatabase?IdCinema=<?php echo $idCinema; ?> &IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>"><button id="add" class="button">Agregar Pelicula</button></a></p>
-              <?php } else { ?>
-                <p><a id="editMovie" href="<?php echo FRONT_ROOT ?>Screening/ShowListView?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>&IdCinema=<?php echo $idCinema ?>"><button id="edit" class="button">Agregar Funcion</button></a></p>
-                <p><a id="removeMovie" href="<?php echo FRONT_ROOT ?>Movies/RemoveMovie?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>&IdCinema=<?php echo $idCinema ?>"><button id="remove" class="button">Eliminar</button></a></p>
               <?php } ?>
             </div>
           </div>

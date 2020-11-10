@@ -21,7 +21,7 @@
           </div>
           <div class="form-group col-md-12">
             <label for="inputFuncion"><i style="color: red;">&#42&nbsp</i>Vencimiento</label>
-            <input type="date" min="<?php echo date("Y-m-d",strtotime(date("Y-m-d")));?>"  class="form-control" name="vencimiento" placeholder="Fecha de vencimiento" required>
+            <input type="tel" onchange="formatDate()" id="vencimiento" minlength="5" maxlength="9" pattern="^(0[1-9]|1[0-2])( )?\/( )?([2][0]\d{2}|\d{2})$"  class="form-control" name="vencimiento" placeholder="Fecha de vencimiento" required>
           </div>
           <div class="form-group col-md-12">
             <label for="inputCantAsientos"><i style="color: red;">&#42&nbsp</i>Nombre</label>
@@ -37,6 +37,17 @@
   </div>
   <!-- Fin Index -->
 </div>
+
+<script>
+   function formatDate() {
+    debugger;
+    if(document.getElementById("vencimiento").value.length == 2){
+      debugger;
+      document.getElementById("vencimiento").value = document.getElementById("vencimiento").value + "/";
+    }
+    
+}
+</script>
 
 <style>
   #box {

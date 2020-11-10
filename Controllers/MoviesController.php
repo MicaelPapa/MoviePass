@@ -94,20 +94,21 @@ class MoviesController
 					array_push($apiMovie, $newMovies);
 				}
 			}		
-		}else if($type == "filterDate"){
-			$dateMovies = $this->getMoviesScreeningApi($filter, $idCinema);
-			$newMovies = New Movies();
-			foreach($dateMovies as $idMovieIMDB){
-				$newMovies =  $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB["IdMovieIMDB"]);
-				array_push($apiMovie, $newMovies);
-			}
-
 		}else{
 			foreach ($arrayToDecode["results"] as $movie) {
-				$newMovies = $this->getMovieFromApi($movie['id'], $arrayToDecode, $idCinema);
-				array_push($apiMovie, $newMovies);
+					$newMovies = $this->getMovieFromApi($movie['id'], $arrayToDecode, $idCinema);
+					$moviesCinema = $this->moviesDAO->getByCinema($idCinema);
+					$flag = true;
+					foreach($moviesCinema as $mc){
+						if($newMovies->getIdMovieIMDB() === $mc->getIdMovieIMDB()){
+							$flag = false;
+						}
+					}
+					if($flag){
+						array_push($apiMovie, $newMovies);
+					}
+				}
 			}
-		}
 		return $apiMovie;
 	}
 
@@ -185,6 +186,38 @@ class MoviesController
 		require_once(VIEWS_PATH . "MoviesPlayingView.php");
 	}
 
+	public function ShowDataBaseMoviesAdmin($alertMessage = "", $alertType = "", $filterType = "", $filter = "", $idCinema)
+	{	
+		$movieList = array();
+		$movie = New Movies();
+		$this->getGenresFromApi();
+		if($filterType == "filterGenres"){
+			$movieGenreList = $this->movieXgenreDAO->getIdMovie($filter);
+			foreach ($movieGenreList as $IdMovieIMDB){
+				$movie = $this->moviesDAO->getByIdMovieIMDB($IdMovieIMDB['IdMovieIMDB']);
+				array_push($movieList, $movie);
+			}
+
+		}else if($filterType == "filterName"){
+			if ($filter != null) {
+				$movieList = $this->moviesDAO->getByMovieName($filter);
+			}
+
+		}else if($filterType == "filterDate"){
+			$dateMovies = $this->getMoviesScreeningDataBase($filter);
+			foreach($dateMovies as $idMovieIMDB){
+				$movie =  $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB["IdMovieIMDB"]);
+				array_push($movieList, $movie);
+			}
+		}else{
+			$movieList = $this->moviesDAO->getByCinema($idCinema);
+		}
+		
+		$genreList = $this->getGenresFromDataBase();
+		require_once(VIEWS_PATH . "ManageDataBaseMoviesView.php");
+	}
+
+
 	public function RemoveMovie($idMovieIMDB, $idCinema)
 	{
 
@@ -201,7 +234,7 @@ class MoviesController
 			$this->moviesDAO->remove($movies, $idCinema);
 		}
 
-		$this->ShowApiMovies("La pelicula se borro satisfactoriamente", "danger", null,null,$idCinema);
+		$this->ShowDataBaseMoviesAdmin("La pelicula se borro satisfactoriamente", "danger", null,null,$idCinema);
 	}
 	
 	private function getGenresFromDataBase(){

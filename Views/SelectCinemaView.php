@@ -13,7 +13,7 @@ require_once("navbar.php");
             <!-- form     -->
             <div class="col-md-8">
 
-                <form action="<?php echo FRONT_ROOT ?>Movies/ShowApiMovies" method="post">
+                <form action="<?php if($viewName === "api"){ echo FRONT_ROOT ?>Movies/ShowApiMovies <?php } else { echo FRONT_ROOT ?>Movies/ShowDataBaseMoviesAdmin <?php } ?>" method="post">
                     <?php
                     if (sizeof($cinemaList) != 0) {
                     ?>
@@ -25,9 +25,8 @@ require_once("navbar.php");
                                     <input type="hidden" name="filter" value="" />
                                     <input type="hidden" name="alertMessage" value="" />
                                     <input type="hidden" name="alertType" value="" />
-
-                                    <select id="inputSala" name="cinema" class="form-control">
-                                        <option selected>Elige un cine</option>
+                                    
+                                    <select id="inputSala" placeholder="Elije un cine" name="cinema" class="form-control">
                                         <?php foreach ($cinemaList as $cinema) { ?>
                                             <option value="<?php echo $cinema->getIdCinema(); ?>"> <?php echo $cinema->getCinemaName(); ?>
                                             </option>

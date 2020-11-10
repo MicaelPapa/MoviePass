@@ -330,7 +330,36 @@ class MoviesDAO implements IMoviesDAO
 			throw $ex;
 		}
 	}
+	public function getByCinema($idCinema)
+    {
+        try {
+            $query = "SELECT * FROM " . $this->tableName . " m JOIN " . $this->moviexcinemaTableName . " mxc ON (mxc.idMovie = m.IdMovie) WHERE mxc.idCinema= " . $idCinema . ";";
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
 
+            $list = array();
+
+            foreach ($resultSet as $row) {
+                $movies = new Movies();
+                $movies->setIdMovie($row["IdMovie"]);
+                $movies->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $movies->setMovieName($row["MovieName"]);
+                $movies->setDuration($row["Duration"]);
+                $movies->setSynopsis($row["Synopsis"]);
+                $movies->setReleaseDate($row["ReleaseDate"]);
+                $movies->setPhoto($row["Photo"]);
+                $movies->setEarnings($row["Earnings"]);
+                $movies->setBudget($row["Budget"]);
+                $movies->setOriginalLAnguage($row["OriginalLanguage"]);
+                $movies->setIsPlaying($row["IsPlaying"]);
+
+                array_push($list, $movies);
+            }
+            return $list;
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
 	
 
 	/* 	public function setMoviesAndGenres($movies,$movieGenre){

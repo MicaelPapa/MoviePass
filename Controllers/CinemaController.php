@@ -172,8 +172,9 @@ class CinemaController
         
     }
 
-    public function SelectCinema()
+    public function SelectCinema($view)
     {
+        $viewName = $view;
         $cinemaList = $this->CinemaDAO->GetAll();
         require_once(VIEWS_PATH . "SelectCinemaView.php");
     }
