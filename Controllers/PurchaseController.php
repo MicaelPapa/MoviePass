@@ -8,6 +8,7 @@ use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
 use DAO\PurchaseDAO as PurchaseDAO;
+use PHPMailer\Mail as Mail;
 
 use Models\Screening as Screening;
 
@@ -166,7 +167,6 @@ class PurchaseController
 
     public function BuyTickets($cantTickets,$idScreening) 
     {
-
         $screening = $this->LoadScreeningToPuchase($idScreening);
 
         if (isset($_SESSION['isLogged'])) {
