@@ -28,11 +28,11 @@ class LoginController
         HomeController::Index();
     }
 
-    public function Index()
+    public function Index($email, $pass)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user = Validate::ValidateData($_POST["email"]);
-            $password = Validate::ValidateData($_POST["pass"]);
+            $user = Validate::ValidateData($email);
+            $password = Validate::ValidateData($pass);
 
             try {
                 $password = Hash::Hashing($password);
@@ -61,9 +61,9 @@ class LoginController
         require_once(FACEBOOK_CUSTOM_PATH . "fblogin.php");
     }
 
-    public function RecoverPassword()
+    public function RecoverPassword($email)
     {
-        $email = Validate::ValidateData($_POST["email"]);
+        $email = Validate::ValidateData($email);
 
         try {
             $selectedUser = new User(null, null, null, null, null, null);
