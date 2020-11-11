@@ -182,47 +182,6 @@ class MoviesDAO implements IMoviesDAO
 		}
 	}
 
-	/* 	public function getMovieGenders($movies)
-	{
-		try
-		{
-			$query = "SELECT * FROM " . $this->generoTableName . " WHERE IdMovie = " . $movies->getIdMovie() . ";";
-			$this->connection = Connection::GetInstance();
-			$resultSet = $this->connection->Execute($query);
-
-			$generos = array();
-			foreach ($resultSet as $row) 
-			{
-				array_push($genders, $row["IdGender"]);
-			}
-			return $genders;
-		} 
-		catch (Exception $ex) 
-		{
-			return null;
-		}
-	} */
-
-	/* 	public function saveGeneros($Movies, $generos)
-	{
-		try
-		{
-			foreach($generos as $genero)
-			{
-				$query = "INSERT INTO " . $this->generoTableName . " (IdMovie, id_generoo) VALUES (:id_Moviesa, :id_generoo);";
-				$parameters["IdMovie"] = $Movies->getId();
-				$parameters["id_generoo"] = $genero;
-
-				$this->connection = Connection::GetInstance();
-				$this->connection->ExecuteNonQuery($query, $parameters);
-			}
-		} 
-		catch (Exception $ex) 
-		{
-			throw $ex;
-		}
-	} */
-
 	public function getByMovieId($idMovie)
 	{
 		try {
@@ -361,26 +320,4 @@ class MoviesDAO implements IMoviesDAO
         }
     }
 	
-
-	/* 	public function setMoviesAndGenres($movies,$movieGenre){
-		try{
-			$query = "INSERTO INTO".$this->movieGenreTableName."(IdMovieIMDB, IdGenreIMDB) VALUES (:IdMovieIMDB, :IdGenreIMDB);";
-			$parameters["IdMovieIMDB"] = $movies->getIdMovieIMDB();
-			
-			foreach ($movieGenre as $values){
-				if($movies->getIdMovieIMDB() == $values->getIdIMDB()) $parameters["IdGenreIMDB"] = $values->getIdIMDB();
-			}
-			
-			$this->connection = Connection::GetInstance();
-			$this->connection->ExecuteNonQuery($query, $parameters);
-
-
-		} 
-		catch (Exception $ex) 
-		{
-			throw $ex;
-		}
-	
-
-	} */
 }

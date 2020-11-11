@@ -6,6 +6,7 @@ use DAO\MoviesDAO as MoviesDAO;
 use DAO\MovieGenreDAO as MovieGenreDAO;
 use DAO\MovieXMovieGenresDAO as MovieXMovieGenresDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
+use DAO\CinemaDAO as CinemaDAO;
 use Models\Movies as Movies;
 use Models\MovieGenre as MovieGenre;
 use Models\Cinema as Cinema;
@@ -20,13 +21,15 @@ class MoviesController
 	private $movieGenreDAO;
 	private $movieXgenreDAO;
 	private $screeningDAO;
+	private $cinemaDAO;
 
 	public function __construct()
 	{
 		$this->moviesDAO = new MoviesDAO();
 		$this->movieGenreDAO = new MovieGenreDAO();
 		$this->movieXgenreDAO = new MovieXMovieGenresDAO();
-		$this->screeningDAO = new ScreeningDAO;
+		$this->screeningDAO = new ScreeningDAO();
+		$this->cinemaDAO = new CinemaDAO();
 	}
 
 	
@@ -96,6 +99,7 @@ class MoviesController
 			}		
 		}else{
 			foreach ($arrayToDecode["results"] as $movie) {
+				if($this->cinemaDAO->existMoviesInCinema($idCinema)){
 					$newMovies = $this->getMovieFromApi($movie['id'], $arrayToDecode, $idCinema);
 					$moviesCinema = $this->moviesDAO->getByCinema($idCinema);
 					$flag = null;
@@ -110,6 +114,11 @@ class MoviesController
 					if($flag){
 						array_push($apiMovie, $newMovies);
 					}
+				}else{
+					$newMovies = $this->getMovieFromApi($movie['id'], $arrayToDecode, $idCinema);
+					array_push($apiMovie, $newMovies);
+				}
+
 				}
 			}
 		return $apiMovie;
@@ -161,6 +170,7 @@ class MoviesController
 	public function ShowDataBaseMovies($type, $filter)
 	{	
 		$movieList = array();
+		$genreList = array();
 		$movie = New Movies();
 		$this->getGenresFromApi();
 		if($type == "filterGenres"){
@@ -185,13 +195,21 @@ class MoviesController
 			$movieList = $this->moviesDAO->getAll();
 		}
 		
-		$genreList = $this->getGenresFromDataBase();
-		require_once(VIEWS_PATH . "MoviesPlayingView.php");
+		$genresDataBaseList = $this->getGenresFromDataBaseAdmin();
+		foreach($genresDataBaseList as $genre){
+			foreach($movieList as $movie){
+				if($genre['IdMovieIMDB'] == $movie->getIdMovieIMDB()){
+					$newGenre = $this->movieGenreDAO->getGenreById($genre['IdGenreIMDB']);
+					array_push($genreList, $newGenre);
+				}
+			}
+		}		require_once(VIEWS_PATH . "MoviesPlayingView.php");
 	}
 
 	public function ShowDataBaseMoviesAdmin($alertMessage = "", $alertType = "", $filterType = "", $filter = "", $idCinema)
 	{	
 		$movieList = array();
+		$genreList = array();
 		$movie = New Movies();
 		$this->getGenresFromApi();
 		if($filterType == "filterGenres"){
@@ -233,8 +251,16 @@ class MoviesController
 		}else{
 			$movieList = $this->moviesDAO->getByCinema($idCinema);
 		}
+		$genresDataBaseList = $this->getGenresFromDataBaseAdmin();
+		foreach($genresDataBaseList as $genre){
+			foreach($movieList as $movie){
+				if($genre['IdMovieIMDB'] == $movie->getIdMovieIMDB()){
+					$newGenre = $this->movieGenreDAO->getGenreById($genre['IdGenreIMDB']);
+					array_push($genreList, $newGenre);
+				}
+			}
+		}
 		
-		$genreList = $this->getGenresFromDataBase();
 		require_once(VIEWS_PATH . "ManageDataBaseMoviesView.php");
 	}
 
@@ -375,7 +401,7 @@ class MoviesController
 
         $arrayToDecode =ApiResponse::HomologatesApiResponse('/genre/movie/list');
 
-        if($this->getGenresFromDataBaseAdmin() == null){
+        if($this->movieGenreDAO->getAll() == null){
             foreach($arrayToDecode['genres'] as $values){
                 $genre = new MovieGenre();
                 $genre->setIdIMDB($values["id"]);
@@ -390,7 +416,7 @@ class MoviesController
     public function getGenresFromDataBaseAdmin(){
 
         $genreList = array();
-        $genreList = $this->movieGenreDAO->getAll();
+        $genreList = $this->movieXgenreDAO->getGenresId();
 		return $genreList;
     }
 }

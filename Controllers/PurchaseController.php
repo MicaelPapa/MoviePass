@@ -11,6 +11,8 @@ use DAO\PurchaseDAO as PurchaseDAO;
 use Models\Screening as Screening;
 use Models\Purchase as Purchase;
 use PHPMailer\Mail as Mail;
+use Util\Validate;
+use Util\CreditCard;
 
 class PurchaseController
 {
@@ -110,19 +112,50 @@ class PurchaseController
             }
     }
 
-    public function ViewCreditCard($cantEntradas, $idScreening){
+    public function ViewCreditCard($cantEntradas, $idScreening, $alertMessage = " ", $alertType = " "){
         $cantEntradas = $cantEntradas;
         $idScreening = $idScreening;
         require_once(VIEWS_PATH . "creditCardView.php");
     }
 
-    public function ValidatePay($name,$apellido,$number,$cvc,$month,$year,$cantEntradas,$idScreening)
+    public function ValidatePay($name,$number,$cvc,$month,$year,$cantEntradas,$idScreening)
 		{
             $cantEntradas = $cantEntradas;
             $idScreening = $idScreening;
-            $this->BuyTickets($cantEntradas,$idScreening);           
+            $mmyy = $month . "/" . $year;
+
+            $name = Validate::ValidateData($name);
+			$mmyy = Validate::ValidateData($mmyy);
+			$number = Validate::ValidateData($number);
+            $cvc = Validate::ValidateData($cvc);
+            
+			if(!$this->validateCreditCard($name,$mmyy,$number,$cvc)){
+
+				$this->ViewCreditCard($cantEntradas, $idScreening, "Los datos de la tarjeta son incorrectos.", "warning");
+            }else{
+                $this->BuyTickets($cantEntradas,$idScreening);
+            }      
+        }
+        
+        private function validateCreditCard($name,$mmyy,$number,$cvc)
+		{
+			//Validamos numeros de la tarjeta
+			$validateCard = CreditCard::validCreditCard($number);
+			if($validateCard['valid'] == false) return false;
+
+			//Validamos codigo de seguridad
+			$validateCvc = CreditCard::validCvc($cvc, $validateCard['type']);
+			if($validateCvc == false) return false;
+
+			//Validamos fecha de expiracion
+			$date = explode("/", $mmyy);
+			$validateDate = CreditCard::validDate("20".$date[1], $date[0]);
+			if(!$validateDate) return false;
+
+			//Si pasa todas las validaciones procesamos la compra
+			Validate::flash("Tu compra con tarjeta ".$validateCard['type']." fue procesada con éxito.","success");
+			return true;
 		}
-		
 
     public function BuyTickets($cantTickets,$idScreening) 
     {
