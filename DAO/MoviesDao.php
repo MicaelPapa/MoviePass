@@ -114,6 +114,9 @@ class MoviesDAO implements IMoviesDAO
 
 
 	}
+
+
+
 	public function getIsPlayingMovie($movie, $idCinema)
 	{
 		try {
@@ -131,13 +134,6 @@ class MoviesDAO implements IMoviesDAO
 		} catch (Exception $ex) {
 			throw $ex;
 		}
-	}
-
-	public function AddToDatabase($idMovieIMDB)
-	{
-		$movies = $this->getMovieDetailsFromApi($idMovieIMDB);
-		$this->moviesDAO->add($movies);
-		return true;
 	}
 
 	function remove($movies, $idCinema)

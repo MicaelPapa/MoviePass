@@ -62,7 +62,7 @@
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="';echo FRONT_ROOT. 'Profile/View"><i class="fas fa-user-alt"></i>&nbspMi Perfil</a>
                         <a class="dropdown-item" href="';echo FRONT_ROOT. 'Tickets/View"><i class="fas fa-ticket-alt"></i>&nbspMis Tickets</a>
-                        <a class="dropdown-item" href="';echo FRONT_ROOT. 'PurchaseHistory/View">><i class="fas fa-ticket-alt"></i>Compras Previas</a>
+                        <a class="dropdown-item" href="';echo FRONT_ROOT. 'PurchaseHistory/View"><i class="fas fa-ticket-alt"></i>Compras Previas</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="';echo FRONT_ROOT. 'Login/Logout"><i class="fas fa-sign-out-alt"></i>&nbspCerrar Sesión</a>
                       </div>
