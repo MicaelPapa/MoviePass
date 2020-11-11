@@ -101,6 +101,23 @@ class MovieGenreDAO implements IMovieGenreDAO
             throw $ex;
         }
     }
+    public function getGenreById($IdIMDB){
+        try {
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdIMDB = " . $IdIMDB . " ;";
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($query);
+
+            foreach ($resultSet as $row) {
+                $movieGenre = new MovieGenre();
+                $movieGenre->setId($row["IdMovieGenre"]);
+                $movieGenre->setIdIMDB($row["IdIMDB"]);
+                $movieGenre->setName($row["Name"]);
+                return $movieGenre;
+            }
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
 }
 
 ?>

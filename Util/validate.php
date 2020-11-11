@@ -27,7 +27,7 @@ class Validate
             return false;
         }
 		
-	}
+    }
 }
 
 ?>

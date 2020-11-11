@@ -231,5 +231,16 @@ class cinemaDAO implements ICinemaDAO
 		$this->connection = Connection::GetInstance();
 		return $this->connection->Execute($invokeStoredProcedure,$parameters, QueryType::StoredProcedure);
 
+	}
+
+	public function existMoviesInCinema($idCinema)
+    {
+
+        $query = "SELECT * FROM movieXcinema WHERE idCinema =" .$idCinema. " ;";
+
+        $this->connection = Connection::GetInstance();
+        $result = $this->connection->Execute($query);
+
+        return $result;
     }
 }
