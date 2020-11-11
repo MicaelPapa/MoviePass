@@ -12,16 +12,12 @@
         <div class="form-row">
             <?php require_once("alertMessage.php"); ?>
           <div class="form-group col-md-12">
-            <label for="inputNomre"><i style="color: red;">&#42&nbsp</i>Nombre</label>
-            <input type="text" id="nombre" pattern="[A-Za-z]+" class="form-control" name="nombreTarjeta" placeholder="Nombre del Titular" required>
+            <label for="inputNomre"><i style="color: red;">&#42&nbsp</i>Nombre y Apellido tal como figura en la tarjeta</label>
+            <input type="text" id="nombre" pattern="^[a-zA-Z-À-Ÿà-ÿ][A-Za-zÀ-Ÿà-ÿ ,.']+$" class="form-control" name="nombreTarjeta" placeholder="Nombre y Apellido del Titular" required>
           </div>
           <div class="form-group col-md-12">
-            <label for="inputApellido"><i style="color: red;">&#42&nbsp</i>Apellido</label>
-            <input type="text" id="apellido" pattern="[A-Za-z]+" class="form-control" name="apellidoTarjeta" placeholder="Apellido del Titular" required>
-          </div>
-          <div class="form-group col-md-12">
-            <label for="inputNumero"><i style="color: red;">&#42&nbsp</i>Numero</label>
-            <input type="number" min=1000000000000000 id="numero" max=9999999999999999 class="form-control" name="numeroTarjeta"  placeholder="Numero" required>
+            <label for="inputNumero"><i style="color: red;">&#42&nbsp</i>Número</label>
+            <input type="number" min=1000000000000000 id="numero" max=9999999999999999 class="form-control" name="numeroTarjeta"  placeholder="Número" required>
           </div>
           <div class="form-group col-md-12">
             <label for="inputCVC"><i style="color: red;">&#42&nbsp</i>Codigo de seguridad</label>
@@ -30,7 +26,7 @@
           <div class="form-group col-md-12">
             <label for="inputDate"><i style="color: red;">&#42&nbsp</i>Vencimiento</label>
               <input type="number" id="month" name="month" placeholder="MM" max=12 min=01 required> /
-              <input type="number" od="year" name="year" placeholder="YYYY" maxlength=2100 min=2020 required>
+              <input type="number" od="year" name="year" placeholder="YY" max=99 min=20 required>
           </div>
         </div>
         <input type="hidden" name="cantEntradas"  value="<?php echo $cantEntradas; ?>" >
@@ -53,25 +49,15 @@
       document.getElementById("vencimiento").value = [document.getElementById("vencimiento").value.slice(0, 2), "/", document.getElementById("vencimiento").value.slice(2)].join('');
       }
    }
-
       var nombre = document.getElementById("nombre");
-        nombre.addEventListener("keyup", function (event) {
-        if (nombre.validity.patternMismatch) {
-          nombre.setCustomValidity("Ingrese un nombre válido.");
-        } else {
-          nombre.setCustomValidity("");
+      nombre.addEventListener("keyup", function (event) {
+      if (nombre.validity.patternMismatch) {
+      nombre.setCustomValidity("Ingrese un nombre válido.");
+      } else {
+        nombre.setCustomValidity("");
         }
       });
 
-      var apellido = document.getElementById("apellido");
-      apellido.addEventListener("keyup", function (event) {
-      if (apellido.validity.patternMismatch) {
-        apellido.setCustomValidity("Ingrese un apellido válido.");
-      } else {
-        apellido.setCustomValidity("");
-      }
-      });
-   
       var numero = document.getElementById("numero");
       numero.addEventListener("keyup", function (event) {
       if (numero.validity.rangeOverflow || numero.validity.rangeUnderflow) {

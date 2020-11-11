@@ -1,6 +1,6 @@
-<?php require_once("navbar.php"); 
+<?php require_once("navbar.php"); ?>
+<?php require_once("alertMessage.php"); ?>
 
-?>
 
 <div class="container">
   <!-- Inicio Index -->
@@ -10,7 +10,7 @@
     </div>
     <!-- form-->
     <div class="col-md-10">
-      <form action="<?php echo FRONT_ROOT ?>Purchase/ViewCreditCard" method="post"> //debe ir a la validacion de la tarjeta
+      <form action="<?php echo FRONT_ROOT ?>Purchase/ViewCreditCard" method="post">
         <div class="form-row">
           <div class="form-group col-md-12">
             <p class="titleData" style="font-size: 24px"><label for="inputPelicula"><br>Película: <?php echo $screening->getMovie()->getMovieName(); ?></label></p>
@@ -29,9 +29,9 @@
           </div>
           <div class="form-group col-md-12">
               <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Sub-Total(sin descuentos):</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $screening->getPrice(); ?></p></p>
-            
-           
-            <input type="hidden" name="idScreening"  value="<?php echo $screening->getIdScreening(); ?>" >
+              <input type="hidden" name="idScreening"  value="<?php echo $screening->getIdScreening(); ?>" >
+              <input type="hidden" name="alertMessage" value="" />
+              <input type="hidden" name="alertType" value="" />
           </div>
         </div>
 
