@@ -11,18 +11,15 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6">
-                                <p class="card-text">Cliente: <?php echo($order['UserName']) ?> </p><br>
-                                <p class="card-text">Complejo: <?php echo($order['cinemaname']) ?> </p><br>
-                                <p class="card-text">Dirección: <?php echo($order['CinemaAddress'])?> </p><br>
-                                <p class="card-text">Sala: <?php echo($order['roomnumber']) ?> </p><br>
-                                <p class="card-text">Fecha: <?php echo($order['startdate']) ?> </p><br>
+                                <p class="card-text">Cine: <?php echo $order->getScreening()->getCinema()->getCinemaName(); ?> </p><br>
+                                <p class="card-text">Sala: <?php echo $order->getScreening()->getRoom()->getRoomNumber(); ?> </p><br>
+                                <p class="card-text">Fecha: <?php echo date_format(date_create($order->getScreening()->getStartDate()),"d/m/Y");?> <?php $date = date_create($order->getScreening()->getStartHour()); echo date_format($date,'h:i:a'); ?> </p><br>
                             </div>
                             <div class="col-sm-6">
-                                <p class="card-text">Pelicula: <?php echo($order['moviename'] . " " . $order['MovieLanguage']) ?> </p><br>
-                                <p class="card-text">Butacas: <?php echo($order['seats']) ?> </p><br>
-                                <p class="card-text">Descuento: <?php echo($order['Discount']) ?> </p><br>
-                                <p class="card-text">SubTotal: <?php echo($order['Subtotal']) ?> </p><br>
-                                <p class="card-text">Total: <?php echo($order['Total']) ?> </p><br>
+                                <p class="card-text">Pelicula: <?php echo $order->getScreening()->getMovie()->getMovieName(); ?> </p><br>
+                                <p class="card-text">SubTotal: <?php echo $order->getSubTotal(); ?> </p><br>
+                                <p class="card-text">Descuento: <?php echo $order->getDiscount(); ?>%</p><br>
+                                <p class="card-text">Total: <?php echo $order->getTotal(); ?> </p><br>
                             </div>
                         </div>
                     </div>

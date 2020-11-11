@@ -2,27 +2,16 @@
 
 namespace DAO;
 
+use Models\Screening as Screening;
+use Models\User as User;
+use Models\Purchase as Purchase;
 use DAO\Connection as Connection;
 use Interfaces\ITicketsDAO as ITicketsDAO;
 
 class TicketsDAO implements ITicketsDAO
 {
     private $connection;
-    private $tableName = "tickets";
-
-    public function LoadOrders($userId, $todayDate) //Carga historial de  compras de un usuario
-    {
-        $invokeStoredProcedure = 'CALL GetOrdersByUser(?,?)';
-        $parameters["UserId"] = $userId;
-        $parameters["TodayDate"] = $todayDate; //Cuando viene en null trae todas las compras historicamente
-
-        $this->connection = Connection::GetInstance();
-        
-        $result =  $this->connection->Execute($invokeStoredProcedure, $parameters, QueryType::StoredProcedure);
-
-        return $result;
-
-    }
+    private $tableName = "orders";
 
     public function BuyTickets($screening,$cantTickets)
     {
@@ -42,29 +31,30 @@ class TicketsDAO implements ITicketsDAO
         }
     }
 
-    public function GetCinemaCapacity($idFuncion)
-    {
-        $invokeStoredProcedure = 'CALL GetCapacityPerScreening(?)';
-        $parameters["IdFuncion"] = $idFuncion;
-        $this->connection = Connection::GetInstance();
-        return $this->connection->Execute($invokeStoredProcedure, $parameters, QueryType::StoredProcedure);
-    }
 
-    public function GetSeatsFromTickets($idOrder)
-    {
-        $seats = "";
-        $query = "SELECT tickets.idseatrow,tickets.idseatcol FROM " . $this->tableName .
-            " WHERE tickets.idorder = :OrderId";
+    public function getTicketsByUser($idUser){
+        try{
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdUser = " . $idUser . " ;";
+            $this->connection = Connection::GetInstance();
+            $resultList = $this->connection->Execute($query); 
+            $results = array();
 
-        $parameters["OrderId"] = $idOrder;
-
-        $this->connection = Connection::GetInstance();
-        $result = $this->connection->Execute($query, $parameters, QueryType::Query);
-
-        foreach ($result as $item) {
-            $seats += $item;
-        }
-
-        return $seats;
+            foreach ($resultList as $row) {
+				$purchase = new Purchase();
+				$purchase->setIdPurchase($row["IdOrder"]);
+				$purchase->setSubTotal($row["SubTotal"]);
+				$purchase->setTotal($row["Total"]);
+				$purchase->setDate($row["DatePurchase"]);
+                $purchase->setDiscount($row["Discount"]);
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+                $purchase->setScreening($screening);
+				$purchase->setCantTickets($row["cantTickets"]);
+                array_push($results, $purchase);
+            }  
+            return $results;      
+        } catch (Exception $ex) {
+			    return null;
+            }
     }
 }
