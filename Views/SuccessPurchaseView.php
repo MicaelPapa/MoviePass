@@ -35,7 +35,7 @@
               <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $purchase->getTotal(); ?></p></p>
           </div>
         </div>
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>&nbspContinuar</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-arrow-right"></i>&nbspContinuar</button>
       </form>
       <!-- form -->
     </div>
