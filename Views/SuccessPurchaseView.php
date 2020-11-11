@@ -29,13 +29,8 @@
           </div>
           <div class="form-group col-md-12">
               <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $purchase->getTotal(); ?></p></p>
-            
-           
-         
           </div>
         </div>
-
-        <button type="button" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbspVolver</button>
         <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>&nbspContinuar</button>
       </form>
       <!-- form -->
