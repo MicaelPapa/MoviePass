@@ -116,6 +116,7 @@ create table Screenings (
     IdScreening int AUTO_INCREMENT,
     IdMovieIMDB int not null,
 	IdMovie int,
+    RemainTickets int,
     StartDate datetime not null,
     LastDate datetime not null,
     StartHour DATETIME NOT NULL,

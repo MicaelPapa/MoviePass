@@ -110,58 +110,17 @@ class PurchaseController
             }
     }
 
-    public function ViewCreditCard($cantEntradas, $precioTotal){
+    public function ViewCreditCard($cantEntradas, $idScreening){
+        $cantEntradas = $cantEntradas;
+        $idScreening = $idScreening;
         require_once(VIEWS_PATH . "creditCardView.php");
     }
 
-    public function VerifyCreditCard(){
-        $hoy = date("Y-m-d");
-        $fechaVencimiento = $_POST['vencimiento'];
-        if ($hoy <= $fechaVencimiento) {
-            $numero = $_POST['numeroTarjeta'];
-
-            if(preg_match("/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|622((12[6-9]|1[3-9][0-9])|([2-8][0-9][0-9])|(9(([0-1][0-9])|(2[0-5]))))[0-9]{10}|64[4-9][0-9]{13}|65[0-9]{14}|3(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})*$/", $numero)){
-                $this->BuyTickets();
-            }
-            else {
-                $alertMessage = "EL numero ingresado es incorrecto";
-                $this->ViewCreditCard($alertMessage);
-            }
-        }
-        else {
-            $alertMessage = "La fecha de vencimiento es incorrecta";
-            $this->ViewCreditCard($alertMessage);
-        }
-
-        if(!$this->validatePay($name,$mmyy,$number,$cvc))
-        {			
-            $params = array();
-            array_push($params,$idFuncion);
-            array_push($params,$cantidad);
-            Functions::flash("Los datos de la tarjeta son incorrectos.","warning");
-            Functions::redirect("Compra","Pay",$params);
-        }
-
-    }
-
-    private function validatePay($name,$mmyy,$number,$cvc)
+    public function ValidatePay($name,$apellido,$number,$cvc,$month,$year,$cantEntradas,$idScreening)
 		{
-			//Validamos numeros de la tarjeta
-			$validateCard = CreditCard::validCreditCard($number);
-			if($validateCard['valid'] == false) return false;
-
-			//Validamos codigo de seguridad
-			$validateCvc = CreditCard::validCvc($cvc, $validateCard['type']);
-			if($validateCvc == false) return false;
-
-			//Validamos fecha de expiracion
-			$date = explode(" / ", $mmyy);
-			$validateDate = CreditCard::validDate("20".$date[1], $date[0]);
-			if(!$validateDate) return false;
-
-			//Si pasa todas las validaciones procesamos la compra
-			Functions::flash("Tu compra con tarjeta ".$validateCard['type']." fue procesada con éxito.","success");
-			return true;
+            $cantEntradas = $cantEntradas;
+            $idScreening = $idScreening;
+            $this->BuyTickets($cantEntradas,$idScreening);           
 		}
 		
 
