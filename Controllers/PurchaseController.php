@@ -153,7 +153,6 @@ class PurchaseController
 			if(!$validateDate) return false;
 
 			//Si pasa todas las validaciones procesamos la compra
-			Validate::flash("Tu compra con tarjeta ".$validateCard['type']." fue procesada con éxito.","success");
 			return true;
 		}
 
