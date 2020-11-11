@@ -48,7 +48,7 @@ select * from Screenings  where  IdMovieIMDB = 724989 and  StartDate = 2020-11-0
 select * from Screenings where IdMovieIMDB = 724989 and IdRoom != 25 and IdCinema = 13 ;
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-04' and (( CAST('2020-11-04 01:32:00' AS  DATETIME) between StartHour AND finishhour) or (CAST('2020-11-04 03:17:00' AS  DATETIME) between StartHour AND finishhour)); /*nueva*/
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-05'  and ( (CAST('2020-11-04 01:30:00' AS  DATETIME) between StartHour and finishHour) or (CAST('2020-11-04 03:25:00' AS  DATETIME) between StartHour and finishHour) ) ;
-
+ALTER TABLE `orders` ADD `cantTickets` INT NOT NULL AFTER `IdScreening`;
 /*BEGIN
 
 select    // ID ORDER, SUBTOTAL, TOTAL, HORA DE LA PELICULA, NOMBRE SALA, NOMBRE PELICULA,  SUBTITULOS, NOMBRE DE CINE, DIRECCION DEL CINE, NOMBRE DEL USUARIO//
@@ -81,7 +81,11 @@ END*/
 select * from screenings;
 
 CALL BuyTickets(3,69,1,150);
+
+
+
  select * from orders;
+ 
 select * from Screenings where  IdMovieIMDB = 724989 and StartHour between CAST('23:02' AS  DATE) and CAST('00:47' AS  DATE);
 describe screenings;
 

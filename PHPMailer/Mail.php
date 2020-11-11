@@ -31,7 +31,7 @@ class Mail
 
     public static function SendConfirmationCode($name, $destinationMail)
     {
-        $mail = InitEmail($destinationMail);
+        $mail = Mail::InitMail($destinationMail);
         $confirmationCode = Random :: CreateRandomNumber(20);
         
         $mail->Subject = 'Bienvenido a MoviePass ' . $name . '!';
@@ -70,6 +70,21 @@ class Mail
         return true;
     else
         return false;
+    }
 
+    public static function sendTicket($seatsCount,$destinationMail,$name,$subtotal,$cinemaName,$movieName,$roomName,$discount = 0, $date, $hour)
+    {
+        $mail = Mail::InitMail($destinationMail);
+        $total = $subtotal - $discount;
+
+        $mail->header = $cinemaName . ' Tickets';
+        $mail->Subject = $cinemaName . ' Tickets' ;
+        $mail->Body = "Pelicula: " . $movieName ."<br>Fecha y horario de la funcion: ".$date." ".$hour. "<br>Cantidad de Entradas: " . $seatsCount . "<br>SALA : " . $roomName. "<br>TOTAL: $" . $total.
+        "<br>Con Descuento del: %" . $discount . " <br><br>Cine:  " . $cinemaName . "<br>Esperamos que disfruten la pelicula " . $name . ".";
+
+        if ($mail->send())
+        return true;
+    else
+        return false;
     }
 }

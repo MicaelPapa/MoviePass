@@ -6,11 +6,11 @@
   <!-- Inicio Index -->
   <div id="box" class="row justify-content-center" style="background-color: rgba(255, 255, 255, 0.5);">
     <div class="col-md-10 text-center m-auto">
-      <h1 class="" id="cinemaTitle"><i class="fas fa-shopping-cart"></i>&nbsp;</i>Comprar Entradas</h1>
+      <h1 class="" id="cinemaTitle"><i class="fas fa-shopping-cart"></i>&nbsp;</i>Resumen de compra</h1>
     </div>
     <!-- form-->
     <div class="col-md-10">
-      <form action="<?php echo FRONT_ROOT ?>Purchase/ViewCreditCard" method="post"> //debe ir a la validacion de la tarjeta
+      <form action="<?php echo FRONT_ROOT ?>Home/Index" method=""> 
         <div class="form-row">
           <div class="form-group col-md-12">
             <p class="titleData" style="font-size: 24px"><label for="inputPelicula"><br>Película: <?php echo $screening->getMovie()->getMovieName(); ?></label></p>
@@ -25,13 +25,13 @@
             <p class="titleData" style="font-size: 24px"><label for="inputPelicula">Función: <?php echo date_format(date_create($screening->getStartDate()),"d/m/Y");?> <?php $date = date_create($screening->getStartHour()); echo date_format($date,'h:i:a'); ?></label></p>
           </div>
           <div class="form-group col-md-12">
-            <p class="titleData" style="font-size: 24px"><label for="inputCantAsientos">Cantidad de asientos</label><i style="color: red;">&#42&nbsp</i>: <input type="number" style="width: 7%; display: inline;" id="cantidadDeAsientos" onchange="onSum(<?php echo $screening->getPrice(); ?>)" name="inputCantAsientos"  max="<?php echo $screening->getRemainTickets(); ?>" min="1" class="form-control" value="1" required></p>
+            <p class="titleData" style="font-size: 24px"><label for="inputCantAsientos">Cantidad de entradas:</label><i style="color: red;"></i><?php echo $purchase->getCantTickets(); ?></p>
           </div>
           <div class="form-group col-md-12">
-              <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Sub-Total(sin descuentos):</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $screening->getPrice(); ?></p></p>
+              <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $purchase->getTotal(); ?></p></p>
             
            
-            <input type="hidden" name="idScreening"  value="<?php echo $screening->getIdScreening(); ?>" >
+         
           </div>
         </div>
 
@@ -45,15 +45,7 @@
 </div>
 
 
-<script>
- 
-   function onSum($precio) {
-    document.getElementById("precio").textContent =" " + $precio * document.getElementById("cantidadDeAsientos").value;
-    document.getElementById("precioTotal").value = $precio * document.getElementById("cantidadDeAsientos").value;
-}
 
-
-</script>
 
 <style>
   #box {
