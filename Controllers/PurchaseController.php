@@ -186,8 +186,8 @@ class PurchaseController
 
     public function successPurchase($purchase,$screening)
     {
-      
         $purchase = $this->PurchaseDAO->getPurchase($purchase);
+        Mail::sendTicket($purchase->getCantTickets(),$_SESSION['User']['Email'],$_SESSION['User']['UserName'],$purchase->getSubTotal(),$screening->getCinema()->getCinemaName(),$screening->getMovie()->getMovieName(),$screening->getRoom()->getRoomNumber(),$purchase->getDiscount());
 
         require_once(VIEWS_PATH. "SuccessPurchaseView.php");
     }
