@@ -21,7 +21,7 @@
           </div>
           <div class="form-group col-md-12">
             <label for="inputNumero"><i style="color: red;">&#42&nbsp</i>Numero</label>
-            <input type="number" min=10000000 id="numero" max=99999999 class="form-control" name="numeroTarjeta"  placeholder="Numero" required>
+            <input type="number" min=1000000000000000 id="numero" max=9999999999999999 class="form-control" name="numeroTarjeta"  placeholder="Numero" required>
           </div>
           <div class="form-group col-md-12">
             <label for="inputCVC"><i style="color: red;">&#42&nbsp</i>Codigo de seguridad</label>
@@ -29,8 +29,8 @@
           </div>
           <div class="form-group col-md-12">
             <label for="inputDate"><i style="color: red;">&#42&nbsp</i>Vencimiento</label>
-              <input type="number" id="month" name="month" placeholder="MM" max=12 min=01 /> /
-              <input type="number" od="year" name="year" placeholder="YYYY" maxlength=2100 min=2020 />
+              <input type="number" id="month" name="month" placeholder="MM" max=12 min=01 required> /
+              <input type="number" od="year" name="year" placeholder="YYYY" maxlength=2100 min=2020 required>
           </div>
         </div>
         <input type="hidden" name="cantEntradas"  value="<?php echo $cantEntradas; ?>" >
@@ -74,7 +74,7 @@
    
       var numero = document.getElementById("numero");
       numero.addEventListener("keyup", function (event) {
-      if (numero.validity.rangeOverflow) {
+      if (numero.validity.rangeOverflow || numero.validity.rangeUnderflow) {
         numero.setCustomValidity("Ingrese un número de tarjeta válido (debe ser de 16 dígitos).");
       } else {
         numero.setCustomValidity("");

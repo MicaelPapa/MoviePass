@@ -116,11 +116,11 @@ class PurchaseController
         require_once(VIEWS_PATH . "creditCardView.php");
     }
 
-    private function ValidatePay($name,$number,$cvc,$month,$year,$cantEntradas,$idScreening)
+    public function ValidatePay($name,$apellido,$number,$cvc,$month,$year,$cantEntradas,$idScreening)
 		{
             $cantEntradas = $cantEntradas;
             $idScreening = $idScreening;
-            $this->BuyTickets($cantTickets,$idScreening);           
+            $this->BuyTickets($cantEntradas,$idScreening);           
 		}
 		
 
