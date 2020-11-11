@@ -21,24 +21,7 @@ require_once("navbar.php");
                             <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" name="cinemaName" required>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputProvincia"><i style="color: red;">&#42&nbsp</i>Provincia</label>
-                            <select id="inputProvincia" class="form-control" required>
-                                <option selected>Elije una</option>
-                                <?php 
-                                    foreach ($states as $state) {
-                                        echo ('<option value="' . $state->getIdState() . '">' . $state->getStateName() . '</option>');
-                                    } 
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputCiudad"><i style="color: red;">&#42&nbsp</i>Ciudad</label>
-                            <select id="inputCiudad" class="form-control" name="cityId" required>
-                            </select>
-                        </div>
-                    </div>
+                
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-6">
                             <label for="inputDireccion"><i style="color: red;">&#42&nbsp</i>Dirección</label>
@@ -71,74 +54,6 @@ require_once("navbar.php");
 
 
 </body>
-
-<script>
-  
-   
-  $(document).ready(function(){
-  
-    $("#inputCiudad").prop('disabled', true);
-
-    function loadCities(provincia, datos){
-
-        var url = <?php echo FRONT_ROOT ?> + "Cinema/LoadCities";        
-        var ciudades = $("#inputCiudad");
-
-        if(provincia.val() != '') {
-
-          $.ajax({ 
-            url: url,
-            method: 'POST',
-            data: datos,
-            context: 'document.body',
-            beforeSend: function () 
-            {
-                provincia.prop('disabled', true);
-            },
-            success:  function (r) 
-            {
-                provincia.prop('disabled', false);
-                // Limpiamos el select
-                ciudades.find('option').remove();
-                ciudades.append("<option value=''>Elija una...</option>");
-
-                var jsonText = r.substring(r.indexOf('$')+1 ,r.indexOf('%'));
-                var json = JSON.parse(jsonText);
-                
-                $(json).each(function(i, v){ 
-                    ciudades.append('<option value="' + v.IdCity + '">' + v.CityName + '</option>');
-                })
-
-                ciudades.prop('disabled', false);
-            },
-            error: function(jqXHR, textStatus )
-            {
-                alert('Ocurrio un error en el servidor: ' + textStatus);
-                provincia.prop('disabled', false);
-            }
-
-          });
-        }  
-        else
-        {
-            ciudades.find('option').remove();
-            ciudades.prop('disabled', true);
-        }
-    }
-
-    $('#inputProvincia').change(function() {
-
-      var id = $(this).val();
-      var datos = { idState: id };
-      var provincia = $("#inputProvincia");
-
-      loadCities(provincia, datos);
-
-    });
-
-  });
-
-</script>
 
 
 <style>

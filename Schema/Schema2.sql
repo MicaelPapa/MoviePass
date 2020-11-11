@@ -116,7 +116,6 @@ create table Screenings (
     IdScreening int AUTO_INCREMENT,
     IdMovieIMDB int not null,
 	IdMovie int,
-    RemainTickets int,
     StartDate datetime not null,
     LastDate datetime not null,
     StartHour DATETIME NOT NULL,
@@ -127,6 +126,7 @@ create table Screenings (
     Subtitles varchar(20),
     Audio varchar(20) not null,
     Dimension varchar(20) not null,
+    RemainTickets int,
     constraint Pk_Screenings primary key (IdScreening),
     constraint Fk_Movie foreign key (IdMovieIMDB)
         references Movies (IdMovieIMDB),
@@ -277,15 +277,6 @@ BEGIN
  END $$
 DELIMITER ;
 
-DELIMITER $$
-CREATE PROCEDURE GetCapacityPerScreening(IdFuncion int)
-BEGIN
-
-select Capacity from screenings where IdScreening = IdFuncion;
-
-END $$
-DELIMITER ;
-
 
 /*Inserts*/
 insert into genders(GenderName) values('Female'),('Male'),('Other');
@@ -297,6 +288,11 @@ insert into rooms(RoomNumber,CinemaId,Capacity) values ('Sala Ambassador 1',1,40
 /* user: admin@gmail.com, password: admin */
 insert into Users(UserName,Email,UserPassword,IdGender,Photo,BirthDate,IsAdmin,ChangedPassword) 
 values('admin','admin@gmail.com','d033e22ae348aeb5660fc2140aec35850c4da997',2,'/MoviePass/Views/img/boy-1.png',now(),1,0);
+
+/*INSERT USUARIO NORMAL*/
+/* user : usuario@gmail.com password: pass*/
+insert into Users(UserName,Email,UserPassword,IdGender,Photo,BirthDate,IsAdmin,ChangedPassword) 
+values('generico','usuario@gmail.com','9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684',2,'/MoviePass/Views/img/boy-1.png','1996-11-03',0,0);
 
 /* EJEMPLOS TARJETAS DE CREDITO
 VISA:
@@ -315,13 +311,6 @@ Maestro:
 
 
 
-/*insert into tickets(price,idroom,idseatrow,idseatcol,idorder) values(1,1,1,1,1),(1,1,1,1,2),(1,1,1,1,3);
-insert into orders(subtotal,total,datepurchase,discount,iduser,idscreening) values(1,1,now(),1,1,1),(1,1,now(),1,1,2),(1,1,now(),1,1,3);
-insert into screenings(idmovie,startdate,lastdate,starthour,finishhour,price,idroom,capacity,idcinema,subtitles,audio,dimension)
-values(1,now(),now(),hour(now()),hour(now()),1,1,1,1,1,1,1),(2,now(),1,1,1,1,1),(3,now(),1,1,1,1,1);
-insert into movies(idmovieimdb,moviename,duration,synopsis,releasedate,photo,earnings,budget,originallanguage,isplaying) 
-values(1,'Rambo',1,"Una peli",now(),'asd',1,1,"spanish",1),(1,'Malefica',1,"Una peli",now(),'asd',1,1,"spanish",1),
-(1,'Duro de Matar',1,"Una peli",now(),'asd',1,1,"spanish",1);*/
 
 
 

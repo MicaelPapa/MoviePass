@@ -57,7 +57,7 @@ class MoviesController
 		}
 
 		$this->ShowApiMovies("La pelicula se ha agregado correctamente", "success",null,null, $idCinema);
-	//	$screeningHelper->View($movie->getIdMovieIMDB());
+	
 	}
 
 

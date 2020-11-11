@@ -1,15 +1,6 @@
 use moviepassdb;
 
 
-create table movieXcinema (
-	idmovieXcinema int not null auto_increment,
-	idCinema int,
-	idMovie int,
-	
-	constraint pkmovieXcinema primary key (idmovieXcinema),
-	constraint fk_idCinema foreign key (idCinema) references cinemas(idCinema),
-	constraint fk_idMovie foreign key  (idMovie) references movies(idMovie)
-);
 
 select * from moviexcinema WHERE IdMovieIMDB = 635302 AND idCinema = 13;
 select * from movies ;
@@ -48,7 +39,7 @@ select * from Screenings  where  IdMovieIMDB = 724989 and  StartDate = 2020-11-0
 select * from Screenings where IdMovieIMDB = 724989 and IdRoom != 25 and IdCinema = 13 ;
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-04' and (( CAST('2020-11-04 01:32:00' AS  DATETIME) between StartHour AND finishhour) or (CAST('2020-11-04 03:17:00' AS  DATETIME) between StartHour AND finishhour)); /*nueva*/
 select * from Screenings where  IdMovieIMDB = 724989 and StartDate = '2020-11-05'  and ( (CAST('2020-11-04 01:30:00' AS  DATETIME) between StartHour and finishHour) or (CAST('2020-11-04 03:25:00' AS  DATETIME) between StartHour and finishHour) ) ;
-ALTER TABLE `orders` ADD `cantTickets` INT NOT NULL AFTER `IdScreening`;
+ALTER TABLE `screenings` ADD `RemainTickets` INT;
 /*BEGIN
 
 select    // ID ORDER, SUBTOTAL, TOTAL, HORA DE LA PELICULA, NOMBRE SALA, NOMBRE PELICULA,  SUBTITULOS, NOMBRE DE CINE, DIRECCION DEL CINE, NOMBRE DEL USUARIO//
