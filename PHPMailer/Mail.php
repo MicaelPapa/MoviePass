@@ -72,15 +72,15 @@ class Mail
         return false;
     }
 
-    public static function sendTicket($seatsCount,$destinationMail,$name,$subtotal,$cinemaName,$movieName,$roomName,$discount = 0)
+    public static function sendTicket($seatsCount,$destinationMail,$name,$subtotal,$cinemaName,$movieName,$roomName,$discount = 0, $date)
     {
         $mail = Mail::InitMail($destinationMail);
         $total = $subtotal - $discount;
 
         $mail->header = $cinemaName . ' Tickets';
         $mail->Subject = $cinemaName . ' Tickets' ;
-        $mail->Body = "Movie: " . $movieName . "<br>Seats count: " . $seatsCount . "<br>Room: " . $roomName. "<br>Total: $" . $total.
-        "<br>Discount: $" . $discount . " <br><br>From " . $cinemaName . " we wish you enjoy the movie Mr/Mrs " . $name . ".";
+        $mail->Body = "Pelicula: " . $movieName ."<br>Fecha y horario de la funcion: ".$date. "<br>Cantidad de Entradas: " . $seatsCount . "<br>SALA : " . $roomName. "<br>TOTAL: $" . $total.
+        "<br>Con Descuento del: %" . $discount . " <br><br>Cine:  " . $cinemaName . "<br>Esperamos que disfruten la pelicula " . $name . ".";
 
         if ($mail->send())
         return true;
