@@ -76,7 +76,7 @@
                             <p class="card-text">Compre entradas para las mejores películas.</p>
                         </div>
                         <div class="card-body">
-                            <a href="<?php echo FRONT_ROOT. 'Purchase/View'?>" class="btn btn-primary btn-block">Comprar Entradas</a>
+                            <a href="<?php echo FRONT_ROOT ?> Movies/ShowDataBaseMovies?Type=null&filter=null"  class="btn btn-primary btn-block">Comprar Entradas</a>
                         </div>
                     </div>
                 </div>
