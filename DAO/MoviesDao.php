@@ -114,6 +114,9 @@ class MoviesDAO implements IMoviesDAO
 
 
 	}
+
+
+
 	public function getIsPlayingMovie($movie, $idCinema)
 	{
 		try {

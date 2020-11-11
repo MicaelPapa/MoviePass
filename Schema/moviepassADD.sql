@@ -80,7 +80,6 @@ END*/
 
 select * from screenings;
 
-CALL BuyTickets(3,69,1,150);
 
 
 
