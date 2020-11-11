@@ -8,8 +8,9 @@ use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
 use DAO\PurchaseDAO as PurchaseDAO;
-
 use Models\Screening as Screening;
+use Models\Purchase as Purchase;
+use PHPMailer\Mail as Mail;
 
 class PurchaseController
 {
@@ -34,14 +35,14 @@ class PurchaseController
 
     {
         if (isset($_SESSION['isLogged'])) {
-            $screening = $this->LoadScreeningToPuchase($idScreening);
+            $screening = $this->LoadScreeningToPurchase($idScreening);
             require_once(VIEWS_PATH . "PurchaseView.php");
         } else {
             require_once(VIEWS_PATH . "LoginView.php");
         }
     }
 
-    public function LoadScreeningToPuchase($idScreening)
+    public function LoadScreeningToPurchase($idScreening)
     {
         $screening = new Screening();
 
@@ -167,15 +168,27 @@ class PurchaseController
     public function BuyTickets($cantTickets,$idScreening) 
     {
 
-        $screening = $this->LoadScreeningToPuchase($idScreening);
+        $screening = $this->LoadScreeningToPurchase($idScreening);
 
         if (isset($_SESSION['isLogged'])) {
             if (count($_POST, COUNT_NORMAL) > 0) {
-                $this->PurchaseDAO->BuyTickets($screening, $_SESSION['User']['IdUser'],$cantTickets);
-                HomeController::Index(); // tiene que mandarte a vista intermedia con compra exitosa/ email enviado
+                $purchase = new Purchase();
+                $purchase->setIdPurchase($this->PurchaseDAO->BuyTickets($screening, $_SESSION['User']['IdUser'],$cantTickets)); 
+                if($purchase->getIdPurchase())
+                {   
+                    $this->successPurchase($purchase,$screening);
+                }
             }
         } else {
             require_once(VIEWS_PATH . "LoginView.php");
         }
+    }
+
+    public function successPurchase($purchase,$screening)
+    {
+      
+        $purchase = $this->PurchaseDAO->getPurchase($purchase);
+
+        require_once(VIEWS_PATH. "SuccessPurchaseView.php");
     }
 }
