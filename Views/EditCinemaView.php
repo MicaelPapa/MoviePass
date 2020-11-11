@@ -21,40 +21,6 @@ require_once("navbar.php");
                             <input value="<?php echo $cine->getCinemaName();?>" type="text" class="form-control" id="inputNombre" placeholder="Nombre" name="cinemaName" required>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputProvincia"><i style="color: red;">&#42&nbsp</i>Provincia</label>
-                            <select id="inputProvincia" class="form-control" >
-                                <option value="">Elije una</option>
-                               <?php 
-                                    /*foreach ($states as $state) {
-                                        if($stateM->getIdState() == $state->getIdState()){
-                                            echo ('<option selected value="' . $state->getIdState() . '">' . $state->getStateName() . '</option>');
-                                        }
-                                        else {
-                                            echo ('<option value="' . $state->getIdState() . '">' . $state->getStateName() . '</option>');
-                                        }                                        
-                                    } */
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputCiudad"><i style="color: red;">&#42&nbsp</i>Ciudad</label>
-                            <select id="inputCiudad" class="form-control" name="cityId" >
-                                <option value="">Elije una</option>
-                                <?php 
-                                    foreach ($cities as $city) {
-                                        if($cityM->getIdCity() == $city->getIdCity()){
-                                            echo ('<option selected value="' . $city->getIdCity() . '">' . $city->getCityName() . '</option>');
-                                        }
-                                        else {
-                                            echo ('<option value="' . $city->getIdCity() . '">' . $city->getCityName() . '</option>');
-                                        }                                        
-                                    } 
-                                ?>
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-6">
                             <label for="inputNombre"><i style="color: red;">&#42&nbsp</i>Dirección</label>

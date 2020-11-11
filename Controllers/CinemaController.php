@@ -46,7 +46,6 @@ class CinemaController
     {
          if (Validate::Logged() && Validate::AdminLog()) {
         
-            $states = $this->LoadStates();
             require_once(VIEWS_PATH."AddCinemaView.php");
      
          } else {
@@ -132,7 +131,7 @@ class CinemaController
         }
     }
 
-    public function Update($cinemaName, $cityId, $street, $number, $idCinema)
+    public function Update($cinemaName, $street, $number, $idCinema)
     {
      
            //validar admin 
@@ -146,9 +145,6 @@ class CinemaController
             $address->setNumberStreet($number);
             $idAddress = $this->AddressDAO->Add($address);
             $address->setIdAddress($idAddress);
-      //      $address->setIdCity($cityId);
-          
-           // $cinema = $this->cinemaDAO->GetCinemaById($idCinema);
                
             $this->CinemaDAO->UpdateCinema($idCinema, $cinemaName, $address);
 

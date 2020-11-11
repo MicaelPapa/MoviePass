@@ -17,11 +17,10 @@ class cinemaDAO implements ICinemaDAO
 	{
 		try {
 			
-			$query = "INSERT INTO addresses (Street, NumberStreet, IdCity ) VALUES (:Street, :NumberStreet, /*:IdCity*/null)";
+			$query = "INSERT INTO addresses (Street, NumberStreet) VALUES (:Street, :NumberStreet)";
 
 			$parameters ["Street"] = $address->getStreet();
 			$parameters ["NumberStreet"] = $address->getNumberStreet();
-			//$parameters ["IdCity"] = $address->getIdCity();
 			
 			$this->connection = Connection::GetInstance();
 			$this->connection->ExecuteNonQuery($query, $parameters);
