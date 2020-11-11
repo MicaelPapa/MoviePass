@@ -22,8 +22,7 @@ class User
                 $this->gender = $gender;
                 $this->photo = $photo;
         }
-
-
+      
         public function getIdUser()
         {
                 return $this->idUser;
