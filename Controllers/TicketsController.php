@@ -38,11 +38,11 @@ class TicketsController
 
     private function LoadOrders()
     {
-        $Orders = $this->ticketDAO->getTicketsByUser($_SESSION['User']['IdUser']);
-        foreach ($Orders as $order) {
+        $tickets = $this->ticketDAO->getTicketsByUser($_SESSION['User']['IdUser']);
+        foreach ($tickets as $ticket) {
             $screening = new Screening();
-            $screening = $this->LoadScreeningToTicket($order->getScreening()->getIdScreening());
-            $order->setScreening($screening);
+            $screening = $this->LoadScreeningToTicket($ticket->getScreening()->getIdScreening());
+            $ticket->setScreening($screening);
         }
         require_once(VIEWS_PATH . "TicketsView.php");
     }

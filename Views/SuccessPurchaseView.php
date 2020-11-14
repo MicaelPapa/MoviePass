@@ -29,10 +29,10 @@
             <p class="titleData" style="font-size: 24px"><label for="inputPelicula">Función: <?php echo date_format(date_create($screening->getStartDate()),"d/m/Y");?> <?php $date = date_create($screening->getStartHour()); echo date_format($date,'h:i:a'); ?></label></p>
           </div>
           <div class="form-group col-md-12">
-            <p class="titleData" style="font-size: 24px"><label for="inputCantAsientos">Cantidad de entradas:</label><i style="color: red;"></i><?php echo $purchase->getCantTickets(); ?></p>
+            <p class="titleData" style="font-size: 24px"><label for="inputCantAsientos">Cantidad de entradas:</label><i style="color: red;"></i><?php echo $order->getCantTickets(); ?></p>
           </div>
           <div class="form-group col-md-12">
-              <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $purchase->getTotal(); ?></p></p>
+              <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Total:</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $order->getTotal(); ?></p></p>
           </div>
         </div>
         <button type="submit" class="btn btn-success"><i class="fas fa-arrow-right"></i>&nbspContinuar</button>

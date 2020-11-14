@@ -3,7 +3,7 @@ namespace Interfaces;
 
 interface IPurchaseDAO
 {
-    public function BuyTickets($screening, $idUser,  $cantTickets);
+    public function BuyTickets($screening,  $cantTickets);
    
 }
 ?>

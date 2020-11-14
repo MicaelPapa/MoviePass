@@ -3,7 +3,7 @@
 
     interface ITicketsDAO
     {
-        function BuyTickets($screening,$cantTickets);
+        function LoadTickets($qr,$idUser,$screening,$idOrder,$cantTickets);
         function getTicketsByUser($idUser);
     }
 ?>

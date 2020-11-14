@@ -4,6 +4,7 @@ namespace DAO;
 
 use Interfaces\IPurchaseDAO as IPuchaseDAO;
 use Models\Purchase as Purchase;
+use Models\Order as Order;
 use Models\Screening as Screening;
 use Models\User as User;
 
@@ -12,12 +13,11 @@ class PurchaseDAO implements IPuchaseDAO
 {
     private $tableName = "orders";
 
-    public function BuyTickets($screening, $idUser, $cantTickets)
+    public function BuyTickets($screening, $cantTickets)
     {
 
 
-        $invokeStoredProcedure = 'CALL BuyTickets(?,?,?,?)';
-        $parameters["IdUser"] = $idUser;
+        $invokeStoredProcedure = 'CALL BuyTickets(?,?,?)';
         $parameters["IdFuncion"] = $screening->getIdScreening();
         $parameters["CantTickets"] = $cantTickets;
         $parameters["Price"] = $screening->getPrice();
@@ -38,21 +38,18 @@ class PurchaseDAO implements IPuchaseDAO
     public function GetPurchase($purchase)
 
     {
-        $query = " SELECT * FROM " . $this->tableName . " WHERE idOrder = ".$purchase->getIdPurchase()." ;";
+        $query = " SELECT * FROM " . $this->tableName . " WHERE idOrder = ".$purchase->getIdOrder()." ;";
 
         $this->connection = Connection::GetInstance();
         $result = $this->connection->Execute($query);
 
         foreach ($result as $value) {
-            $purchase = new Purchase();
-            $screening = new Screening();
-            $purchase->setIdPurchase($value["IdOrder"]);
+            $order = new Order();
+            $purchase->setIdOrder($value["IdOrder"]);
             $purchase->setSubTotal($value["SubTotal"]);
             $purchase->setTotal($value["Total"]);
-            $purchase->setDate($value["DatePurchase"]);
+            $purchase->setDatePurchase($value["DatePurchase"]);
             $purchase->setDiscount($value["Discount"]);
-            $screening->setIdScreening($value["IdScreening"]);
-            $purchase->setScreening($screening);
             $purchase->setCantTickets($value["cantTickets"]);
 
             return $purchase;

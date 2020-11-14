@@ -152,14 +152,23 @@ create table Orders (
     Total decimal(10 , 2 ),
     DatePurchase datetime not null,
     Discount decimal(6 , 2 ),
+    cantTickets int,
+    constraint Pk_Orders primary key (IdOrder)
+);
+
+create table Tickets (
+    IdTicket int AUTO_INCREMENT,
+    QrCode varchar(200),
     IdUser int not null,
     IdScreening int not null,
-    cantTickets int,
-    constraint Pk_Orders primary key (IdOrder),
+    IdOrder int not null,
+    constraint Pk_Ticket primary key (IdTicket),
     constraint Fk_User foreign key (IdUser)
         references Users (IdUser),
     constraint Fk_Screening foreign key (IdScreening)
-        references Screenings (IdScreening)
+        references Screenings (IdScreening),
+    constraint Fk_Order foreign key (IdOrder)
+        references Orders (IdOrder)
 );
 
 
@@ -264,15 +273,15 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
- CREATE PROCEDURE `BuyTickets`(IN `IdUser` INT, IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT) 
+ CREATE PROCEDURE `BuyTickets`( IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT) 
 
 BEGIN 
 	declare MoviePrice decimal default 0.0; declare Discount decimal default 0.0; 
 	declare LastInsertIdOrders int default 0; 
 	declare AsignedRoom int default 0;
 	insert into orders
-	(SubTotal,Total,DatePurchase,Discount,IdUser,IdScreening,cantTickets) 
-	values(Price * CantTickets, Price * CantTickets * (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 0.75 ELSE 1 END), now(), (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 25 ELSE 0 END), IdUser, IdFuncion, CantTickets); 
+	(SubTotal,Total,DatePurchase,Discount,cantTickets) 
+	values(Price * CantTickets, Price * CantTickets * (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 0.75 ELSE 1 END), now(), (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 25 ELSE 0 END), CantTickets); 
 	update screenings set RemainTickets = RemainTickets - CantTickets where idScreening = IdFuncion; 
  END $$
 DELIMITER ;
