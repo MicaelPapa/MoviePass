@@ -8,8 +8,11 @@ use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
 use DAO\PurchaseDAO as PurchaseDAO;
+use DAO\TicketsDAO as TicketsDAO;
 use Models\Screening as Screening;
 use Models\Purchase as Purchase;
+use Models\Order as Order;
+use Models\User as User;
 use PHPMailer\Mail as Mail;
 use Util\Validate;
 use Util\CreditCard;
@@ -21,7 +24,7 @@ class PurchaseController
     private $CinemasDAO;
     private $ScreeningDAO;
     private $PurchaseDAO;
-
+    private $TicketsDAO;
 
     public function __construct()
     {
@@ -31,6 +34,7 @@ class PurchaseController
         $this->ScreeningDAO = new ScreeningDAO();
         $this->PurchaseDAO = new PurchaseDAO();
         $this->RoomDAO = new RoomDAO();
+        $this->TicketsDAO = new TicketsDAO();
     }
 
     public function ViewPreSelected($idScreening,$message = "") //falta pasarle el id USer
@@ -163,11 +167,12 @@ class PurchaseController
 
         if (isset($_SESSION['isLogged'])) {
             if (count($_POST, COUNT_NORMAL) > 0) {
-                $purchase = new Purchase();
-                $purchase->setIdPurchase($this->PurchaseDAO->BuyTickets($screening, $_SESSION['User']['IdUser'],$cantTickets)); 
-                if($purchase->getIdPurchase())
+                $order = new Order();
+                $order->setIdOrder($this->PurchaseDAO->BuyTickets($screening, $cantTickets)); 
+                if($order->getIdOrder())
                 {   
-                    $this->successPurchase($purchase,$screening);
+                    $this->TicketsDAO->LoadTickets("",$_SESSION['User']['IdUser'],$screening, $order->getIdOrder(), $cantTickets);
+                    $this->successPurchase($order,$screening);
                 }
             }
         } else {
@@ -175,10 +180,14 @@ class PurchaseController
         }
     }
 
-    public function successPurchase($purchase,$screening)
+    public function successPurchase($order,$screening)
     {
-        $purchase = $this->PurchaseDAO->getPurchase($purchase);
-        Mail::sendTicket($purchase->getCantTickets(),$_SESSION['User']['Email'],$_SESSION['User']['UserName'],$purchase->getSubTotal(),$screening->getCinema()->getCinemaName(),$screening->getMovie()->getMovieName(),$screening->getRoom()->getRoomNumber(),$purchase->getDiscount(),$screening->getStartDate(),$screening->getStartHour());
+        $ticketList = $this->TicketsDAO->getTicketsByIdOrder($order);
+        $order = $this->PurchaseDAO->getPurchase($order);
+        foreach($ticketList as $ticket){
+            Mail::sendTicket($_SESSION['User']['Email'],$_SESSION['User']['UserName'],$screening->getCinema()->getCinemaName(),$screening->getMovie()->getMovieName(),$screening->getRoom()->getRoomNumber(),$screening->getStartDate(),$screening->getStartHour());
+        }
+        
 
         require_once(VIEWS_PATH. "SuccessPurchaseView.php");
     }

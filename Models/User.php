@@ -13,8 +13,9 @@ class User
         private $changedPassword;
         private $photo;
 
-        public function __construct($email, $userName, $password, $birthdate, $gender, $photo)
+        public function __construct($idUser, $email, $userName, $password, $birthdate, $gender, $photo)
         {       
+                $this->idUser = $idUser;
                 $this->email = $email;
                 $this->userName = $userName;
                 $this->password = $password;
@@ -26,6 +27,13 @@ class User
         public function getIdUser()
         {
                 return $this->idUser;
+        }
+        
+        public function setIdUser()
+        {
+                $this->idUser = $idUser;
+
+                return $this;
         }
 
         /**

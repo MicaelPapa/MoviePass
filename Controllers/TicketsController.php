@@ -26,24 +26,41 @@ class TicketsController
         $this->RoomDAO = new RoomDAO();
     }
 
-    public function View()
+    public function View($orderType)
     {
         if(isset($_SESSION['isLogged'])){
-            $this->LoadOrders();
+            $this->LoadOrders($orderType);
         }
         else {
             require_once(VIEWS_PATH . "LoginView.php");
         }
     }
 
-    private function LoadOrders()
-    {
-        $Orders = $this->ticketDAO->getTicketsByUser($_SESSION['User']['IdUser']);
-        foreach ($Orders as $order) {
-            $screening = new Screening();
-            $screening = $this->LoadScreeningToTicket($order->getScreening()->getIdScreening());
-            $order->setScreening($screening);
+    private function LoadOrders($orderType)
+    {   
+        if($orderType === "name"){
+            $tickets = $this->ticketDAO->getTicketsOrderedByMovie($_SESSION['User']['IdUser']);
+            foreach ($tickets as $ticket) {
+                $screening = new Screening();
+                $screening = $this->LoadScreeningToTicket($ticket->getScreening()->getIdScreening());
+                $ticket->setScreening($screening);
+            } 
+        }else if($orderType === "date"){
+            $tickets = $this->ticketDAO->getTicketsOrderedByDate($_SESSION['User']['IdUser']);
+            foreach ($tickets as $ticket) {
+                $screening = new Screening();
+                $screening = $this->LoadScreeningToTicket($ticket->getScreening()->getIdScreening());
+                $ticket->setScreening($screening);
+            } 
+        }else{
+            $tickets = $this->ticketDAO->getTicketsByUser($_SESSION['User']['IdUser']);
+            foreach ($tickets as $ticket) {
+                $screening = new Screening();
+                $screening = $this->LoadScreeningToTicket($ticket->getScreening()->getIdScreening());
+                $ticket->setScreening($screening);
+            }
         }
+
         require_once(VIEWS_PATH . "TicketsView.php");
     }
 
