@@ -3,6 +3,8 @@
 <body>
     <div class="container">
     <div><h1>Tickets Adquiridos</h1></div>
+    <a href="<?php echo FRONT_ROOT?>Tickets/View?orderType=name" type="submit" class="btn btn-primary"><i class="fas fa-sort"></i>Ordenar por nombre</a>
+    <a href="<?php echo FRONT_ROOT?>Tickets/View?orderType=date" type="submit" class="btn btn-info"><i class="fas fa-sort"></i>Ordenar por fecha de compra</a>
         <div class="overflow-auto">
             <?php foreach ($tickets as $ticket) { ?>
                 <div class="card mb-3">

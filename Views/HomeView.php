@@ -90,7 +90,7 @@
                             <p class="card-text">Vea sus entradas adquiridas.</p>
                         </div>
                         <div class="card-body">
-                            <a href="<?php echo FRONT_ROOT?>Tickets/View"  class="btn btn-primary btn-block">Ver mis Tickets</a>
+                            <a href="<?php echo FRONT_ROOT?>Tickets/View?orderType=null"  class="btn btn-primary btn-block">Ver mis Tickets</a>
                         </div>
                     </div>
                 </div>

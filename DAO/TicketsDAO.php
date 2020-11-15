@@ -75,4 +75,46 @@ class TicketsDAO implements ITicketsDAO
 			    return null;
             }
     }
+    public function getTicketsOrderedByMovie($idUser){
+        try{
+            $query = "SELECT * FROM " . $this->tableName . " INNER JOIN screenings as s INNER JOIN movies as m ON s.IdScreening = tickets.IdScreening
+            AND s.IdMovie = m.IdMovie WHERE IdUser = " . $idUser . " ORDER by m.MovieName ;";
+            $this->connection = Connection::GetInstance();
+            $resultList = $this->connection->Execute($query); 
+            $results = array();
+        
+            foreach ($resultList as $row) {
+                $purchase = new Purchase();
+                $purchase->setIdPurchase($row["IdTicket"]);
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+                $purchase->setScreening($screening);
+                array_push($results, $purchase);
+                }  
+                return $results;
+        }catch (Exception $ex) {
+            return null;
+        }
+    }
+    public function getTicketsOrderedByDate($idUser){
+        try{
+            $query = "SELECT * FROM " . $this->tableName . " INNER JOIN orders WHERE IdUser = " . $idUser . " AND tickets.IdOrder = orders.IdOrder ORDER by orders.DatePurchase ;";
+            $this->connection = Connection::GetInstance();
+            $resultList = $this->connection->Execute($query); 
+            $results = array();
+        
+            foreach ($resultList as $row) {
+                $purchase = new Purchase();
+                $purchase->setIdPurchase($row["IdTicket"]);
+                $screening = new Screening();
+                $screening->setIdScreening($row["IdScreening"]);
+                $purchase->setScreening($screening);
+                array_push($results, $purchase);
+                }  
+                return $results;
+        }catch (Exception $ex) {
+            return null;
+        }
+    }
+
 }
