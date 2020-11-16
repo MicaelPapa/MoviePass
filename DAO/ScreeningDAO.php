@@ -184,7 +184,6 @@ class ScreeningDAO implements IScreeningDAO
     {
 
      
-        $cinema = new Cinema();
     
 
         try {
@@ -218,9 +217,9 @@ class ScreeningDAO implements IScreeningDAO
                 foreach ($resultSet as $row) {
 
                     $screening = new Screening();
+                    $cinema = new Cinema();
+                    $room = new Room();
                     $screening->setIdScreening($row["IdScreening"]);
-                    //  $screening->setIdMovie($row["IdMovie"]);
-                   // $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                     $screening->setStartDate($row["StartDate"]);
                     $screening->setLastDate($row["LastDate"]);
                     $screening->setDimension($row["Dimension"]);
@@ -230,10 +229,6 @@ class ScreeningDAO implements IScreeningDAO
                     $screening->setStartHour($row["StartHour"]);
                     $screening->setFinishHour($row["FinishHour"]);
                     $screening->setRemainTickets($row["RemainTickets"]);
-
-
-
-                    $room = new Room();
                     $room->setIdRoom($row["IdRoom"]);
                     $screening->setRoom($room);
                     $cinema->setIdCinema($row["IdCinema"]);
