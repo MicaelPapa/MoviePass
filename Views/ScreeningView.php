@@ -20,6 +20,8 @@
                             </span></p>
                         <p class="titleData"><i class="fas fa-clock">&nbsp</i>Duración:&nbsp<span class="textData"><?php echo $movie->getDuration() . " minutos";?>
                             </span></p>
+                            <p class="titleData"><i class="fas fa-video">&nbsp</i>Cine:&nbsp<span class="textData"><?php echo $cinema->getCinemaName();?>
+                            </span></p>
                     </div>
                     <div class="form-group col-md-3 align-self-center">
                         <button id="addScreening" class="btn btn-success btn-block btn-lg" type="button" data-toggle="modal" data-target="#editFunctionModal"
@@ -69,6 +71,7 @@
                                     </div>
                                     <div class="col-md-2 align-self-end">
                                         <a id="edit" href = "<?php echo FRONT_ROOT ?>Screening/EditScreening?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>" class="btn btn-primary" type="button" data-toggle="modal" data-target="#editFunctionModal"><i class="fas fa-edit"></i></a>
+                                        <a id="remove" href = "<?php echo FRONT_ROOT ?>Screening/RemoveFromDataBase?IdScreening=<?php echo $screening->getIdScreening(); ?>&idCinema = <?php echo $screening->getCinema()->getIdCinema();?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +111,7 @@
                     <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputFechaDesde"><i style="color: red;">&#42&nbsp</i>Hora de Inicio</label>
-                                <input type="time" min="16:00:00" max="24:00:00" class="form-control" id="inputHoraInicio" name="inputHoraInicio" placeholder="Hora de Inicio">
+                                <input type="time"  max="24:00:00" class="form-control" id="inputHoraInicio" name="inputHoraInicio" placeholder="Hora de Inicio">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputPrecio"><i style="color: red;">&#42&nbsp</i>Precio</label>
@@ -120,7 +123,6 @@
                         <div class="form-group col-md-12">
                             <label for="inputSala"><i style="color: red;">&#42&nbsp</i>Sala</label>
                             <select id="inputSala" name="inputSala" class="form-control">
-                            <option selected>Elije una</option>
                             <?php foreach ($rooms as $room) {?>
                             <option value="<?php echo $room->getIdRoom();?>"  ><?php echo $room->getRoomNumber();?></option>
                             <?php } ?>

@@ -90,4 +90,5 @@ class UserDAO implements IUserDAO
         return $this->SearchUserByEmail($user->getEmail());
     }
 
+    
 }

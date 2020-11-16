@@ -4,7 +4,6 @@ namespace Controllers;
 
 use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
-use DAO\CitiesDAO as CitiesDAO;
 use DAO\AddressDAO as AddressDAO;
 use Controllers\RoomController as RoomController;
 use Models\Movie as Movie;
@@ -14,9 +13,6 @@ use Exception;
 use Util\ApiResponse;
 use Util\Validate;
 use Controllers\HomeController as HomeController;
-use Models\City as City;
-use Models\State as State;
-use Models\Country as Country;
 use Models\Address as Address;
 
 class CinemaController
@@ -24,14 +20,13 @@ class CinemaController
 
     private $CinemaDAO;
     private $RoomDAO;
-    private $CitiesDAO;
+
     private $AddressDAO;
 
     function __construct()
     {
         $this->CinemaDAO = new CinemaDAO();
         $this->RoomDAO = new RoomDAO();
-        $this->CitiesDAO = new CitiesDAO();
         $this->AddressDAO = new AddressDAO();
     }
 

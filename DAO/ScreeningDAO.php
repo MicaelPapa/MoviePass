@@ -183,13 +183,9 @@ class ScreeningDAO implements IScreeningDAO
     public function GetScreeningsByIdMovie($movie)
     {
 
-     
-        $cinema = new Cinema();
-    
-
         try {
             $list = array();
-            $query = "SELECT * FROM " . $this->tableName . " as s INNER JOIN movieXcinema as mc ON s.idMovie = mc.idMovie  WHERE s.IdMovieIMDB = " . $movie->getIdMovieIMDB() . " ;"; //--------------------------------//
+            $query = "SELECT * FROM " . $this->tableName . " WHERE IdMovieIMDB = " . $movie->getIdMovieIMDB() . " ;"; 
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
 
@@ -217,10 +213,10 @@ class ScreeningDAO implements IScreeningDAO
 
                 foreach ($resultSet as $row) {
 
-                    $screening = new Screening();
+                    $screening = new Screening(); 
+                    $cinema = new Cinema();
+                    $room = new Room();
                     $screening->setIdScreening($row["IdScreening"]);
-                    //  $screening->setIdMovie($row["IdMovie"]);
-                   // $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                     $screening->setStartDate($row["StartDate"]);
                     $screening->setLastDate($row["LastDate"]);
                     $screening->setDimension($row["Dimension"]);
@@ -230,15 +226,10 @@ class ScreeningDAO implements IScreeningDAO
                     $screening->setStartHour($row["StartHour"]);
                     $screening->setFinishHour($row["FinishHour"]);
                     $screening->setRemainTickets($row["RemainTickets"]);
-
-
-
-                    $room = new Room();
                     $room->setIdRoom($row["IdRoom"]);
                     $screening->setRoom($room);
                     $cinema->setIdCinema($row["IdCinema"]);
                     $screening->setCinema($cinema);
-                    $screening->setRoom($room);
                     $screening->setMovie($movie);
                     array_push($list, $screening);
                 }
@@ -297,8 +288,8 @@ class ScreeningDAO implements IScreeningDAO
     }
 
 
-    //separa  las funciones por dia en un arreglo.
-    public function distinctScreeningPerDay($screening)
+    public function distinctScreeningPerDay($screening)  //separa  las funciones por dia en un arreglo.
+
     {
 
         $screeningList = array();
@@ -394,42 +385,36 @@ class ScreeningDAO implements IScreeningDAO
         }
     }
 
-    public function validateScreening($screening)
-    {  //valida que en la sala a la que pertenece cada funcion no haya funciones en ese horario
+    public function validateScreening($screening) //Realiza las validaciones pertinentes para poder agregar una función, devuelve un mensaje y un boolean.
+    {  
         $notExist = false;
-        $alertMessage = "";
-        $query  = "select * from " . $this->tableName . "  where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and  StartDate = " . $screening->getStartDate() . " and IdCinema != " . $screening->getCinema()->getIdCinema() . " ;"; //cine unico en ese dia
+        $alertMessage = ""; 
+        $middleTime = strtotime("+15 minutes", strtotime($screening->getFinishHour()));
+        $middleTime = date('Y-m-d H:i:s', $middleTime); //setea un entretiempo sumando 15 minutos al horario de finalizacion de la pelicula 
+   
+
+        $query  = "select * from " . $this->tableName . "  where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and  StartDate = '" . $screening->getStartDate() . "' and IdCinema != " . $screening->getCinema()->getIdCinema() . " ;"; //cine unico en ese dia
         $query2 = "select * from " . $this->tableName . " where IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and IdRoom != " . $screening->getRoom()->getIdRoom() . " AND idCinema = " . $screening->getCinema()->getIdCinema() . " ;"; //sala unica
-        $query3 =  "select * from " . $this->tableName . " where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and StartDate = '" . $screening->getStartDate() . "' and (( CAST('" . $screening->getStartHour() . "' AS  DATETIME) between StartHour AND finishhour) or (CAST('" . $screening->getFinishHour() . "' AS  DATETIME) between StartHour AND finishhour));"; //horario unico
+        $query3 =  "select * from " . $this->tableName . " where  IdMovieIMDB = " . $screening->getMovie()->getIdMovieIMDB() . " and StartDate = '" . $screening->getStartDate() . "' and (( CAST('" . $screening->getStartHour() . "' AS  DATETIME) between StartHour AND finishhour) or (CAST('" . $middleTime . "' AS  DATETIME) between StartHour AND finishhour));"; //Valida que los horarios de la funcion (+15 minutos) no se pisen
 
         $this->connection = Connection::GetInstance();
 
         $notUniqueCinema = $this->connection->Execute($query);
         $notUniqueRoom = $this->connection->Execute($query2);
         $notUniqueHour = $this->connection->Execute($query3);
-        if (!$notUniqueCinema && !$notUniqueRoom && !$notUniqueHour) //si ningun select matchea significa que la funcion no existe y ademas es valida para ser agregada.
+        if (!$notUniqueCinema && !$notUniqueRoom && !$notUniqueHour)
         {
             $notExist = true;
         } else if ($notUniqueCinema) {
             $alertMessage = "No es posible agregar una funcion en este dia debido a que ya existe en otro cine.";
         } else if ($notUniqueRoom) {
-            $alertMessage = "Por favor ingresa la sala a la cual le pertenece esta pelicula";
+            $alertMessage = "Esta pelicula le pertenece a otra Sala. Intente nuevamente";
         } else if ($notUniqueHour) {
             $alertMessage = "Ya existe una funcion para esta pelicula en el horario que queres ingresar.";
         }
 
         $validate = array();
-        //   $screeningList = $this->GetScreeningByIdRoom($screening->getIdRoom());
-
-        /*   if ($screeningList != null) {
-            foreach ($screeningList as $value) {
-                if ($value->getStartDate() == $screening->getStartDate()) {
-                    if ($value->getStartHour() == $screening->getStartHour()) {
-                        $notExist = false;
-                    }
-                }
-            }
-        } */
+   
 
         array_push($validate, $alertMessage, $notExist);
         return $validate;
