@@ -34,7 +34,7 @@ class ScreeningController
 		$rooms = array();
 		$movie = new Movies();
 		$cinema = new Cinema();
-		
+
 		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
 		$cinema = $this->cinemaDAO->GetCinemaById($idCinema);
 		$screenings = $this->GetAll($movie);
@@ -174,15 +174,11 @@ class ScreeningController
 	public function RemoveFromDataBase($IdScreening, $idCinema)
 	{
 
-		if ($_GET['IdScreening'] != null) {
-
-			$movie = new Movies();
-			$screening = new Screening();
-			$screening = $this->screeningDAO->GetScreeningById($IdScreening);
-			$movie = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB());
-			$screening = $this->screeningDAO->remove($screening);
-		}
-		$idMovieIMDB = $movie->getIdMovieIMDB();
-		$this->ShowListView($idMovieIMDB, $idCinema);
+		$movie = new Movies();
+		$screening = new Screening();
+		$screening = $this->screeningDAO->GetScreeningById($IdScreening);
+		$movie = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB()); //arma la movie
+		$screening = $this->screeningDAO->remove($screening);
+		$this->ShowListView($movie->getIdMovieIMDB(), $idCinema);
 	}
 }
