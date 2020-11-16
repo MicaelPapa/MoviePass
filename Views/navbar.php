@@ -27,7 +27,7 @@
               <a class="nav-link" href="';echo FRONT_ROOT. 'Cinema/ShowListView" tabindex="-1" aria-disabled="true"><i class="fas fa-compact-disc"></i>&nbspCines</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="';echo FRONT_ROOT. 'Statistics/View" tabindex="-1" aria-disabled="true"><i class="fas fa-atlas"></i>&nbspEstadisticas</a>
+            <a class="nav-link" href="';echo FRONT_ROOT. 'Statistics/View?date1=null&&date2=null" tabindex="-1" aria-disabled="true"><i class="fas fa-atlas"></i>&nbspEstadisticas</a>
           </li>
           </ul>'
          ;

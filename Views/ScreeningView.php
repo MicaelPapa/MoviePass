@@ -53,11 +53,6 @@
                                         <p class="ticketText">Cine:&nbsp<span class="ticketData"><?php if($screening->getCinema() === '-'){echo $screening->getCinema();}else { echo $screening->getCinema()->getCinemaName();}?></span></p>
                                         <p class="ticketText">Sala:&nbsp<span class="ticketData"><?php if($screening->getRoom() === '-'){ echo $screening->getRoom();}else{ echo $screening->getRoom()->getRoomNumber();}?></span></p>
                                         <p class="ticketText">Dimension:&nbsp<span class="ticketData"><?php echo $screening->getDimension();?></span></p>
-
-                                    </div>
-                                    <div class="col-md-5">
-                                        <p class="ticketText">Audio:&nbsp<span class="ticketData"><?php echo $screening->getAudio();?></span></p>
-                                        <p class="ticketText">Subtitulos:&nbsp<span class="ticketData"><?php echo $screening->getSubtitles();?></span></p>
                                         <p class="ticketText">Horario de inicio:&nbsp<span class="ticketData">
                                             <?php if($screening->getStartDate() == '-'){
                                                           echo $screening->getStartHour();
@@ -66,8 +61,15 @@
                                                         }                                                
                                                 ?></span>
                                         </p>
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p class="ticketText">Audio:&nbsp<span class="ticketData"><?php echo $screening->getAudio();?></span></p>
+                                        <p class="ticketText">Subtitulos:&nbsp<span class="ticketData"><?php echo $screening->getSubtitles();?></span></p>
                                         <p class="ticketText">Precio:&nbsp<span
                                                 class="ticketData"><?php echo "$" . $screening->getPrice();?></span></p>
+                                        <p class="ticketText">Entradas disponibles:&nbsp<span
+                                                class="ticketData"><?php echo $screening->getRemainTickets();?></span></p>
                                     </div>
                                     <div class="col-md-2 align-self-end">
                                         <a id="edit" href = "<?php echo FRONT_ROOT ?>Screening/EditScreening?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>" class="btn btn-primary" type="button" data-toggle="modal" data-target="#editFunctionModal"><i class="fas fa-edit"></i></a>

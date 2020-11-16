@@ -223,56 +223,6 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetMostPopularMovies()
-BEGIN
-
-select 
-    count(tickets.idticket) / (select count(tickets.idticket) from tickets) * 100 as Popularity,
-    movies.idmovie,
-    movies.moviename,
-    sum(tickets.price) as moneyCollection
-from
-    tickets
-        inner join
-    orders ON orders.idorder = tickets.idorder
-        inner join
-    screenings ON screenings.idscreening = orders.idscreening
-        inner join
-    movies ON movies.idmovie = screenings.idmovie
-group by 2 , 3
-order by (Popularity) desc
-limit 3;
-
-END $$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE GetLessPopularMovies()
-BEGIN
-select 
-    count(tickets.idticket) / (select 
-            count(tickets.idticket)
-        from
-            tickets) * 100 as Popularity,
-    movies.idmovie,
-    movies.moviename,
-    sum(tickets.price) as moneyCollection
-from
-    tickets
-        inner join
-    orders ON orders.idorder = tickets.idorder
-        inner join
-    screenings ON screenings.idscreening = orders.idscreening
-        inner join
-    movies ON movies.idmovie = screenings.idmovie
-group by 2 , 3
-order by (Popularity) asc
-limit 3;
-
-END $$
-DELIMITER ;
-
-DELIMITER $$
  CREATE PROCEDURE `BuyTickets`( IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT) 
 
 BEGIN 
