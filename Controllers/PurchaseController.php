@@ -185,7 +185,7 @@ class PurchaseController
         $ticketList = $this->TicketsDAO->getTicketsByIdOrder($order);
         $order = $this->PurchaseDAO->getPurchase($order);
         foreach($ticketList as $ticket){
-            Mail::sendTicket($_SESSION['User']['Email'],$_SESSION['User']['UserName'],$screening->getCinema()->getCinemaName(),$screening->getMovie()->getMovieName(),$screening->getRoom()->getRoomNumber(),$screening->getStartDate(),$screening->getStartHour());
+            Mail::sendTicket($_SESSION['User']['Email'],$_SESSION['User']['UserName'],$screening->getCinema()->getCinemaName(),$screening->getMovie()->getMovieName(),$screening->getRoom()->getRoomNumber(),$screening->getStartDate(),$screening->getStartHour(),$ticket->getQrCode());
         }
         
 

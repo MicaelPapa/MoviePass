@@ -6,6 +6,8 @@ use Models\Screening as Screening;
 use Models\User as User;
 use Models\Order as Order;
 use Models\Purchase as Purchase;
+use DAO\CinemaDAO as CinemaDAO;
+use DAO\RoomDAO as RoomDAO;
 use DAO\Connection as Connection;
 use Interfaces\ITicketsDAO as ITicketsDAO;
 
@@ -21,7 +23,7 @@ class TicketsDAO implements ITicketsDAO
             for($i = 0; $i < $cantTickets; $i ++) {
                 $query = "INSERT INTO " . $this->tableName . " (QrCode,IdUser,IdScreening,IdOrder) VALUES (:QrCode, :IdUser, :IdScreening,:IdOrder);";
     
-                $parameters["QrCode"] = $qr;
+                $parameters["QrCode"] = $screening->getCinema()->getIdCinema()."-".$screening->getRoom()->getRoomNumber()."-".$screening->getIdScreening()."-".$idOrder."-".$i;
                 $parameters["IdUser"] = $idUser;
                 $parameters["IdScreening"] = $screening->getIdScreening();
                 $parameters["IdOrder"] = $idOrder;
