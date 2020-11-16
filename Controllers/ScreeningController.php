@@ -18,7 +18,7 @@ class ScreeningController
 	private $screeningDAO;
 	private $cinemaDAO;
 	private $roomDAO;
-	
+
 	function __construct()
 	{
 		$this->moviesDAO = new MoviesDAO();
@@ -28,63 +28,53 @@ class ScreeningController
 	}
 
 
-	public function ShowListView($idMovieIMDB, $idCinema)
+	public function ShowListView($idMovieIMDB, $idCinema) //Recibe el id de la pelicula y el cine, arma los objetos y muestra las funciones.
 	{
 		$cinemas = array();
 		$rooms = array();
 		$movie = new Movies();
 		$cinema = new Cinema();
-		if ($idMovieIMDB != NULL) {
-			$cinema = $this->cinemaDAO->GetCinemaById($idCinema);
-			$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
-			$screenings = $this->GetAll($movie);
-			$cinemas = $this->cinemaDAO->getAll();
-			$rooms = $this->roomDAO->GetRoomsByCinema($idCinema);
-		} else {
-			$screenings = $this->screeningDAO->GetScreeningsByIdMovie($idMovie);
-			$cinemas = $this->cinemaDAO->getAll();
-		}
+
+		$movie = $this->moviesDAO->getByIdMovieIMDB($idMovieIMDB);
+		$cinema = $this->cinemaDAO->GetCinemaById($idCinema);
+		$screenings = $this->GetAll($movie);
+		$rooms = $this->roomDAO->GetRoomsByCinema($idCinema);
 		require_once(VIEWS_PATH . "ScreeningView.php");
 	}
 
-	
+
 	public function GetAll($movie)
-	{	
+	{
 
 		$room = new Room();
 		$cinema = new Cinema();
-		
-		$screenings = array ();
-		
+
+		$screenings = array();
+
 		$screeningsList = $this->screeningDAO->GetScreeningsByIdMovie($movie);
 
-	
-			foreach ($screeningsList as $screening)
-			{
-			
-				if($screening->getIdScreening() != "-")
-				{
-					$idRoom = $screening->getRoom()->getIdRoom();
-					$room = $this->roomDAO->GetRoomById($idRoom);
-					$screening->setRoom($room);
-					$cinema = $this->cinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
-					$screening->setCinema($cinema);
-					$movie = $this->moviesDAO->getByMovieId($screening->getMovie()->getIdMovie());
-					$screening->setMovie($movie);
 
+		foreach ($screeningsList as $screening) {
 
-				} 
-	
+			if ($screening->getIdScreening() != "-") {
+				$idRoom = $screening->getRoom()->getIdRoom();
+				$room = $this->roomDAO->GetRoomById($idRoom);
+				$screening->setRoom($room);
+				$cinema = $this->cinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
+				$screening->setCinema($cinema);
+				$movie = $this->moviesDAO->getByMovieId($screening->getMovie()->getIdMovie());
+				$screening->setMovie($movie);
 			}
-	
-		
-	
+		}
+
+
+
 		return $screeningsList;
 	}
 
-	public function Add($fechaorigen, $fechafinal, $hora, $precio, $idRoom, $dimension, $audio, $sub,$idMovieIMDB, $idCinema) //fecha1 fecha 2  horario inicio  dimension  sala  audio precio subtitulos 
+	public function Add($fechaorigen, $fechafinal, $hora, $precio, $idRoom, $dimension, $audio, $sub, $idMovieIMDB, $idCinema) //fecha1 fecha 2  horario inicio  dimension  sala  audio precio subtitulos 
 	{
-		$validate =true;
+		$validate = true;
 		$continue = true;
 		$i = 0;
 		$screening = new Screening();
@@ -151,7 +141,6 @@ class ScreeningController
 		}
 
 		$this->ShowListView($idMovieIMDB, $idCinema);
-	
 	}
 
 
@@ -185,15 +174,11 @@ class ScreeningController
 	public function RemoveFromDataBase($IdScreening, $idCinema)
 	{
 
-		if ($_GET['IdScreening'] != null) {
-
-			$movie = new Movies();
-			$screening = new Screening();
-			$screening = $this->screeningDAO->GetScreeningById($IdScreening);
-			$movie = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB());
-			$screening = $this->screeningDAO->remove($screening);
-		}
-		$idMovieIMDB = $movie->getIdMovieIMDB();
-		$this->ShowListView($idMovieIMDB, $idCinema);
+		$movie = new Movies();
+		$screening = new Screening();
+		$screening = $this->screeningDAO->GetScreeningById($IdScreening);
+		$movie = $this->moviesDAO->getByIdMovieIMDB($screening->getIdMovieIMDB()); //arma la movie
+		$screening = $this->screeningDAO->remove($screening);
+		$this->ShowListView($movie->getIdMovieIMDB(), $idCinema);
 	}
 }
