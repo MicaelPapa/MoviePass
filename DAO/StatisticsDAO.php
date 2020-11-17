@@ -11,14 +11,74 @@ class StatisticsDAO implements IStatisticsDAO
 
     public function LoadTheMostPopularMovies()
     {
-        $invokeStoredProcedure = 'CALL GetMostPopularMovies()';
-        $this->connection = Connection::GetInstance();
-        return $this->connection->Execute($invokeStoredProcedure,array(), QueryType::StoredProcedure);
+        try{
+            $query = "select movies.MovieName, count(tickets.IdTicket) as topMovies
+            from tickets inner join orders ON orders.IdOrder = tickets.IdOrder
+            inner join screenings ON screenings.IdScreening = tickets.IdScreening
+            inner join movies ON movies.IdMovie = screenings.IdMovie
+            group by movies.MovieName
+            order by (topMovies) desc
+            limit 5;";
+            $this->connection = Connection::GetInstance();
+            $resultList = $this->connection->Execute($query); 
+
+            return $resultList;
+
+     }catch (Exception $ex) {
+        return null;
+        }
     }
 
     public function LoadTheLessPopularMovies(){
-        $invokeStoredProcedure = 'CALL GetLessPopularMovies()';
-        $this->connection = Connection::GetInstance();
-        return $this->connection->Execute($invokeStoredProcedure,array(), QueryType::StoredProcedure);
+        try{
+            $query = "select movies.MovieName, count(tickets.IdTicket) as lowMovies
+            from tickets inner join orders ON orders.IdOrder = tickets.IdOrder
+            inner join screenings ON screenings.IdScreening = tickets.IdScreening
+            inner join movies ON movies.IdMovie = screenings.IdMovie
+            group by movies.MovieName
+            order by (lowMovies) asc
+            limit 5;";
+            $this->connection = Connection::GetInstance();
+            $resultList = $this->connection->Execute($query); 
+
+            return $resultList;
+
+     }catch (Exception $ex) {
+        return null;
+        }
     }
+     public function LoadMostBoughtMovies(){
+         try{
+                $query = "select movies.MovieName, count(tickets.IdTicket)  * screenings.Price as boxOffice from tickets
+                    inner join orders ON orders.IdOrder = tickets.IdOrder
+                    inner join screenings ON screenings.IdScreening = tickets.IdScreening
+                    inner join movies ON movies.IdMovie = screenings.IdMovie
+                    group by movies.MovieName
+                    order by (boxOffice) desc
+                    limit 5;";
+                $this->connection = Connection::GetInstance();
+                $resultList = $this->connection->Execute($query); 
+
+                return $resultList;
+
+         }catch (Exception $ex) {
+            return null;
+        }
+     }
+     public function LoadTheMostPopularMoviesByDate($date1, $date2){
+         try{
+                $query="select movies.MovieName, count(tickets.IdTicket) as topMovies
+                    from tickets inner join orders ON orders.IdOrder = tickets.IdOrder 
+                    inner join screenings ON screenings.IdScreening = tickets.IdScreening AND (screenings.StartDate BETWEEN CAST('" . $date1 . "' as DATETIME) AND CAST('" . $date2 . "' as DATETIME))
+                    inner join movies ON movies.IdMovie = screenings.IdMovie
+                    group by movies.MovieName order by (topMovies) asc limit 5;";
+                 $this->connection = Connection::GetInstance();
+                 $resultList = $this->connection->Execute($query); 
+ 
+                 return $resultList;
+
+         }catch (Exception $ex){
+             return null;
+         }
+     }
 }

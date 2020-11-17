@@ -31,7 +31,7 @@
                             <p class="card-text">Observe las estadisticas de los cines y peliculas.</p>
                         </div>
                         <div class="card-body">
-                            <a href="<?php echo FRONT_ROOT. 'Statistics/View'?>" class="btn btn-primary btn-block">Vea sus Estadisticas</a>
+                            <a href="<?php echo FRONT_ROOT. 'Statistics/View?date1=null&&date2=null'?>" class="btn btn-primary btn-block">Vea sus Estadisticas</a>
                         </div>
                     </div>
                 </div>
