@@ -23,7 +23,7 @@ class TicketsDAO implements ITicketsDAO
             for($i = 0; $i < $cantTickets; $i ++) {
                 $query = "INSERT INTO " . $this->tableName . " (QrCode,IdUser,IdScreening,IdOrder) VALUES (:QrCode, :IdUser, :IdScreening,:IdOrder);";
     
-                $parameters["QrCode"] = $screening->getCinema()->getIdCinema()."-".$screening->getRoom()->getRoomNumber()."-".$screening->getIdScreening()."-".$idOrder."-".$i;
+                $parameters["QrCode"] = $qr . $i;
                 $parameters["IdUser"] = $idUser;
                 $parameters["IdScreening"] = $screening->getIdScreening();
                 $parameters["IdOrder"] = $idOrder;
@@ -66,7 +66,8 @@ class TicketsDAO implements ITicketsDAO
 
             foreach ($resultList as $row) {
 				$purchase = new Purchase();
-				$purchase->setIdPurchase($row["IdTicket"]);
+                $purchase->setIdPurchase($row["IdTicket"]);
+                $purchase->setQrCode($row["QrCode"]);
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
                 $purchase->setScreening($screening);

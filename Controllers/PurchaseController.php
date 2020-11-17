@@ -28,7 +28,6 @@ class PurchaseController
 
     public function __construct()
     {
-        $this->CitiesDAO = new CitiesDAO();
         $this->MoviesDAO = new MoviesDAO();
         $this->CinemaDAO = new CinemaDAO();
         $this->ScreeningDAO = new ScreeningDAO();
@@ -169,9 +168,12 @@ class PurchaseController
             if (count($_POST, COUNT_NORMAL) > 0) {
                 $order = new Order();
                 $order->setIdOrder($this->PurchaseDAO->BuyTickets($screening, $cantTickets)); 
+                $date = date_create($screening->getStartHour());
+                $qr = "Cine:" . $screening->getCinema()->getCinemaName() . " Sala:" . $screening->getRoom()->getRoomNumber() . " Fecha:" . date_format(date_create($screening->getStartDate()),"d/m/Y") . 
+                " Hora:" . date_format($date,'h:i:a') . " Código:" . $screening->getIdScreening() . $screening->getCinema()->getIdCinema() . $screening->getRoom()->getIdRoom();
                 if($order->getIdOrder())
-                {   
-                    $this->TicketsDAO->LoadTickets("",$_SESSION['User']['IdUser'],$screening, $order->getIdOrder(), $cantTickets);
+                {
+                    $this->TicketsDAO->LoadTickets($qr,$_SESSION['User']['IdUser'],$screening, $order->getIdOrder(), $cantTickets);
                     $this->successPurchase($order,$screening);
                 }
             }
