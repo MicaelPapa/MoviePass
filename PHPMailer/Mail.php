@@ -80,7 +80,7 @@ class Mail
         $mail->Subject = $cinemaName . ' Tickets' ;
         $mail->Body = "Pelicula: " . $movieName ."<br>Fecha y horario de la funcion: ".$date." ".$hour. "<br>SALA : " . $roomName . "
          <br><br>Cine:  " . $cinemaName . " <td bgcolor='#fff' style='color:#666; text-align:center; font-size:13px; padding:20px 0px 20px 40px; line-height:25px; border-radius:0 30px 30px 0;' valign='middle' width='50%' class=''>
-         <center><img src='https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=". $qr. " style='display:block'></center>
+         <center><img src='https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=". $qr. "'> style='display:block'></center>
          </td><br>Esperamos que disfruten la pelicula " . $name . ".";
 
         if ($mail->send())
