@@ -66,7 +66,7 @@ class LoginController
         $email = Validate::ValidateData($email);
 
         try {
-            $selectedUser = new User(null, null, null, null, null, null);
+            $selectedUser = new User();
             $selectedUser = $this->userDAO->SearchUserByEmail($email);
             $newPassword = Random::CreateRandomNumber(10);
 

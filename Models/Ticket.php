@@ -2,20 +2,20 @@
 
 namespace Models;
 
-class Purchase
+class Ticket
 {
-    private $idPurchase;
+    private $idTicket;
     private $qrCode;
     private $user;
     private $screening;
     private $order;
 
-	public function getIdPurchase() {
-		return $this->idPurchase;
+	public function getIdTicket() {
+		return $this->idTicket;
 	}
 
-	public function setIdPurchase( $idPurchase) {
-		$this->idPurchase = $idPurchase;
+	public function setIdTicket( $idTicket) {
+		$this->idTicket = $idTicket;
 	}
 
 	public function getQrCode() {

@@ -38,13 +38,6 @@ create table NonWorkDaysXCinemas (
         references Cinemas (IdCinema)
 );
 
-create table Clasifications (
-    IdClasification int AUTO_INCREMENT,
-    ClasificationCode varchar(20),
-    Description varchar(200),
-    constraint Pk_Clasifications primary key (IdClasification)
-);
-
 
 create table Genders (
     IdGender int AUTO_INCREMENT,

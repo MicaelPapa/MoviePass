@@ -12,17 +12,6 @@ class User
         private $isAdmin;
         private $changedPassword;
         private $photo;
-
-        public function __construct($idUser, $email, $userName, $password, $birthdate, $gender, $photo)
-        {       
-                $this->idUser = $idUser;
-                $this->email = $email;
-                $this->userName = $userName;
-                $this->password = $password;
-                $this->birthdate = $birthdate;
-                $this->gender = $gender;
-                $this->photo = $photo;
-        }
       
         public function getIdUser()
         {

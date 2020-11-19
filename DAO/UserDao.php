@@ -49,7 +49,7 @@ class UserDAO implements IUserDAO
 
     public function SearchUserByEmail($email)
     {
-        $result = new User(null, null, null, null, null, null);
+        $result = new User();
 
         $query = "SELECT * FROM " . $this->tableName .
             " WHERE Email = :email limit 1;";

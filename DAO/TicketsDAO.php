@@ -5,7 +5,7 @@ namespace DAO;
 use Models\Screening as Screening;
 use Models\User as User;
 use Models\Order as Order;
-use Models\Purchase as Purchase;
+use Models\Ticket as Ticket;
 use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\Connection as Connection;
@@ -45,12 +45,12 @@ class TicketsDAO implements ITicketsDAO
             $results = array();
 
             foreach ($resultList as $row) {
-				$purchase = new Purchase();
-				$purchase->setIdPurchase($row["IdTicket"]);
+				$ticket = new Ticket();
+				$ticket->setIdTicket($row["IdTicket"]);
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $purchase->setScreening($screening);
-                array_push($results, $purchase);
+                $ticket->setScreening($screening);
+                array_push($results, $ticket);
             }  
             return $results;      
         } catch (Exception $ex) {
@@ -65,13 +65,13 @@ class TicketsDAO implements ITicketsDAO
             $results = array();
 
             foreach ($resultList as $row) {
-				$purchase = new Purchase();
-                $purchase->setIdPurchase($row["IdTicket"]);
-                $purchase->setQrCode($row["QrCode"]);
+				$ticket = new Ticket();
+                $ticket->setIdTicket($row["IdTicket"]);
+                $ticket->setQrCode($row["QrCode"]);
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $purchase->setScreening($screening);
-                array_push($results, $purchase);
+                $ticket->setScreening($screening);
+                array_push($results, $ticket);
             }  
             return $results;      
         } catch (Exception $ex) {
@@ -87,12 +87,12 @@ class TicketsDAO implements ITicketsDAO
             $results = array();
         
             foreach ($resultList as $row) {
-                $purchase = new Purchase();
-                $purchase->setIdPurchase($row["IdTicket"]);
+                $ticket = new Ticket();
+                $ticket->setIdTicket($row["IdTicket"]);
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $purchase->setScreening($screening);
-                array_push($results, $purchase);
+                $ticket->setScreening($screening);
+                array_push($results, $ticket);
                 }  
                 return $results;
         }catch (Exception $ex) {
@@ -107,12 +107,12 @@ class TicketsDAO implements ITicketsDAO
             $results = array();
         
             foreach ($resultList as $row) {
-                $purchase = new Purchase();
-                $purchase->setIdPurchase($row["IdTicket"]);
+                $ticket = new Ticket();
+                $ticket->setIdTicket($row["IdTicket"]);
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $purchase->setScreening($screening);
-                array_push($results, $purchase);
+                $ticket->setScreening($screening);
+                array_push($results, $ticket);
                 }  
                 return $results;
         }catch (Exception $ex) {

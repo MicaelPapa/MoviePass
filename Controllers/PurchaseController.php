@@ -10,7 +10,6 @@ use DAO\ScreeningDAO as ScreeningDAO;
 use DAO\PurchaseDAO as PurchaseDAO;
 use DAO\TicketsDAO as TicketsDAO;
 use Models\Screening as Screening;
-use Models\Purchase as Purchase;
 use Models\Order as Order;
 use Models\User as User;
 use PHPMailer\Mail as Mail;
