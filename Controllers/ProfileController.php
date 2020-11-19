@@ -23,12 +23,12 @@ class ProfileController
 
     public function Index(){
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user = new User($_SESSION['User']['Email'],
-                             Validate :: ValidateData($_POST["UserName"]),
-                             null,
-                             Validate :: ValidateData($_POST["BirthDate"]),
-                             Validate :: ValidateData($_POST["gender"]),
-                             $_SESSION['User']['Photo']);
+            $user = new User();
+            $user->setEmail($_SESSION['User']['Email']);
+            $user->setUserName(Validate :: ValidateData($_POST["UserName"]));
+            $user->setBirthDate(Validate :: ValidateData($_POST["BirthDate"]));
+            $user->setGender(Validate :: ValidateData($_POST["gender"]));
+            $user->setPhoto($_SESSION['User']['Photo']);              
 
             try {
                 $result = $this->userDAO->UpdateUser($user);
@@ -47,14 +47,12 @@ class ProfileController
     public function ChangeImageProfile(){
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $newImage = $_POST["photo"];
-
-            $user = new User($_SESSION['User']['Email'],
-                                $_SESSION['User']['UserName'],
-                                null,
-                                $_SESSION['User']['Birthdate'],
-                                $_SESSION['User']['IdGender'],
-                                Validate :: ValidateData($_POST["photo"]));
-            
+            $user = new User();
+            $user->setEmail($_SESSION['User']['Email']);
+            $user->setUserName(Validate :: ValidateData($_SESSION['User']['UserName']));
+            $user->setBirthDate(Validate :: ValidateData($_SESSION['User']['Birthdate']));
+            $user->setGender(Validate :: ValidateData( $_SESSION['User']['IdGender']));
+            $user->setPhoto(Validate :: ValidateData($newImage));
             try {
                 $result = $this->userDAO->UpdateUser($user);
                 $_SESSION['User'] = $result[0];

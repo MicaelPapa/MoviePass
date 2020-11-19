@@ -23,7 +23,7 @@ class RegisterController
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email = Validate :: ValidateData($_POST["email"]);
-            $user = Validate :: ValidateData($_POST["userName"]);
+            $username = Validate :: ValidateData($_POST["userName"]);
             $password = Validate :: ValidateData($_POST["password"]);
             $passwordConfirmed = Validate :: ValidateData($_POST["passwordConfirmed"]);
             $birthdate = Validate :: ValidateData($_POST["birthdate"]);
@@ -37,11 +37,18 @@ class RegisterController
                 $photo = FRONT_ROOT.VIEWS_PATH."img/other.png";
             }
 
-            $this->ValidateRegister($email, $user, $password, $passwordConfirmed, $birthdate);
+            $this->ValidateRegister($email, $username, $password, $passwordConfirmed, $birthdate);
 
             try {
                 $password = Hash::Hashing($password); //hashing password
-                $selectedUser = $this->userDAO->Add(new User($email, $user, $password, $birthdate, $gender, $photo));
+                $user = new User();
+                $user->setEmail($email);
+                $user->setUserName($username);
+                $user->setPassword($password);
+                $user->setBirthDate(Validate :: ValidateData($birthdate));
+                $user->setGender(Validate :: ValidateData( $gender));
+                $user->setPhoto(Validate :: ValidateData($photo));
+                $selectedUser = $this->userDAO->Add($user);
 
                 if ($selectedUser != null) {
                     $_SESSION['User'] = $selectedUser[0];

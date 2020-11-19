@@ -44,12 +44,12 @@
             <p class="titleData" style="margin-top: 1%" >Cine <?php echo ($this->screeningDAO->getCinemaByIdCinema($screening->getIdCinema()))->getCinemaName();?></p>
             <?php foreach($screeningListCopy as $screeningCopy){ 
                 if($screening->getStartDate() === $screeningCopy->getStartDate()){ ?>
-                    <p class="titleData"><input type="checkbox" name="chackScreening" class="radio" value="<?php echo $screeningCopy->getIdScreening();?>"><?php $date = date_create($screeningCopy->getStartHour()); echo date_format($date,'h:i:a');?></p>
+                    <p class="titleData"><input type="checkbox" name="chackScreening" class="radio" value="<?php echo $screeningCopy->getIdScreening();?>" required><?php $date = date_create($screeningCopy->getStartHour()); echo date_format($date,'h:i:a');?></p>
                 <?php }} ?>
            
-            <button type="submit" style="float:right; margin-bottom: 2%" class="btn btn-success" name="selectScreening" id="selectScreening">Ir a Compras </t></button>
+            <button type="submit" style="float:right; margin-bottom: 2%" class="btn btn-success" name="selectScreening" id="selectScreening">Ir a Compras  <i class="fas fa-arrow-right"></i></t></button>
         </form>
-        <button class="btn btn-danger" onclick="goBack()">Regresar</button>
+        <button class="btn btn-danger" onclick="goBack()"><i class="fas fa-arrow-left"></i>  Volver</button>
         </div>
         <?php } ?>
     </div>

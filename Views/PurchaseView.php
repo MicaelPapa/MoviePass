@@ -35,8 +35,8 @@
           </div>
         </div>
 
-        <button type="button" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbspVolver</button>
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>&nbspContinuar</button>
+        <a type="button" href="/MoviePass/Movies/ShowScreeningUserView?idMovie= <?php echo $screening->getMovie()->getIdMovie(); ?>" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbspVolver</a>
+        <button type="submit" class="btn btn-success">&nbspContinuar  <i class="fas fa-arrow-right"></i></button>
       </form>
       <!-- form -->
     </div>

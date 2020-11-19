@@ -42,7 +42,7 @@
                                 <span class="checkmark"></span>
                             </label> 
                             <label class="label">
-                                <input type="radio" name="gender" required value=<?php echo (3); ?>> No binario
+                                <input type="radio" name="gender" required value=<?php echo (3); ?>> Otro
                                 <span class="checkmark"></span>
                             </label>                                                                            
                             <button id="registerBtn" type="submit" name="button" class="bg-light-alpha">Registrarme</button>
