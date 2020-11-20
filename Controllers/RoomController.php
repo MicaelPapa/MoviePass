@@ -23,7 +23,6 @@ class RoomController
 
     public function Add($roomNumber, $capacity,  $cinemaName)
     {
-
         $roomNumber = Validate::ValidateData($roomNumber);
         $capacity = Validate::ValidateData($capacity);
         $cinemaName =  Validate::ValidateData($cinemaName);
@@ -34,36 +33,26 @@ class RoomController
         if ($this->RoomDAO->getRoomByName($roomNumber)) {
             $this->ShowAddView("Sala ya existente", "danger", $cinema->getIdCinema());
         }else{
-          
-           
-    
             $room = new Room();
             $room->setRoomNumber($roomNumber);
             $room->setCapacity($capacity);
             $room->setCinema($cinema);
-            $this->RoomDAO->Add($room, $cinema);
-    
+            $this->RoomDAO->Add($room, $cinema);  
             $cinemaList = $this->cinemaDAO->GetAll();
     
             require_once(VIEWS_PATH . "CinemaListView.php");
-
         }
        
     }
 
     public  function ShowAddView($alertMessage = "", $alertType = "", $idCinema)
     {
-
         $cinema =  $this->cinemaDAO->GetCinemaById($idCinema);
         require_once(VIEWS_PATH . "AddRoomView.php");
-
-        //CinemaController::ShowCinemaList();     
     }
-
 
     public function ShowEditView($idRoom)
     {
-
         if (Validate::Logged() && Validate::AdminLog()) {
             $room = new Room();
             $room = $this->RoomDAO->GetRoomById($idRoom);
@@ -79,14 +68,10 @@ class RoomController
         }
     }
 
-
     public function Update($roomNumber, $capacity, $idRoom)
     {
-
-        //validar admin 
         $roomNumber = Validate::ValidateData($roomNumber);
         $capacity = Validate::ValidateData($capacity);
-
 
         $this->RoomDAO->UpdateRoom($idRoom, $roomNumber, $capacity);
 
@@ -96,27 +81,18 @@ class RoomController
 
     public function ShowListView($idCinema)
     {
-
         $roomList = $this->RoomDAO->GetRoomsByCinema($idCinema);
-
         $cinema = $this->cinemaDAO->GetCinemaById($idCinema);
         require_once(VIEWS_PATH . "RoomListView.php");
     }
 
     public function Remove($idRoom)
     {
-
         $idRoom = Validate::ValidateData($idRoom);
         $room = new Room();
         $room->setIdRoom($idRoom);
-
         $idCinema = $this->RoomDAO->GetIdCinema($idRoom);
         $this->RoomDAO->Remove($room);
-
-
-
-
-
         $this->ShowListView($idCinema);
     }
 }

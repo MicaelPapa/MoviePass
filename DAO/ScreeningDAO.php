@@ -84,6 +84,7 @@ class ScreeningDAO implements IScreeningDAO
                 $movie->setIdMovie($row["IdMovie"]);
                 $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setMovie($movie);
+
                 array_push($list, $screening);
             }
             return $list;
@@ -153,33 +154,6 @@ class ScreeningDAO implements IScreeningDAO
         }
     }
 
-    public function edit($screening)
-    {
-
-        try {
-            $query = "UPDATE " . $this->tableName . " SET IdMovieIMDB = :IdMovieIMDB, StartDate = :StartDate, 
-            LastDate = :LastDate, IdRoom = :IdRoom, IdCinema = :IdCinema, Dimension = :Dimension,
-
-            Audio = :Audio, Subtitles = :Subtitles, StartHour = :StartHour, FinishHour = :FinishHour, Price = :Price
-            WHERE IdScreening = " . $screening->getIdScreening() . " ;";
-
-            $parameters["StartDate"] = $screening->getStartDate();
-            $parameters["LastDate"] = $screening->getLastDate();
-            $parameters["IdRoom"] = $screening->getIdRoom();
-            $parameters["IdCinema"] = $screening->getIdCinema();
-            $parameters["Dimension"] = $screening->getDimension();
-            $parameters["Audio"] = $screening->getAudio();
-            $parameters["Price"] = $screening->getPrice();
-            $parameters["Subtitles"] = $screening->getSubtitles();
-            $parameters["StartHour"] = $screening->getStartHour();
-            $parameters["FinishHour"] = $screening->getFinishHour();
-
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query, $parameters);
-        } catch (Exception $ex) {
-            throw $ex;
-        }
-    }
     public function GetScreeningsByIdMovie($movie)
     {
 
@@ -289,7 +263,6 @@ class ScreeningDAO implements IScreeningDAO
 
 
     public function distinctScreeningPerDay($screening)  //separa  las funciones por dia en un arreglo.
-
     {
 
         $screeningList = array();
@@ -316,8 +289,6 @@ class ScreeningDAO implements IScreeningDAO
 
             array_push($screeningList, $newScreening);
         }
-
-
         return $screeningList;
     }
 
@@ -414,7 +385,6 @@ class ScreeningDAO implements IScreeningDAO
         }
 
         $validate = array();
-   
 
         array_push($validate, $alertMessage, $notExist);
         return $validate;
@@ -432,7 +402,6 @@ class ScreeningDAO implements IScreeningDAO
 
     public function getIdAllIdMoviesByDateAndCinema($Date, $CinemaId)
     {
-
         try {
             $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' AND IdCinema = '" . $CinemaId . "' ;";
             $this->connection = Connection::GetInstance();
@@ -444,7 +413,6 @@ class ScreeningDAO implements IScreeningDAO
     }
     public function getIdAllIdMoviesByDate($Date)
     {
-
         try {
             $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' ;";
             $this->connection = Connection::GetInstance();
@@ -461,12 +429,9 @@ class ScreeningDAO implements IScreeningDAO
             $query = "SELECT * FROM " .$this->tableName ." WHERE IdMovie = ". $IdMovie;
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
-
             $screeningList = array();
-    
                     
-            foreach ($resultSet as $row) {
-                    
+            foreach ($resultSet as $row) {      
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
 		        $screening->setIdMovie($row["IdMovie"]);
@@ -482,6 +447,7 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
                 $screening->setRemainTickets($row["RemainTickets"]);
+
                 array_push($screeningList, $screening);
                 }
             }
@@ -494,8 +460,6 @@ class ScreeningDAO implements IScreeningDAO
         public function getCinemaByIdCinema($idCinema){
             try {
                 $query = "SELECT * FROM " . $this->cinemaTableName . " WHERE idCinema = " . $idCinema. ";";
-            
-            
                 $this->connection = Connection::GetInstance();
                 $result = $this->connection->Execute($query);
     
