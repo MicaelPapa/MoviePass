@@ -97,7 +97,7 @@ class LoginController
     }
 
     public function Logout()
-    {
+    {   $_SESSION['isLogged'] = false;
         session_destroy();
         $this->View();
     }
