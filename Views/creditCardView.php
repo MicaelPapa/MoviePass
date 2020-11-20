@@ -31,8 +31,8 @@
         </div>
         <input type="hidden" name="cantEntradas"  value="<?php echo $cantEntradas; ?>" >
         <input type="hidden" name="idScreening"  value="<?php echo $idScreening; ?>" >
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>&nbspContinuar</button>
-        <button type="button" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbspVolver</button>
+        <button type="button" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbsp  Volver</button>
+        <button type="submit" class="btn btn-success">&nbspContinuar  <i class="fas fa-arrow-right"></i></button>
       </form>
       <!-- form -->
     </div>

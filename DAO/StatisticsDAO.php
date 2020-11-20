@@ -17,8 +17,7 @@ class StatisticsDAO implements IStatisticsDAO
             inner join screenings ON screenings.IdScreening = tickets.IdScreening
             inner join movies ON movies.IdMovie = screenings.IdMovie
             group by movies.MovieName
-            order by (topMovies) desc
-            limit 5;";
+            order by (topMovies) desc;";
             $this->connection = Connection::GetInstance();
             $resultList = $this->connection->Execute($query); 
 
@@ -36,8 +35,7 @@ class StatisticsDAO implements IStatisticsDAO
             inner join screenings ON screenings.IdScreening = tickets.IdScreening
             inner join movies ON movies.IdMovie = screenings.IdMovie
             group by movies.MovieName
-            order by (lowMovies) asc
-            limit 5;";
+            order by (lowMovies) asc;";
             $this->connection = Connection::GetInstance();
             $resultList = $this->connection->Execute($query); 
 
@@ -54,8 +52,7 @@ class StatisticsDAO implements IStatisticsDAO
                     inner join screenings ON screenings.IdScreening = tickets.IdScreening
                     inner join movies ON movies.IdMovie = screenings.IdMovie
                     group by movies.MovieName
-                    order by (boxOffice) desc
-                    limit 5;";
+                    order by (boxOffice) desc;";
                 $this->connection = Connection::GetInstance();
                 $resultList = $this->connection->Execute($query); 
 
@@ -71,7 +68,7 @@ class StatisticsDAO implements IStatisticsDAO
                     from tickets inner join orders ON orders.IdOrder = tickets.IdOrder 
                     inner join screenings ON screenings.IdScreening = tickets.IdScreening AND (screenings.StartDate BETWEEN CAST('" . $date1 . "' as DATETIME) AND CAST('" . $date2 . "' as DATETIME))
                     inner join movies ON movies.IdMovie = screenings.IdMovie
-                    group by movies.MovieName order by (topMovies) asc limit 5;";
+                    group by movies.MovieName order by (topMovies) asc;";
                  $this->connection = Connection::GetInstance();
                  $resultList = $this->connection->Execute($query); 
  

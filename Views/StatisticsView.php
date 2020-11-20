@@ -13,7 +13,7 @@
                             <input type="date" id="inputDate1" name="inputDate1" value="<?php echo date('Y-m-d'); ?>" />
                             <input type="date" id="inputDate2" name="inputDate2" value="<?php echo date('Y-m-d'); ?>" />
                             <button type="submit" class="btn btn-success" style="padding: 0.35% 1%" id="submitDate"><i class="fas fa-search"></i></button>
-                            <a type="submit" href="<?php echo FRONT_ROOT ?>Statistics/View?filter=null" style="padding: 0.35% 1%" class="btn btn-info">Ver datos pasados</a></p>
+                            <a type="submit" href="<?php echo FRONT_ROOT ?>Statistics/View?date1=null&&date2=null" style="padding: 0.35% 1%" class="btn btn-info">Ver datos pasados</a></p>
                         </div>
                     </div>
                 </form>

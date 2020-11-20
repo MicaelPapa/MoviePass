@@ -5,7 +5,6 @@
     class Screening{
         
         private $idScreening;
-		private $idMovie;
         private $idMovieIMDB;
         private $startDate;
         private $lastDate;
