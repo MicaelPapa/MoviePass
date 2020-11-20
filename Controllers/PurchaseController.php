@@ -140,7 +140,6 @@ class PurchaseController
         $screening = $this->LoadScreeningToPurchase($idScreening);
 
         if (isset($_SESSION['isLogged'])) {
-            if (count($_POST, COUNT_NORMAL) > 0) {
                 $order = new Order();
                 $order->setIdOrder($this->PurchaseDAO->BuyTickets($screening, $cantTickets)); 
                 $date = date_create($screening->getStartHour());
@@ -151,7 +150,6 @@ class PurchaseController
                     $this->TicketsDAO->LoadTickets($qr,$_SESSION['User']['IdUser'],$screening, $order->getIdOrder(), $cantTickets);
                     $this->successPurchase($order,$screening);
                 }
-            }
         } else {
             require_once(VIEWS_PATH . "LoginView.php");
         }

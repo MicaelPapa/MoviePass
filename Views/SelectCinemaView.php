@@ -42,7 +42,7 @@ require_once("navbar.php");
                     }
                     ?>
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-success" value=""><i class="fas fa-save"></i>&nbspContinuar</button>
+                        <button type="submit" class="btn btn-success" value=""><i class="fas fa-arrow-right"></i>&nbsp  Continuar</button>
 
                         <a href="<?php echo FRONT_ROOT ?>Home/Index" class="btn btn-primary btn-block"><i class="fas fa-arrow-left"></i>&nbspVolver</a>
                     </div>
