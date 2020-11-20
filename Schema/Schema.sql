@@ -21,22 +21,6 @@ create table Cinemas (
         references Addresses (IdAddress)
 );
 
-create table NonWorkDays (
-    IdNonWorkDay int AUTO_INCREMENT,
-    DateNonWorkDay date not null,
-    Reason varchar(300) not null,
-    constraint Pk_NonWorkDays primary key (IdNonWorkDay)
-);
-
-create table NonWorkDaysXCinemas (
-    IdNonWorkDay int not null,
-    IdCinema int not null,
-    constraint Pk_NonWorkDaysXCinemas primary key (IdNonWorkDay , IdCinema),
-    constraint Fk_NonWorkDays foreign key (IdNonWorkDay)
-        references NonWorkDays (IdNonWorkDay),
-    constraint Fk_Cinema foreign key (IdCinema)
-        references Cinemas (IdCinema)
-);
 
 
 create table Genders (
@@ -164,56 +148,6 @@ create table Tickets (
         references Orders (IdOrder)
 );
 
-
-DELIMITER $$
-
-
-CREATE PROCEDURE GetOrdersByUser(UserId int, TodayDate Date)
-BEGIN
-
-select  
-orders.idorder,
-concat('$',orders.Discount) as Discount,
-concat('$',orders.SubTotal) as SubTotal,
-concat('$',orders.Total) as Total,
-screenings.startdate,
-rooms.roomnumber,
-movies.moviename,
-if(screenings.Subtitles is null, screenings.audio, concat('Sub ',screenings.subtitles)) as MovieLanguage,
-screenings.Dimension,
-cinemas.cinemaname,
-concat(addresses.street,' ',addresses.numberstreet) as CinemaAddress,
-users.UserName
-FROM orders
-inner join screenings on screenings.IdScreening = orders.IdScreening
-inner join rooms on screenings.IdRoom = rooms.IdRoom
-inner join movies on screenings.IdMovie = movies.IdMovie
-inner join cinemas on rooms.CinemaId = cinemas.IdCinema
-inner join addresses on cinemas.IdAddress = addresses.IdAddress
-inner join users on users.IdUser = orders.IdUser
-WHERE (users.IdUser = UserId AND screenings.StartDate > if(TodayDate is null,'0001-01-01',TodayDate))
-GROUP BY(orders.IdOrder) ORDER BY screenings.StartDate ASC;
-
-END $$ 
-DELIMITER ;
-
-DELIMITER $$
-
-
-CREATE PROCEDURE GetScreeningsByMovieAndCinema(MovieId int, CinemaId int)
-BEGIN
-
-select screenings.StartDate,screenings.price, movies.MovieName from screenings
-inner join movies on screenings.IdMovie = movies.IdMovie 
-inner join rooms on screenings.idroom = rooms.IdRoom
-inner join cinemas on rooms.cinemaid = cinemas.IdCinema
-inner join addresses on addresses.IdAddress = cinemas.IdAddress
-inner join cities on cities.IdCity = addresses.IdCity 
-where cities.idcity = CityId;
-
-END $$
- 
-DELIMITER ;
 
 DELIMITER $$
  CREATE PROCEDURE `BuyTickets`( IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT) 
