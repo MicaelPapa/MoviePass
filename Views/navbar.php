@@ -61,9 +61,10 @@
                       <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">';echo $_SESSION['User']['UserName'] . '</a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="';echo FRONT_ROOT. 'Profile/View"><i class="fas fa-user-alt"></i>&nbspMi Perfil</a>
-                        <a class="dropdown-item" href="';echo FRONT_ROOT. 'Tickets/View"><i class="fas fa-ticket-alt"></i>&nbspMis Tickets</a>
-                        <a class="dropdown-item" href="';echo FRONT_ROOT. 'PurchaseHistory/View"><i class="fas fa-ticket-alt"></i>Compras Previas</a>
-                        <div class="dropdown-divider"></div>
+                        ';if(!$_SESSION['User']['IsAdmin']){
+                        echo '<a class="dropdown-item" href="';echo FRONT_ROOT. 'Tickets/View?orderType=null"><i class="fas fa-ticket-alt"></i>&nbspMis Tickets</a>'
+                        ;}
+                     echo '<div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="';echo FRONT_ROOT. 'Login/Logout"><i class="fas fa-sign-out-alt"></i>&nbspCerrar Sesión</a>
                       </div>
                     </li>                     
