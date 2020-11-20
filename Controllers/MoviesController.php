@@ -4,7 +4,6 @@ namespace Controllers;
 
 use DAO\MoviesDAO as MoviesDAO;
 use DAO\MovieGenreDAO as MovieGenreDAO;
-use DAO\MovieXMovieGenresDAO as MovieXMovieGenresDAO;
 use DAO\ScreeningDAO as ScreeningDAO;
 use DAO\CinemaDAO as CinemaDAO;
 use Models\Movies as Movies;
@@ -19,7 +18,6 @@ class MoviesController
 {
 	private $moviesDAO;
 	private $movieGenreDAO;
-	private $movieXgenreDAO;
 	private $screeningDAO;
 	private $cinemaDAO;
 
@@ -27,7 +25,6 @@ class MoviesController
 	{
 		$this->moviesDAO = new MoviesDAO();
 		$this->movieGenreDAO = new MovieGenreDAO();
-		$this->movieXgenreDAO = new MovieXMovieGenresDAO();
 		$this->screeningDAO = new ScreeningDAO();
 		$this->cinemaDAO = new CinemaDAO();
 	}
@@ -48,7 +45,7 @@ class MoviesController
 		if ($movie == null) {
 			$movie = $this->getInfoMovieApi($idMovieIMDB);
 			$this->moviesDAO->Add($movie, $cinema);
-			$this->movieGenreDAO->addGenreAndMovie($movie->getGenres(), $movie->getIdMovieIMDB());
+			$this->addGenreAndMovie($movie->getGenres(), $movie->getIdMovieIMDB());
 		} else if (!$this->moviesDAO->isExistMovieXCinema($cinema, $movie)) { //valida que no exista esa pelicula para ese cine
 
 			$this->moviesDAO->setMovieXcinema($cinema, $movie);
@@ -292,7 +289,7 @@ class MoviesController
 	private function addGenreAndMovie($genres, $IdMovie)
 	{
 		foreach ($genres as $idGenre) {
-			$this->movieXgenreDAO->addMoviexGenres($idGenre['id'], $IdMovie);
+			$this->movieGenreDAO->addMoviexGenres($idGenre['id'], $IdMovie);
 		}
 	}
 

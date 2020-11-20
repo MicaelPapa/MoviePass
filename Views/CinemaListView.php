@@ -49,8 +49,8 @@ require_once("navbar.php");
             echo '<h2 class="text-center display-4">No hay Cines disponibles para mostrar</h2>';
           }
           ?>
-          <a href="<?php echo FRONT_ROOT ?>Cinema/ShowAddView" class="btn btn-success btn-block"><i class="fas fa-plus-square"></i>&nbspAgregar nuevo cine</a>
-          <a href="<?php echo FRONT_ROOT ?>Home/Index" class="btn btn-primary btn-block"><i class="fas fa-arrow-left"></i>&nbspVolver</a>
+          <a href="<?php echo FRONT_ROOT ?>Cinema/ShowAddView" class="btn btn-success btn-block"><i class="fas fa-arrow-right"></i>&nbsp Agregar nuevo cine</a>
+          <a href="<?php echo FRONT_ROOT ?>Home/Index" class="btn btn-primary btn-block"><i class="fas fa-arrow-left"></i>&nbsp Volver</a>
         </form>
         <!-- form -->
       </div>

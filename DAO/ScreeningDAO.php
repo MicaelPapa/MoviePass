@@ -179,8 +179,10 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setStartHour("-");
                 $screening->setFinishHour("-");
                 $screening->setMovie($movie);
-                $screening->setCinema("-");
-                $screening->setRoom("-");
+                $screening->setCinema(new Cinema());
+                $screening->setRoom(new Room);
+                $screening->getCinema()->setIdCinema("-");
+                $screening->getRoom()->setRoomNumber("-");
                 array_push($list, $screening);
             } else {
 
