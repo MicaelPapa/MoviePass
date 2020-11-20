@@ -50,12 +50,9 @@ class UserDAO implements IUserDAO
     public function SearchUserByEmail($email)
     {
         $result = new User();
-
         $query = "SELECT * FROM " . $this->tableName .
             " WHERE Email = :email limit 1;";
-
         $parameters["email"] = $email;
-
         $this->connection = Connection::GetInstance();
         $result = $this->connection->Execute($query, $parameters, QueryType::Query);
 
@@ -65,11 +62,10 @@ class UserDAO implements IUserDAO
     public function UpdateUserPassword($email, $newPassword)
     {
         $query = "UPDATE " . $this->tableName . " SET UserPassword = '" . $newPassword . "' WHERE (:email = email);";
-
         $parameters["email"] = $email;
-
         $this->connection = Connection::GetInstance();
         $this->connection->ExecuteNonQuery($query, $parameters);
+
         return $newPassword;
     }
 
@@ -79,14 +75,12 @@ class UserDAO implements IUserDAO
         IdGender = " . $user->getGender() . ",
         Birthdate = '" . $user->getBirthdate() . "',
         Photo = '" . $user->getPhoto() . "' WHERE (email = :email);";
-
         $parameters["email"] = $user->getEmail();
         $this->connection = Connection::GetInstance();
         $this->connection->ExecuteNonQuery($query, $parameters);
 
         $result = array();
         
-
         return $this->SearchUserByEmail($user->getEmail());
     }
 

@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use DAO\CitiesDAO as CitiesDAO;
 use DAO\MoviesDAO as MoviesDAO;
 use DAO\CinemaDAO as CinemaDAO;
 use DAO\RoomDAO as RoomDAO;
@@ -18,7 +17,6 @@ use Util\CreditCard;
 
 class PurchaseController
 {
-    private $CitiesDAO;
     private $MoviesDAO;
     private $CinemasDAO;
     private $ScreeningDAO;
@@ -81,17 +79,6 @@ class PurchaseController
         return $this->MoviesDAO->getAll();
     }
 
-    public function LoadCinemas()
-    {
-
-        if (isset($_POST["idMovie"])) {
-
-            $cinemas = $this->CinemasDAO->getCinemasByMovie($_POST['idMovie']);
-            $json = json_encode($cinemas);
-            echo "$" . $json . "%";
-        }
-    }
-
     public function LoadFunciones()
     {
 
@@ -101,17 +88,6 @@ class PurchaseController
             $json = json_encode($funciones);
             echo "$" . $json . "%";
         }
-    }
-
-    public function Index($functionId)
-    {
-        if ($_POST)
-            if (isset($_SESSION['isLogged'])) {
-                $cities = $this->LoadMovies();
-                require_once(VIEWS_PATH . "PurchaseView.php");
-            } else {
-                require_once(VIEWS_PATH . "LoginView.php");
-            }
     }
 
     public function ViewCreditCard($cantEntradas, $idScreening, $alertMessage = " ", $alertType = " "){

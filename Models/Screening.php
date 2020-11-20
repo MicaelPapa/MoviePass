@@ -131,65 +131,41 @@
 		$this->remainTickets = $remainTickets;
 	}
 
+	public function getRoom()
+	{
+			return $this->room;
+	}
 
-		/**
-		 * Get the value of room
-		 */ 
-		public function getRoom()
-		{
-				return $this->room;
-		}
 
-		/**
-		 * Set the value of room
-		 *
-		 * @return  self
-		 */ 
-		public function setRoom($room)
-		{
-				$this->room = $room;
+	public function setRoom($room)
+	{
+		$this->room = $room;
 
-				return $this;
-		}
+		return $this;
+	}
 
-		/**
-		 * Get the value of cinema
-		 */ 
-		public function getCinema()
-		{
-				return $this->cinema;
-		}
+	public function getCinema()
+	{
+		return $this->cinema;
+	}
 
-		/**
-		 * Set the value of cinema
-		 *
-		 * @return  self
-		 */ 
-		public function setCinema($cinema)
-		{
-				$this->cinema = $cinema;
+	public function setCinema($cinema)
+	{
+		$this->cinema = $cinema;
 
-				return $this;
-		}
+		return $this;
+	}
 
-		/**
-		 * Get the value of movie
-		 */ 
-		public function getMovie()
-		{
-				return $this->movie;
-		}
+	public function getMovie()
+	{
+		return $this->movie;
+	}
 
-		/**
-		 * Set the value of movie
-		 *
-		 * @return  self
-		 */ 
-		public function setMovie($movie)
-		{
-				$this->movie = $movie;
+	public function setMovie($movie)
+	{
+		$this->movie = $movie;
 
-				return $this;
-		}
+		return $this;
+	}
 }
 ?>

@@ -4,7 +4,7 @@ namespace Models;
 
 class Ticket
 {
-    private $idTicket;
+	private $idTicket;
     private $qrCode;
     private $user;
     private $screening;
@@ -49,14 +49,5 @@ class Ticket
 	public function setOrder( $order) {
 		$this->order = $order;
 	}
-
-    
-
 }
-
-
-
-
-
-
 ?>

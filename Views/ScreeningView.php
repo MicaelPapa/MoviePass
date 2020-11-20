@@ -72,7 +72,6 @@
                                                 class="ticketData"><?php echo $screening->getRemainTickets();?></span></p>
                                     </div>
                                     <div class="col-md-2 align-self-end">
-                                        <a id="edit" href = "<?php echo FRONT_ROOT ?>Screening/EditScreening?IdMovieIMDB=<?php echo $movie->getIdMovieIMDB(); ?>" class="btn btn-primary" type="button" data-toggle="modal" data-target="#editFunctionModal"><i class="fas fa-edit"></i></a>
                                         <a id="remove" href = "<?php echo FRONT_ROOT ?>Screening/RemoveFromDataBase?IdScreening=<?php echo $screening->getIdScreening(); ?>&idCinema = <?php echo $screening->getCinema()->getIdCinema();?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                     </div>
                                 </div>
