@@ -48,7 +48,7 @@ class MoviesController
 		if ($movie == null) {
 			$movie = $this->getInfoMovieApi($idMovieIMDB);
 			$this->moviesDAO->Add($movie, $cinema);
-			$this->addGenreAndMovie($movie->getGenres(), $movie->getIdMovieIMDB());
+			$this->movieGenreDAO->addGenreAndMovie($movie->getGenres(), $movie->getIdMovieIMDB());
 		} else if (!$this->moviesDAO->isExistMovieXCinema($cinema, $movie)) { //valida que no exista esa pelicula para ese cine
 
 			$this->moviesDAO->setMovieXcinema($cinema, $movie);
@@ -168,7 +168,7 @@ class MoviesController
 		$movie = new Movies();
 		$this->getGenresFromApi();
 		if ($type == "filterGenres") {
-			$movieGenreList = $this->movieXgenreDAO->getIdMovie($filter);
+			$movieGenreList = $this->movieGenreDAO->getIdMovie($filter);
 			foreach ($movieGenreList as $IdMovieIMDB) {
 				$movie = $this->moviesDAO->getByIdMovieIMDB($IdMovieIMDB['IdMovieIMDB']);
 				array_push($movieList, $movie);
@@ -206,7 +206,7 @@ class MoviesController
 		$movie = new Movies();
 		$this->getGenresFromApi();
 		if ($filterType == "filterGenres") {
-			$movieGenreList = $this->movieXgenreDAO->getIdMovie($filter);
+			$movieGenreList = $this->movieGenreDAO->getIdMovie($filter);
 			$movieCinemaList = $this->moviesDAO->getByCinema($idCinema);
 			foreach ($movieGenreList as $IdMovieIMDB) {
 				$movie = $this->moviesDAO->getByIdMovieIMDB($IdMovieIMDB['IdMovieIMDB']);
@@ -292,7 +292,7 @@ class MoviesController
 	private function addGenreAndMovie($genres, $IdMovie)
 	{
 		foreach ($genres as $idGenre) {
-			$this->movieXgenreDAO->add($idGenre['id'], $IdMovie);
+			$this->movieXgenreDAO->addMoviexGenres($idGenre['id'], $IdMovie);
 		}
 	}
 
@@ -364,7 +364,7 @@ class MoviesController
 	{
 
 		$genreList = array();
-		$genreList = $this->movieXgenreDAO->getGenresId();
+		$genreList = $this->movieGenreDAO->getGenresId();
 		return $genreList;
 	}
 }

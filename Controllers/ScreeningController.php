@@ -88,22 +88,15 @@ class ScreeningController
 		$date = strtotime($date);
 		$date = date('Y-m-d H:i:s', $date);
 		$screening->setStartHour($date);
-<<<<<<< HEAD
 
 		//Calcula la hora en que termina la pelicula
-=======
->>>>>>> 612ae4afbf983e03d6c2f18bb764cc5858c7c777
 		$duration = $movie->getDuration();
 		$dateHour = $fechaorigen . " " . $hora;
 		$stringHour = "+" . $duration . " minutes";
 		$newDate = strtotime($stringHour, strtotime($dateHour));
 		$newDate = date('Y-m-d H:i:s', $newDate);
-<<<<<<< HEAD
 		$screening->setFinishHour($newDate);
 
-=======
-		$screening->setFinishHour($newDate); //Calcula la hora en que termina la pelicula a partir de la duracion y la setea en el objeto screening
->>>>>>> 612ae4afbf983e03d6c2f18bb764cc5858c7c777
 		$screening->setDimension($dimension);
 		$screening->setAudio($audio);
 		$screening->setPrice($precio);
@@ -133,38 +126,6 @@ class ScreeningController
 		$this->ShowListView($idMovieIMDB, $idCinema);
 	}
 
-<<<<<<< HEAD
-=======
-
-	public function EditScreening($idMovieIMDB)
-	{
-		$screening = new Screening();
-
-		$movie = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
-		$screening->setStartDate($_GET['inputFechaDesde']);
-		$screening->setLastDate($_GET['inputFechaHasta']);
-		$screening->setStartHour($_GET['inputHoraInicio']);
-		$duration = $movie->getDuration();
-		$dateHour = $_GET['inputFechaDesde'] . " " . $_GET['inputHoraInicio'];
-		$stringHour = "+" . $duration . " minutes";
-		$newDate = strtotime($stringHour, strtotime($dateHour));
-		$newDate = date('Y-m-d H:i:s', $newDate);
-		$screening->setFinishHour($newDate);
-		$screening->setIdCinema($_GET['inputCinema']);
-		$screening->setIdRoom($_GET['inputSala']);
-		$screening->setDimension($_GET['dimension']);
-		$screening->setIdCinema($_GET['inputCinema']);
-		$screening->setIdRoom($_GET['inputSala']);
-		$screening->setAudio($_GET['audio']);
-		$screening->setPrice($_GET['price']);
-		$screening->setSubtitles($_GET['subtitulos']);
-
-		$this->screeningDAO->edit($screening);
-
-		require_once(VIEWS_PATH . "ScreeningView.php");
-	}
-
->>>>>>> 612ae4afbf983e03d6c2f18bb764cc5858c7c777
 	public function RemoveFromDataBase($IdScreening, $idCinema)
 	{
 
