@@ -12,7 +12,7 @@
 
         <!-- Opciones NavBar -->
         <?php 
-        if(isset($_SESSION['isAdmin'])){
+        if(isset($_SESSION['isAdmin']) && $_SESSION['isLogged']){
           echo '<ul class="navbar-nav mt-2 mt-lg-0">
             <li class="nav-item active">
               <a class="nav-link" href="'; echo FRONT_ROOT. 'Home/View"><i class="fas fa-home"></i>&nbspInicio</a>
@@ -52,7 +52,7 @@
         <!--Opcion Perfil -->
         <?php 
 
-            if(isset($_SESSION['isLogged'])){  
+            if(isset($_SESSION['isLogged']) && $_SESSION['isLogged']){  
 
               echo '<ul class="nav navbar-nav ml-auto">
                     <img src="'; 
