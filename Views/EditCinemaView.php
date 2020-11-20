@@ -18,7 +18,7 @@ require_once("navbar.php");
                 <div class="form-row justify-content-center">
                         <div class="form-group col-md-6">
                             <label for="inputNombre"><i style="color: red;">&#42&nbsp</i>Nombre</label>
-                            <input value="<?php echo $cine->getCinemaName();?>" type="text" class="form-control" id="inputNombre" placeholder="Nombre" name="cinemaName" required>
+                            <input value="<?php echo $cinema->getCinemaName();?>" type="text" class="form-control" id="inputNombre" placeholder="Nombre" name="cinemaName" required>
                         </div>
                     </div>
                     <div class="form-row justify-content-center">

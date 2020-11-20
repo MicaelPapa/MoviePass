@@ -7,11 +7,7 @@ class Address
         private $idAddress;
         private $street;
         private $numberStreet;
-        private $department;
-        private $departmentFloor;
-        private $city;
-
-
+       
 
         public function getIdAddress()
         {
@@ -71,68 +67,5 @@ class Address
                 return $this;
         }
 
-        /**
-         * Get the value of department
-         */
-        public function getDepartment()
-        {
-                return $this->department;
-        }
-
-        /**
-         * Set the value of department
-         *
-         * @return  self
-         */
-        public function setDepartment($department)
-        {
-                $this->department = $department;
-
-                return $this;
-        }
-
-        /**
-         * Get the value of departmentFloor
-         */
-        public function getDepartmentFloor()
-        {
-                return $this->departmentFloor;
-        }
-
-        /**
-         * Set the value of departmentFloor
-         *
-         * @return  self
-         */
-        public function setDepartmentFloor($departmentFloor)
-        {
-                $this->departmentFloor = $departmentFloor;
-
-                return $this;
-        }
-
-
-        /**
-         * Get the value of idAddress
-         */
-
-        /**
-         * Get the value of city
-         */
-        public function getCity()
-        {
-                return $this->city;
-        }
-
-        /**
-         * Set the value of city
-         *
-         * @return  self
-         */
-        public function setCity($city)
-        {
-                $this->city = $city;
-
-                return $this;
-        }
+    
 }

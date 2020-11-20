@@ -12,7 +12,7 @@ interface ICinemaDAO
     public function GetCinemaById($idCinema);
     public function UpdateCinema($idCinema, $cinemaName, $address);
     public function getCinemaByName($cinema);
-    public function getCinemasByMovie($movieId);
+    public function existMoviesInCinema($idCinema);
 }
 
 
