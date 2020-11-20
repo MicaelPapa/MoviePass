@@ -58,7 +58,6 @@
 	 public function setCantTickets( $cantTickets) {
 		$this->cantTickets = $cantTickets;
 	}
-
   }
 
 ?>

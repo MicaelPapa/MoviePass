@@ -67,13 +67,9 @@ class TicketsController
     public function LoadScreeningToTicket($idScreening)
     {
         $screening = new Screening();
-
         $screening = $this->ScreeningDAO->GetScreeningById($idScreening);
-
         $movie = $this->MoviesDAO->getByMovieId($screening->getMovie()->getIdMovie());
-
         $cinema = $this->CinemaDAO->GetCinemaById($screening->getCinema()->getIdCinema());
-
         $room = $this->RoomDAO->getRoomById($screening->getRoom()->getIdRoom());
 
         $screening->setCinema($cinema);

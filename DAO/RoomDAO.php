@@ -43,16 +43,12 @@ class RoomDAO implements IRoomDAO
     public function UpdateRoom ($idRoom, $roomNumber, $capacity)
     {
         try {
-			
 			$query = "UPDATE " . $this->tableName . " SET RoomNumber = :RoomNumber, Capacity = :Capacity WHERE IdRoom = " . $idRoom . ";";
-
-			
-         
             $parameters["RoomNumber"] = $roomNumber;
-			$parameters["Capacity"] = $capacity;
-
+            $parameters["Capacity"] = $capacity;
 			$this->connection = Connection::GetInstance();
-			$this->connection->ExecuteNonQuery($query, $parameters);
+            $this->connection->ExecuteNonQuery($query, $parameters);
+            
 			return true;
 		} catch (Exception $ex) {
 			return null;
@@ -130,12 +126,9 @@ class RoomDAO implements IRoomDAO
     }
 
     public function GetRoomById($idRoom)
-
     {
         try {
             $query = "SELECT * FROM " . $this->tableName . " WHERE idRoom = " . $idRoom . ";";
-
-
             $this->connection = Connection::GetInstance();
             $result = $this->connection->Execute($query);
 
@@ -155,8 +148,6 @@ class RoomDAO implements IRoomDAO
     {
         try {
             $query = "SELECT * FROM " . $this->tableName . " WHERE RoomNumber = '" . $name . "' ;";
-
-
             $this->connection = Connection::GetInstance();
             $result = $this->connection->Execute($query);
 
