@@ -54,17 +54,10 @@ class CinemaController
     {
 
         if (Validate::Logged() && Validate::AdminLog()) {
-            $cine = new Cinema();
-            $cine = $this->CinemaDAO->GetCinemaById($idCinema);
-            $idAddress = $this->CinemaDAO->getCinemaAddress($cine->getIdCinema());
-            $address = $this->AddressDAO->getAddressById($idAddress); 
-            $cine->setAddress($address);
-            
- //           $cityM = $this->CitiesDAO->getCity($addressM->getIdCity());
-    //        $stateM = $this->CitiesDAO->getState($cityM->getIdState());
-            
- //           $states = $this->LoadStates();
-//            $cities = $this->LoadCities($stateM->getIdState());
+            $cinema = new Cinema();
+            $cinema = $this->CinemaDAO->GetCinemaById($idCinema);
+            $address = $this->AddressDAO->getAddressById($cinema->getAddress()->getIdAddress()); 
+            $cinema->setAddress($address);
 
             require_once(VIEWS_PATH . "EditCinemaView.php");
            

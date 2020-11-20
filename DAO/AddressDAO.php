@@ -11,6 +11,7 @@ class AddressDAO implements IAddressDAO
 {
     private $connection;
     private $tableName = "Addresses";
+    
 
 
     public function GetAll()
@@ -39,29 +40,7 @@ class AddressDAO implements IAddressDAO
 
     }
 
-    public function getAddressByCity($idCity){
-        $query = "SELECT * FROM " . $this->tableName . " WHERE IdCity = " . $idCity . " ;";
-        $parameters = array();
-        $this->connection = Connection::GetInstance();
-        $result = $this->connection->Execute($query, $parameters, QueryType::Query);
 
-        try{
-
-            foreach ($result as $row) {
-                $address = new Address();
-                $address->setIdAddress($row["IdAddress"]);
-                $address->setStreet($row["Street"]);
-                $address->setNumberStreet($row["NumberStreet"]);
-                $address->setIdCity($row["IdCity"]);
-    
-                array_push($parameters, $address);
-            }
-            return $parameters;
-        }
-        catch (Exception $ex) {
-            throw $ex;
-        }
-    }
 
     public function getAddressById($idAddress){
 
@@ -77,9 +56,32 @@ class AddressDAO implements IAddressDAO
                 $address = new Address();
                 $address->setIdAddress($row["IdAddress"]);
                 $address->setStreet($row["Street"]);
-                $address->setNumberStreet($row["NumberStreet"]);
-             //   $address->setIdCity($row["IdCity"]);
-                
+                $address->setNumberStreet($row["NumberStreet"]);                
+                return $address;
+            }
+            
+        }
+        catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    
+    public function getAddressByCinema($cinema){
+
+        $query = "SELECT * FROM " . $this->tableName . " WHERE IdAddress = " . $idAddress . " ;";
+
+
+        $this->connection = Connection::GetInstance();
+        $result = $this->connection->Execute($query);
+
+        try{
+
+            foreach ($result as $row) {
+                $address = new Address();
+                $address->setIdAddress($row["IdAddress"]);
+                $address->setStreet($row["Street"]);
+                $address->setNumberStreet($row["NumberStreet"]);                
                 return $address;
             }
             
@@ -109,11 +111,7 @@ class AddressDAO implements IAddressDAO
                 $idAddress = null;
                 $idAddress = $row["IdAddress"];
                 return $idAddress;
-            }
-          
-          //  $parameters["IdCity"] = $address->getIdCity();
-        
-           
+            }        
         }
         
         catch (Exception $ex) {

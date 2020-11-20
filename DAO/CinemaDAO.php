@@ -158,8 +158,11 @@ class cinemaDAO implements ICinemaDAO
 
 			foreach ($result as $row) {
 				$cinema = new Cinema();
+				$address = new Address();
+				$address->setIdAddress(($row["IdAddress"]));
 				$cinema->setIdCinema($row["IdCinema"]);
 				$cinema->setCinemaName($row["CinemaName"]);
+				$cinema->setAddress($address);
 				return $cinema;
 			}
 		} catch (Exception $ex) {
