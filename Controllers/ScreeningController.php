@@ -96,20 +96,13 @@ class ScreeningController
 		$date = strtotime($date);
 		$date = date('Y-m-d H:i:s', $date);
 		$screening->setStartHour($date);
-
-		//Calcula la hora en que termina la pelicula
-
-
 		$duration = $movie->getDuration();
 		$dateHour = $fechaorigen . " " . $hora;
 		$stringHour = "+" . $duration . " minutes";
 		$newDate = strtotime($stringHour, strtotime($dateHour));
 		$newDate = date('Y-m-d H:i:s', $newDate);
-
-		$screening->setFinishHour($newDate);
-
+		$screening->setFinishHour($newDate); //Calcula la hora en que termina la pelicula a partir de la duracion y la setea en el objeto screening
 		$screening->setDimension($dimension);
-
 		$screening->setAudio($audio);
 		$screening->setPrice($precio);
 		$screening->setSubtitles($sub);
@@ -146,6 +139,7 @@ class ScreeningController
 
 	public function EditScreening($idMovieIMDB)
 	{
+		$screening = new Screening();
 
 		$movie = $this->moviesDAO->getByIdMovieIMDB($_GET['idMovieIMDB']);
 		$screening->setStartDate($_GET['inputFechaDesde']);
