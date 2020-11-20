@@ -37,26 +37,6 @@ class Cinema
     }
 
 
-   /* /**
-     * Get the value of IdAddress
-      
-    public function getIdAddress()
-    {
-        return $this->IdAddress;
-    }
-
-    /**
-     * Set the value of IdAddress
-     *
-     * @return  self
-     *
-    public function setIdAddress($IdAddress)
-    {
-        $this->IdAddress = $IdAddress;
-
-        return $this;
-    }*/
-
     public function getAddress()
     {
         return $this->address;

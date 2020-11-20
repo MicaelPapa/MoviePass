@@ -9,8 +9,6 @@
         private $idMovieIMDB;
         private $startDate;
         private $lastDate;
-        private $idRoom;
-        private $idCinema;
         private $Dimension;
 		private $Audio;
 		private $Price;

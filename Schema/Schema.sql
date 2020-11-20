@@ -163,6 +163,20 @@ BEGIN
  END $$
 DELIMITER ;
 
+DELIMITER  $$
+create procedure sp_insert_cinema(pNumberStreet int, pStreet varchar(50), pcinemaName  varchar(50), out pid_address varchar(50)) 
+begin
+	
+		INSERT INTO addresses (Street, NumberStreet) VALUES ( pStreet, pNumberStreet);
+		
+        SET pid_address = last_insert_id();
+		
+        INSERT INTO cinemas (CinemaName, IdAddress)
+			values (pcinemaName,pid_address);
+end;
+$$
+DELIMITER ; 
+
 
 /*Inserts*/
 insert into genders(GenderName) values('Female'),('Male'),('Other');

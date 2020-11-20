@@ -67,30 +67,6 @@ class AddressDAO implements IAddressDAO
     }
 
     
-    public function getAddressByCinema($cinema){
-
-        $query = "SELECT * FROM " . $this->tableName . " WHERE IdAddress = " . $idAddress . " ;";
-
-
-        $this->connection = Connection::GetInstance();
-        $result = $this->connection->Execute($query);
-
-        try{
-
-            foreach ($result as $row) {
-                $address = new Address();
-                $address->setIdAddress($row["IdAddress"]);
-                $address->setStreet($row["Street"]);
-                $address->setNumberStreet($row["NumberStreet"]);                
-                return $address;
-            }
-            
-        }
-        catch (Exception $ex) {
-            throw $ex;
-        }
-    }
-
     public function Add($address){
        
         try{
@@ -119,26 +95,5 @@ class AddressDAO implements IAddressDAO
         }
     }
 
-    public function getIdFromDataBase($street, $numberStreet){
-        
-        $query = "SELECT * FROM " . $this->tableName . " WHERE Street = " . $street . " and  NumberStreet = " . $numberStreet . " ;";
-        $parameters = array();
-        $this->connection = Connection::GetInstance();
-        $result = $this->connection->Execute($query, $parameters, QueryType::Query);
-
-        try{
-
-            foreach ($result as $row) {
-                $address = new Address();
-                $address->setIdAddress($row["IdAddress"]);
-
-    
-            }
-            return $address;
-        }
-        catch (Exception $ex) {
-            throw $ex;
-        }
-    }
 }
     

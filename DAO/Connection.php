@@ -68,6 +68,27 @@
             }        	    	
         }
         
+        public function ExecuteProcedureOutQuery($query, $parameters = array(), $queryType = QueryType::Query, $param)
+        { 
+            try
+            {
+                $this->Prepare($query);
+                
+                $this->BindParameters($parameters, $queryType);
+
+                $this->pdoStatement->execute();
+               
+                $row = $this->pdo->query("SELECT @".$param." AS ".$param)->fetch(PDO::FETCH_ASSOC);
+                if ($row) {
+                    return $row !== false ? $row[$param] : null;
+                }
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }      
+
+        }
         private function Prepare($query)
         {
             try
@@ -87,7 +108,7 @@
             foreach($parameters as $parameterName => $value)
             {                
                 $i++;
-
+                
                 if($queryType == QueryType::Query)
                     $this->pdoStatement->bindParam(":".$parameterName, $parameters[$parameterName]);
                 else
