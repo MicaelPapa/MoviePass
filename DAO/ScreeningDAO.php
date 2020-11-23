@@ -106,12 +106,9 @@ class ScreeningDAO implements IScreeningDAO
 
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
                 $screening->setPrice($row["Price"]);
@@ -154,7 +151,7 @@ class ScreeningDAO implements IScreeningDAO
         }
     }
 
-    public function GetScreeningsByIdMovie($movie)
+    public function GetScreeningsByMovie($movie)
     {
 
         try {
@@ -166,12 +163,9 @@ class ScreeningDAO implements IScreeningDAO
             if ($resultSet == null) {
                 $screening = new Screening();
                 $screening->setIdScreening("-");
-                $screening->setIdMovie($movie->getIdMovie());
                 $screening->setIdMovieIMDB($movie->getIdMovieIMDB());
                 $screening->setStartDate("-");
                 $screening->setLastDate("-");
-                $screening->setIdRoom("-");
-                $screening->setIdCinema("-");
                 $screening->setDimension("-");
                 $screening->setPrice("-");
                 $screening->setAudio($movie->getOriginalLanguage());
@@ -216,35 +210,7 @@ class ScreeningDAO implements IScreeningDAO
         }
     }
 
-    public function GetScreeningByIdCinema($idCinema)
-    {
-        try {
-            $list = array();
-            $query = "SELECT * FROM " . $this->tableName . " WHERE IdCinema =" . $idCinema;
-            $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
-
-
-            foreach ($resultSet as $row) {
-                $screening = new Screening();
-                $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
-                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                $screening->setMovieName($row["MovieName"]);
-                $screening->setDuration($row["Duration"]);
-                $screening->setSynopsis($row["Synopsis"]);
-                $screening->setReleaseDate($row["ReleaseDate"]);
-                $screening->setPhoto($row["Photo"]);
-                $screening->setEarnings($row["Earnings"]);
-                $screening->setBudget($row["Budget"]);
-                $screening->setRemainTickets($row["RemainTickets"]);
-                return $screening;
-            }
-            return null;
-        } catch (Exception $ex) {
-            return null;
-        }
-    }
+    
     public function existInDataBase($idMovieIMDB)
     {
         try {
@@ -294,69 +260,8 @@ class ScreeningDAO implements IScreeningDAO
         return $screeningList;
     }
 
-    public function GetScreeningByIdRoom($IdRoom)
-    {
-        try {
-            $list = array();
-            $query = "SELECT * FROM " . $this->tableName . " WHERE IdRoom = " . $IdRoom;
-            $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
-
-
-            foreach ($resultSet as $row) {
-
-                $screening = new Screening();
-                $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
-                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                $screening->setStartDate($row["StartDate"]);
-                $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
-                $screening->setDimension($row["Dimension"]);
-                $screening->setAudio($row["Audio"]);
-                $screening->setPrice($row["Price"]);
-                $screening->setSubtitles($row["Subtitles"]);
-                $screening->setStartHour($row["StartHour"]);
-                $screening->setFinishHour($row["FinishHour"]);
-                $screening->setRemainTickets($row["RemainTickets"]);
-                return $screening;
-            }
-        } catch (Exception $ex) {
-            return null;
-        }
-    }
-    public function GetScreeningByStartDate($startDate)
-    {
-        try {
-            $list = array();
-            $query = "SELECT * FROM " . $this->tableName . " WHERE StartDate = " . $startDate;
-            $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
-
-            foreach ($resultSet as $row) {
-
-                $screening = new Screening();
-                $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
-                $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
-                $screening->setStartDate($row["StartDate"]);
-                $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
-                $screening->setDimension($row["Dimension"]);
-                $screening->setAudio($row["Audio"]);
-                $screening->setPrice($row["Price"]);
-                $screening->setSubtitles($row["Subtitles"]);
-                $screening->setStartHour($row["StartHour"]);
-                $screening->setFinishHour($row["FinishHour"]);
-                $screening->setRemainTickets($row["RemainTickets"]);
-                return $screening;
-            }
-        } catch (Exception $ex) {
-            return null;
-        }
-    }
+   
+   
 
     public function validateScreening($screening) //Realiza las validaciones pertinentes para poder agregar una función, devuelve un mensaje y un boolean.
     {  
@@ -392,27 +297,6 @@ class ScreeningDAO implements IScreeningDAO
         return $validate;
     }
 
-    public function GetScreeningsByMovieAndCinema($MovieId, $CinemaId)
-    {
-        $invokeStoredProcedure = 'CALL GetScreeningsByMovieAndCinema(?,?)';
-        $parameters["idMovie"] = $MovieId;
-        $parameters["idCinema"] = $CinemaId;
-
-        $this->connection = Connection::GetInstance();
-        return $this->connection->Execute($invokeStoredProcedure, $parameters, QueryType::StoredProcedure);
-    }
-
-    public function getIdAllIdMoviesByDateAndCinema($Date, $CinemaId)
-    {
-        try {
-            $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' AND IdCinema = '" . $CinemaId . "' ;";
-            $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($query);
-        } catch (Exception $ex) {
-            return null;
-        }
-        return $resultSet;
-    }
     public function getIdAllIdMoviesByDate($Date)
     {
         try {
@@ -424,6 +308,7 @@ class ScreeningDAO implements IScreeningDAO
         }
         return $resultSet;
     }
+
 
     public function GetSpecificScreeningByIdMovie($IdMovie){
         try{
