@@ -26,13 +26,6 @@
 	public function setIdScreening($idScreening) {
 		$this->idScreening = $idScreening;
 	}
-	public function getIdMovie() {
-		return $this->idMovie;
-	}
-
-	public function setIdMovie($idMovie) {
-		$this->idMovie = $idMovie;
-	}
 	    
 	public function getIdMovieIMDB() {
 		return $this->idMovieIMDB;

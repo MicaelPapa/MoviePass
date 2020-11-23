@@ -166,7 +166,6 @@ class ScreeningDAO implements IScreeningDAO
             if ($resultSet == null) {
                 $screening = new Screening();
                 $screening->setIdScreening("-");
-                $screening->setIdMovie($movie->getIdMovie());
                 $screening->setIdMovieIMDB($movie->getIdMovieIMDB());
                 $screening->setStartDate("-");
                 $screening->setLastDate("-");
