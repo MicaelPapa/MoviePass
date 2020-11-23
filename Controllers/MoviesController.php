@@ -331,7 +331,7 @@ class MoviesController
 	public function ShowScreeningUserView($idMovie)
 	{
 		$movie = $this->moviesDAO->getByMovieId($idMovie);
-		$screeningList = $this->screeningDAO->GetSpecificScreeningByIdMovie($idMovie);
+		$screeningList = $this->screeningDAO->GetSpecificScreeningByIdMovie($movie);
 		usort($screeningList, array($this, "sortFunctionByDate"));
 		$screeningListCopy = $screeningList;
 		$screeningCondition = null;
