@@ -41,7 +41,7 @@
         <?php foreach($screeningList as $screening){ ?>  
         <div role="tabpanel" id="nav-<?php echo $screening->getIdScreening();?>" class="tab-pane fade" aria-labelledby="nav-<?php echo $screening->getIdScreening();?>-tab">
         <form action="<?php echo FRONT_ROOT ?>Purchase/ViewPreSelected" method="POST">
-            <p class="titleData" style="margin-top: 1%" >Cine <?php echo ($this->screeningDAO->getCinemaByIdCinema($screening->getIdCinema()))->getCinemaName();?></p>
+            <p class="titleData" style="margin-top: 1%" >Cine <?php echo ($this->screeningDAO->getCinemaByIdCinema($screening->getCinema()->getIdCinema()))->getCinemaName();?></p>
             <?php foreach($screeningListCopy as $screeningCopy){ 
                 if($screening->getStartDate() === $screeningCopy->getStartDate()){ ?>
                     <p class="titleData"><input type="checkbox" name="chackScreening" class="radio" value="<?php echo $screeningCopy->getIdScreening();?>" required><?php $date = date_create($screeningCopy->getStartHour()); echo date_format($date,'h:i:a');?></p>

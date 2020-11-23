@@ -61,11 +61,9 @@ class ScreeningDAO implements IScreeningDAO
             foreach ($resultSet as $row) {
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
                 $screening->setPrice($row["Price"]);
@@ -105,13 +103,11 @@ class ScreeningDAO implements IScreeningDAO
             foreach ($resultSet as $row) {
 
                 $screening = new Screening();
+
                 $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
                 $screening->setPrice($row["Price"]);
@@ -226,8 +222,10 @@ class ScreeningDAO implements IScreeningDAO
 
             foreach ($resultSet as $row) {
                 $screening = new Screening();
+                $screening->setMovie(new Movies());
+
                 $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
+                $screening->getMovie()->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setMovieName($row["MovieName"]);
                 $screening->setDuration($row["Duration"]);
@@ -306,12 +304,9 @@ class ScreeningDAO implements IScreeningDAO
 
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
                 $screening->setPrice($row["Price"]);
@@ -319,6 +314,19 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
                 $screening->setRemainTickets($row["RemainTickets"]);
+
+                $cinema = new Cinema();
+                $room = new Room();
+                $movie = new Movies();
+                $movie->setIdMovie($row["IdMovie"]);
+                $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $room->setIdRoom($row["IdRoom"]);
+                $screening->setRoom($room);
+                $cinema->setIdCinema($row["IdCinema"]);
+                $screening->setCinema($cinema);
+                $screening->setRoom($room);
+                $screening->setMovie($movie);
+
                 return $screening;
             }
         } catch (Exception $ex) {
@@ -337,12 +345,9 @@ class ScreeningDAO implements IScreeningDAO
 
                 $screening = new Screening();
                 $screening->setIdScreening($row["IdScreening"]);
-                $screening->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
                 $screening->setPrice($row["Price"]);
@@ -350,6 +355,18 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setStartHour($row["StartHour"]);
                 $screening->setFinishHour($row["FinishHour"]);
                 $screening->setRemainTickets($row["RemainTickets"]);
+
+                $cinema = new Cinema();
+                $room = new Room();
+                $movie = new Movies();
+                $movie->setIdMovie($row["IdMovie"]);
+                $movie->setIdMovieIMDB($row["IdMovieIMDB"]);
+                $room->setIdRoom($row["IdRoom"]);
+                $screening->setRoom($room);
+                $cinema->setIdCinema($row["IdCinema"]);
+                $screening->setCinema($cinema);
+                $screening->setRoom($room);
+                $screening->setMovie($movie);
                 return $screening;
             }
         } catch (Exception $ex) {
@@ -424,23 +441,27 @@ class ScreeningDAO implements IScreeningDAO
         return $resultSet;
     }
 
-    public function GetSpecificScreeningByIdMovie($IdMovie){
+    public function GetSpecificScreeningByIdMovie($movie){
         try{
             $list = array();
-            $query = "SELECT * FROM " .$this->tableName ." WHERE IdMovie = ". $IdMovie;
+            $query = "SELECT * FROM " .$this->tableName ." WHERE IdMovie = ". $movie->getIdMovie();
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($query);
             $screeningList = array();
                     
             foreach ($resultSet as $row) {      
                 $screening = new Screening();
+                $screening->setMovie(new Movies());
+                $screening->setCinema(new Cinema());
+                $screening->setRoom(new Room());
+
                 $screening->setIdScreening($row["IdScreening"]);
-		        $screening->setIdMovie($row["IdMovie"]);
+                $screening->getMovie()->setIdMovie($row["IdMovie"]);
                 $screening->setIdMovieIMDB($row["IdMovieIMDB"]);
                 $screening->setStartDate($row["StartDate"]);
                 $screening->setLastDate($row["LastDate"]);
-                $screening->setIdRoom($row["IdRoom"]);
-                $screening->setIdCinema($row["IdCinema"]);
+                $screening->getRoom()->setIdRoom($row["IdRoom"]);
+                $screening->getCinema()->setIdCinema($row["IdCinema"]);
                 $screening->setDimension($row["Dimension"]);
                 $screening->setAudio($row["Audio"]);
                 $screening->setPrice($row["Price"]);
