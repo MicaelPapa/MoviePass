@@ -9,7 +9,6 @@
     function GetScreeningById($idScreening);
     function remove($screening);
     function GetScreeningsByIdMovie($movies);
-    function GetScreeningByIdCinema($idCinema);
     function existInDataBase($idMovieIMDB);
     }
 ?>

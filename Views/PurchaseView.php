@@ -28,6 +28,9 @@
             <p class="titleData" style="font-size: 24px"><label for="inputCantAsientos">Cantidad de asientos</label><i style="color: red;">&#42&nbsp</i>: <input type="number" style="width: 7%; display: inline;" id="cantidadDeAsientos" onchange="onSum(<?php echo $screening->getPrice(); ?>)" name="inputCantAsientos"  max="<?php echo $screening->getRemainTickets(); ?>" min="1" class="form-control" value="1" required></p>
           </div>
           <div class="form-group col-md-12">
+            <p class="titleData" style="font-size: 24px"><label for="entradasRestantes">Entradas restantes: <?php echo $screening->getRemainTickets(); ?></label></p>
+          </div>
+          <div class="form-group col-md-12">
               <p class="titleData" style="font-size: 24px; display: inline;"><label for="inputCantAsientos">Sub-Total(sin descuentos):</label><p class="titleData" name="precioTotal" style="font-size: 24px; display: inline;" id="precio"> <?php echo $screening->getPrice(); ?></p></p>
               <input type="hidden" name="idScreening"  value="<?php echo $screening->getIdScreening(); ?>" >
               <input type="hidden" name="alertMessage" value="" />
