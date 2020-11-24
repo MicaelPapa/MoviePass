@@ -48,7 +48,7 @@ class ScreeningController
 		$cinema = new Cinema();
 
 		$screenings = array();
-		$screeningsList = $this->screeningDAO->GetScreeningsByIdMovie($movie);
+		$screeningsList = $this->screeningDAO->GetScreeningsByMovie($movie);
 
 		foreach ($screeningsList as $screening) {
 			if ($screening->getIdScreening() != "-") {

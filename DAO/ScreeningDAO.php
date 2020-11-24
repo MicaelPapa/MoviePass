@@ -173,7 +173,7 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setFinishHour("-");
                 $screening->setMovie($movie);
                 $screening->setCinema(new Cinema());
-                $screening->setRoom(new Room);
+                $screening->setRoom(new Room());
                 $screening->getCinema()->setIdCinema("-");
                 $screening->getRoom()->setRoomNumber("-");
                 array_push($list, $screening);
@@ -296,7 +296,7 @@ class ScreeningDAO implements IScreeningDAO
         return $validate;
     }
 
-    public function getIdAllIdMoviesByDate($Date)
+    public function getAllIdMoviesByDate($date)
     {
         try {
             $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' ;";
@@ -308,7 +308,8 @@ class ScreeningDAO implements IScreeningDAO
         return $resultSet;
     }
 
-    public function GetSpecificScreeningByIdMovie($movie){
+    public function GetSpecificScreeningByMovie($movie)
+    {
         try{
             $list = array();
             $query = "SELECT * FROM " .$this->tableName ." WHERE IdMovie = ". $movie->getIdMovie();
