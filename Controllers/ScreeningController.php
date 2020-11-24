@@ -48,7 +48,7 @@ class ScreeningController
 		$cinema = new Cinema();
 
 		$screenings = array();
-		$screeningsList = $this->screeningDAO->GetScreeningsByIdMovie($movie);
+		$screeningsList = $this->screeningDAO->GetScreeningsByMovie($movie);
 
 		foreach ($screeningsList as $screening) {
 			if ($screening->getIdScreening() != "-") {
@@ -95,8 +95,7 @@ class ScreeningController
 		$stringHour = "+" . $duration . " minutes";
 		$newDate = strtotime($stringHour, strtotime($dateHour));
 		$newDate = date('Y-m-d H:i:s', $newDate);
-		$screening->setFinishHour($newDate);
-
+		$screening->setFinishHour($newDate); //Calcula la hora en que termina la pelicula a partir de la duracion y la setea en el objeto screening
 		$screening->setDimension($dimension);
 		$screening->setAudio($audio);
 		$screening->setPrice($precio);

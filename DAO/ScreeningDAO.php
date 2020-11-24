@@ -150,7 +150,7 @@ class ScreeningDAO implements IScreeningDAO
         }
     }
 
-    public function GetScreeningsByIdMovie($movie)
+    public function GetScreeningsByMovie($movie)
     {
 
         try {
@@ -165,8 +165,6 @@ class ScreeningDAO implements IScreeningDAO
                 $screening->setIdMovieIMDB($movie->getIdMovieIMDB());
                 $screening->setStartDate("-");
                 $screening->setLastDate("-");
-                $screening->setIdRoom("-");
-                $screening->setIdCinema("-");
                 $screening->setDimension("-");
                 $screening->setPrice("-");
                 $screening->setAudio($movie->getOriginalLanguage());
@@ -211,6 +209,10 @@ class ScreeningDAO implements IScreeningDAO
         }
     }
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> a8da36ebdfe3195beec5005e24932c7150fbed2c
     public function existInDataBase($idMovieIMDB)
     {
         try {
@@ -259,6 +261,12 @@ class ScreeningDAO implements IScreeningDAO
         return $screeningList;
     }
 
+<<<<<<< HEAD
+=======
+   
+   
+
+>>>>>>> a8da36ebdfe3195beec5005e24932c7150fbed2c
     public function validateScreening($screening) //Realiza las validaciones pertinentes para poder agregar una función, devuelve un mensaje y un boolean.
     {  
         $notExist = false;
@@ -293,7 +301,11 @@ class ScreeningDAO implements IScreeningDAO
         return $validate;
     }
 
+<<<<<<< HEAD
     public function getAllIdMoviesByDate($Date)
+=======
+    public function getAllIdMoviesByDate($date)
+>>>>>>> a8da36ebdfe3195beec5005e24932c7150fbed2c
     {
         try {
             $query = "SELECT IdMovieIMDB FROM " . $this->tableName . " WHERE StartDate = '" . $Date . "' ;";
@@ -305,7 +317,12 @@ class ScreeningDAO implements IScreeningDAO
         return $resultSet;
     }
 
+<<<<<<< HEAD
     public function GetSpecificScreeningByMovie($movie){
+=======
+    public function GetSpecificScreeningByMovie($movie)
+    {
+>>>>>>> a8da36ebdfe3195beec5005e24932c7150fbed2c
         try{
             $list = array();
             $query = "SELECT * FROM " .$this->tableName ." WHERE IdMovie = ". $movie->getIdMovie();

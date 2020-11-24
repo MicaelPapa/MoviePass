@@ -51,21 +51,6 @@
 		$this->lastDate = $lastDate;
 	}
 
-	public function getIdRoom() {
-		return $this->idRoom;
-	}
-
-	public function setIdRoom($idRoom) {
-		$this->idRoom = $idRoom;
-	}
-
-	public function getIdCinema() {
-		return $this->idCinema;
-	}
-
-	public function setIdCinema($idCinema) {
-		$this->idCinema = $idCinema;
-	}
 
 	public function getDimension() {
 		return $this->Dimension;
