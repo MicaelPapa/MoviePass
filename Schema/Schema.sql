@@ -150,7 +150,7 @@ create table Tickets (
 
 
 DELIMITER $$
- CREATE PROCEDURE `BuyTickets`( IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT) 
+ CREATE PROCEDURE `BuyTickets`( IN `IdFuncion` INT, IN `CantTickets` INT, IN `Price` INT, OUT pid_order int ) 
 
 BEGIN 
 	declare MoviePrice decimal default 0.0; declare Discount decimal default 0.0; 
@@ -159,12 +159,14 @@ BEGIN
 	insert into orders
 	(SubTotal,Total,DatePurchase,Discount,cantTickets) 
 	values(Price * CantTickets, Price * CantTickets * (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 0.75 ELSE 1 END), now(), (CASE WHEN DAYOFWEEK(now()) = 3 or DAYOFWEEK(now()) = 4 THEN 25 ELSE 0 END), CantTickets); 
-	update screenings set RemainTickets = RemainTickets - CantTickets where idScreening = IdFuncion; 
+	SET pid_order = last_insert_id();
+    update screenings set RemainTickets = RemainTickets - CantTickets where idScreening = IdFuncion; 
+
  END $$
 DELIMITER ;
 
 DELIMITER  $$
-create procedure sp_insert_cinema(pNumberStreet int, pStreet varchar(50), pcinemaName  varchar(50), out pid_address varchar(50)) 
+create procedure sp_insert_cinema(pNumberStreet int, pStreet varchar(50), pcinemaName  varchar(50), out pid_address int) 
 begin
 	
 		INSERT INTO addresses (Street, NumberStreet) VALUES ( pStreet, pNumberStreet);

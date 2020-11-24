@@ -325,13 +325,13 @@ class MoviesController
 
 	private function getMoviesScreeningDataBase($date)
 	{
-		$movies = $this->screeningDAO->getIdAllIdMoviesByDate($date);
+		$movies = $this->screeningDAO->getAllIdMoviesByDate($date);
 		return $movies;
 	}
 	public function ShowScreeningUserView($idMovie)
 	{
 		$movie = $this->moviesDAO->getByMovieId($idMovie);
-		$screeningList = $this->screeningDAO->GetSpecificScreeningByIdMovie($movie);
+		$screeningList = $this->screeningDAO->GetSpecificScreeningByMovie($movie);
 		usort($screeningList, array($this, "sortFunctionByDate"));
 		$screeningListCopy = $screeningList;
 		$screeningCondition = null;
